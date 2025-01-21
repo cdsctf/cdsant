@@ -27,6 +27,15 @@ export default createBrowserRouter([
                             };
                         },
                     },
+                    {
+                        path: ":id",
+                        lazy: async () => {
+                            return {
+                                Component: (await import("@/pages/games/[id]"))
+                                    .default,
+                            };
+                        },
+                    },
                 ],
             },
             {

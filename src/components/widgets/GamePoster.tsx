@@ -1,18 +1,25 @@
-import { Game } from "@/models/game";
 import { css } from "@emotion/react";
 import { theme, Image } from "antd";
-import { useState } from "react";
+import { useState, useEffect, CSSProperties } from "react";
 import FlagBold from "~icons/solar/flag-bold";
 
 export interface GamePosterProps {
     gameId: number;
+    className?: string;
+    style?: CSSProperties;
 }
 
 export function GamePoster(props: GamePosterProps) {
-    const { gameId } = props;
+    const { gameId, ...rest } = props;
     const { token } = theme.useToken();
 
+    const [currentGameId, setCurrentGameId] = useState(gameId);
     const [err, setErr] = useState<boolean>(false);
+
+    useEffect(() => {
+        setCurrentGameId(gameId);
+        setErr(false);
+    }, [gameId]);
 
     if (err) {
         return (
@@ -25,6 +32,7 @@ export function GamePoster(props: GamePosterProps) {
                     justify-content: center;
                     align-items: center;
                 `}
+                {...rest}
             >
                 <FlagBold
                     css={css`
@@ -41,9 +49,10 @@ export function GamePoster(props: GamePosterProps) {
         <Image
             preview={false}
             draggable={false}
-            src={`/api/games/${gameId}/poster`}
+            src={`/api/games/${currentGameId}/poster`}
             onError={() => setErr(true)}
             height={"100%"}
+            {...rest}
         />
     );
 }
