@@ -1,53 +1,8 @@
+import { GamePoster } from "@/components/widgets/GamePoster";
 import { Game } from "@/models/game";
 import { css } from "@emotion/react";
-import { Card, Input, Space, Image, theme } from "antd";
-import { useState } from "react";
+import { theme } from "antd";
 import { Link } from "react-router";
-import FlagBold from "~icons/solar/flag-bold";
-
-export interface GamePosterProps {
-    game?: Game;
-}
-
-export function GamePoster(props: GamePosterProps) {
-    const { game } = props;
-    const { token } = theme.useToken();
-
-    const [err, setErr] = useState<boolean>(false);
-
-    if (err) {
-        return (
-            <div
-                css={css`
-                    width: 100%;
-                    height: 100%;
-                    background-color: ${token.colorBgContainerDisabled};
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                `}
-            >
-                <FlagBold
-                    css={css`
-                        height: 49px;
-                        width: 49px;
-                        color: ${token.colorTextDisabled};
-                    `}
-                />
-            </div>
-        );
-    }
-
-    return (
-        <Image
-            preview={false}
-            draggable={false}
-            src={`/api/games/${game?.id}/poster`}
-            onError={() => setErr(true)}
-            height={"100%"}
-        />
-    );
-}
 
 export interface GameCardProps {
     game?: Game;
@@ -77,7 +32,7 @@ export default function GameCard(props: GameCardProps) {
                     aspect-ratio: 16/9;
                 `}
             >
-                <GamePoster key={game?.id} game={game} />
+                <GamePoster key={game?.id} gameId={game?.id!} />
             </div>
             <div
                 css={css`
