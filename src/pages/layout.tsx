@@ -1,35 +1,22 @@
-import { useThemeStore } from "@/stores/theme";
-import { Button, Layout, theme } from "antd";
+import { Layout } from "antd";
+import Navbar from "./_blocks/Navbar";
+import { css } from "@emotion/react";
+import { Outlet } from "react-router";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content } = Layout;
 
 export default function () {
-    const themeStore = useThemeStore();
-
     return (
         <Layout>
-            <Header
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    position: "sticky",
-                    top: 0,
-                    backgroundColor: "transparent",
-                }}
-            >
-                <Button
-                    type="primary"
-                    onClick={() => themeStore.setDarkMode(!themeStore.darkMode)}
-                >
-                    1
-                </Button>
-            </Header>
+            <Navbar />
             <Content
-                style={{
-                    minHeight: "100vh",
-                }}
+                css={css`
+                    display: flex;
+                    flex-direction: column;
+                    min-height: calc(100vh - 64px);
+                `}
             >
-                11
+                <Outlet />
             </Content>
         </Layout>
     );

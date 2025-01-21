@@ -26,7 +26,9 @@ export default defineConfig(({ mode }) => {
             },
         },
         plugins: [
-            React(),
+            React({
+                jsxImportSource: "@emotion/react",
+            }),
             Icons({
                 compiler: "jsx",
                 jsx: "react",
