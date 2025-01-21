@@ -1,0 +1,43 @@
+import { defineConfig, loadEnv } from "vite";
+import Icons from "unplugin-icons/vite";
+import React from "@vitejs/plugin-react-swc";
+import path from "path";
+
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd());
+    const apiUrl = env.VITE_API_URL || "/api";
+
+    return {
+        server: {
+            host: "0.0.0.0",
+            proxy: {
+                "/api": {
+                    target: apiUrl,
+                    changeOrigin: true,
+                },
+                "/metrics": {
+                    target: apiUrl,
+                    changeOrigin: true,
+                },
+                "/api/proxies": {
+                    target: apiUrl.replace("http", "ws"),
+                    ws: true,
+                },
+            },
+        },
+        plugins: [
+            React(),
+            Icons({
+                compiler: "jsx",
+                jsx: "react",
+                scale: 1.2,
+                defaultClass: "iconify",
+            }),
+        ],
+        resolve: {
+            alias: {
+                "@": path.resolve(__dirname, "src"),
+            },
+        },
+    };
+});
