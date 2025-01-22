@@ -6,7 +6,7 @@ export async function postSubmission(request: SubmissionCreateRequest) {
     return alovaInstance.Post<Response<Submission>>("/submissions", request);
 }
 
-export async function getByID(id: number) {
+export async function getSubmissionById(id: number) {
     return alovaInstance.Get<Response<Submission>>(`/submissions/${id}`, {
         cacheFor: 0,
     });

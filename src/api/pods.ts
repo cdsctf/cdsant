@@ -3,6 +3,7 @@ import {
     PodCreateRequest,
     PodGetRequest,
     PodRemoveRequest,
+    PodRenewRequest,
 } from "@/models/pod";
 import { alovaInstance } from "@/utils/alova";
 import { Response } from "@/types";
@@ -22,6 +23,13 @@ export async function createPod(request: PodCreateRequest) {
 export async function stopPod(request: PodRemoveRequest) {
     return alovaInstance.Post<Response<unknown>>(
         `/pods/${request.id}/stop`,
+        request
+    );
+}
+
+export async function renewPod(request: PodRenewRequest) {
+    return alovaInstance.Post<Response<Pod>>(
+        `/pods/${request.id}/renew`,
         request
     );
 }
