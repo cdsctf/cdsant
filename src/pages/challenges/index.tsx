@@ -6,6 +6,7 @@ import { useCategoryStore } from "@/stores/category";
 import { useSharedStore } from "@/stores/shared";
 import {
     ActionType,
+    nanoid,
     ProColumnType,
     ProTable,
 } from "@ant-design/pro-components";
@@ -38,6 +39,7 @@ export default function () {
             dataIndex: "id",
             key: "id",
             width: "5%",
+            search: false,
             sorter: true,
             sortDirections: ["ascend", "descend", "ascend"],
             defaultSortOrder: "descend",
@@ -123,6 +125,7 @@ export default function () {
             key: "action",
             width: "5%",
             search: false,
+            hideInSetting: true,
             render: (_, data) => (
                 <Flex gap={12} justify={"center"}>
                     <Button
@@ -168,17 +171,14 @@ export default function () {
                 }}
                 actionRef={ref}
                 bordered
-                search={{
-                    filterType: "light",
-                }}
                 pagination={{
                     pageSizeOptions: [12, 24, 48, 100],
                     defaultPageSize: 12,
                     showSizeChanger: true,
                 }}
+                rowKey={nanoid}
                 request={async (params, sort, filter) => {
                     const getChallengesResponse = await getChallenges({
-                        id: params.id ? Number(params.id) : undefined,
                         title: params.title ? params.title : undefined,
                         category: filter.category
                             ? Number(filter.category[0])
