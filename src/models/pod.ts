@@ -19,7 +19,7 @@ export interface Pod {
     nats?: Array<Nat>;
 }
 
-export interface PodFindRequest {
+export interface PodGetRequest {
     id?: number;
     game_id?: number;
     user_id?: number;
@@ -38,8 +38,6 @@ export interface PodCreateRequest {
 
 export interface PodRemoveRequest {
     id: number;
-    team_id?: number;
-    game_id?: number;
 }
 
 export interface PodRenewRequest {

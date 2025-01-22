@@ -39,6 +39,7 @@ import { useAuthStore } from "@/stores/auth";
 import { useSharedStore } from "@/stores/shared";
 import { Game } from "@/models/game";
 import { getGames } from "@/api/game";
+import useMode from "@/hooks/useMode";
 
 const { useToken } = theme;
 const { Header } = Layout;
@@ -164,7 +165,7 @@ function NavDropdown() {
                                     `}
                                 >
                                     {`# ${authStore?.user?.id
-                                        ?.toString()
+                                        ?.toString(16)
                                         .padStart(6, "0")}`}
                                 </span>
                             </Flex>
@@ -248,18 +249,7 @@ export default function Navbar() {
     const { id } = useParams();
     const { token } = useToken();
 
-    const mode: "default" | "game" | "setting" = useMemo(() => {
-        const path = location.pathname;
-        if (path.startsWith("/games") && path !== "/games") {
-            return "game";
-        }
-
-        if (path.startsWith("/settings")) {
-            return "setting";
-        }
-
-        return "default";
-    }, [location.pathname]);
+    const mode = useMode();
 
     const [game, setGame] = useState<Game>();
 

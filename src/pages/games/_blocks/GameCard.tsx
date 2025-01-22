@@ -18,7 +18,7 @@ export default function GameCard(props: GameCardProps) {
                 display: flex;
                 background-color: ${token.colorBgContainer};
                 border-radius: ${token.borderRadius}px;
-                box-shadow: ${token.boxShadowTertiary};
+                box-shadow: ${token.boxShadowSecondary};
                 overflow: hidden;
                 border: 1px solid ${token.colorBorderSecondary};
                 user-select: none;
@@ -41,13 +41,12 @@ export default function GameCard(props: GameCardProps) {
                     justify-content: space-between;
                     flex: 1;
                     padding: 12px;
+                    overflow: hidden;
                 `}
             >
                 <h2
                     css={css`
                         font-size: 1.2rem;
-                        text-overflow: ellipsis;
-                        overflow: hidden;
                     `}
                 >
                     {game?.title}
@@ -55,8 +54,6 @@ export default function GameCard(props: GameCardProps) {
                 <p
                     css={css`
                         font-size: 0.9rem;
-                        text-overflow: ellipsis;
-                        overflow: hidden;
                     `}
                 >
                     {game?.sketch}

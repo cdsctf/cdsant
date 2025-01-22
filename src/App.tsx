@@ -12,7 +12,9 @@ function App() {
     const sharedStore = useSharedStore();
     const notificationStore = useNotificationStore();
     const [notificationApi, notificationContextHolder] =
-        notification.useNotification();
+        notification.useNotification({
+            placement: "bottomRight",
+        });
 
     function fetchConfigs() {
         getConfigs().then((res) => {

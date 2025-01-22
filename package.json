@@ -12,8 +12,10 @@
         "format": "prettier --write ."
     },
     "dependencies": {
+        "@ant-design/pro-components": "^2.8.4",
         "alova": "^3.2.8",
         "antd": "^5.23.2",
+        "clsx": "^2.1.1",
         "highlight.js": "^11.11.1",
         "katex": "^0.16.21",
         "react": "^19.0.0",

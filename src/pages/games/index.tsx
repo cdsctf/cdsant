@@ -23,7 +23,7 @@ export default function () {
     const [total, setTotal] = useState<number>();
 
     const [id, setId] = useState<number>();
-    const [size, setSize] = useState(4);
+    const [size, setSize] = useState(3);
     const [page, setPage] = useState(1);
     const [title, setTitle] = useState<string>();
 
@@ -56,11 +56,19 @@ export default function () {
                 margin: 0 ${screens.lg ? "15%" : 0};
                 padding: 2.5rem 10%;
                 justify-content: space-between;
-                gap: 36px;
-                background-color: ${token.colorBgElevated};
-                box-shadow: ${token.boxShadow};
+                gap: 2.5rem;
             `}
         >
+            <Flex justify={"center"}>
+                <h2
+                    css={css`
+                        font-size: 2rem;
+                        line-height: 1em;
+                    `}
+                >
+                    比赛
+                </h2>
+            </Flex>
             <Space.Compact
                 size={"large"}
                 css={css`
@@ -109,8 +117,8 @@ export default function () {
                 <Pagination
                     showSizeChanger
                     pageSize={size}
-                    pageSizeOptions={[4, 8, 12]}
-                    defaultPageSize={4}
+                    pageSizeOptions={[3, 6, 9]}
+                    defaultPageSize={3}
                     onShowSizeChange={(_, size) => setSize(size)}
                     locale={{
                         items_per_page: "/ 页",

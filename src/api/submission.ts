@@ -2,7 +2,7 @@ import { Submission, SubmissionCreateRequest } from "@/models/submission";
 import { Response } from "@/types";
 import { alovaInstance } from "@/utils/alova";
 
-export async function post(request: SubmissionCreateRequest) {
+export async function postSubmission(request: SubmissionCreateRequest) {
     return alovaInstance.Post<Response<Submission>>("/submissions", request);
 }
 
