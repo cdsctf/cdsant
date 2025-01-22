@@ -8,6 +8,14 @@ export default createBrowserRouter([
         },
         children: [
             {
+                index: true,
+                lazy: async () => {
+                    return {
+                        Component: (await import("@/pages")).default,
+                    };
+                },
+            },
+            {
                 path: "challenges",
                 lazy: async () => {
                     return {
