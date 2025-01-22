@@ -17,7 +17,7 @@ export async function getChallenges(request: ChallengeGetRequest) {
 }
 
 export async function getChallengeStatus(request: ChallengeStatusRequest) {
-    return alovaInstance.Post<Response<Record<number, ChallengeStatus>>>(
+    return alovaInstance.Post<Response<Record<string, ChallengeStatus>>>(
         "/challenges/status",
         request,
         {

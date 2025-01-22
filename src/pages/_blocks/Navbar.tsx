@@ -16,6 +16,8 @@ import LogoutLineDuotone from "~icons/solar/logout-linear";
 import Book2Bold from "~icons/solar/book-2-bold";
 import FlagBold from "~icons/solar/flag-bold";
 import UsersGroupTwoRoundedBold from "~icons/solar/users-group-two-rounded-bold";
+import StarFallMinimalistic2Bold from "~icons/solar/star-fall-minimalistic-2-bold";
+import CupStarBold from "~icons/solar/cup-star-bold";
 import HamburgerMenuLinear from "~icons/solar/hamburger-menu-linear";
 import SettingsOutline from "~icons/solar/settings-outline";
 import PlanetLinear from "~icons/solar/planet-linear";
@@ -40,6 +42,7 @@ import { useSharedStore } from "@/stores/shared";
 import { Game } from "@/models/game";
 import { getGames } from "@/api/game";
 import useMode from "@/hooks/useMode";
+import { ItemType, MenuItemType } from "antd/es/menu/interface";
 
 const { useToken } = theme;
 const { Header } = Layout;
@@ -240,6 +243,123 @@ function NavDropdown() {
     );
 }
 
+function NavMenu() {
+    const { mode, game } = useContext(NavbarCtx);
+
+    const menuItems = useMemo<Array<ItemType<MenuItemType>>>(() => {
+        if (mode === "game") {
+            return [
+                {
+                    key: "challenges",
+                    label: (
+                        <Flex align={"center"} gap={10}>
+                            <StarFallMinimalistic2Bold />
+                            <Link to={`/games/${game?.id}/challenges`}>
+                                题目
+                            </Link>
+                        </Flex>
+                    ),
+                },
+                {
+                    key: "scoreboard",
+                    label: (
+                        <Flex align={"center"} gap={10}>
+                            <CupStarBold />
+                            <Link to={`/games/${game?.id}/scoreboard`}>
+                                积分榜
+                            </Link>
+                        </Flex>
+                    ),
+                },
+            ];
+        } else if (mode === "setting") {
+            return [
+                {
+                    key: "challenges",
+                    label: (
+                        <Flex align={"center"} gap={10}>
+                            <Book2Bold />
+                            <Link to={"/challenges"}>题库</Link>
+                        </Flex>
+                    ),
+                },
+                {
+                    key: "games",
+                    label: (
+                        <Flex align={"center"} gap={10}>
+                            <FlagBold />
+                            <Link to={"/games"}>比赛</Link>
+                        </Flex>
+                    ),
+                },
+                {
+                    key: "teams",
+                    label: (
+                        <Flex align={"center"} gap={10}>
+                            <UsersGroupTwoRoundedBold />
+                            <Link to={"/teams"}>团队</Link>
+                        </Flex>
+                    ),
+                },
+                {
+                    key: "users",
+                    label: (
+                        <Flex align={"center"} gap={10}>
+                            <UsersGroupTwoRoundedBold />
+                            <Link to={"/users"}>用户</Link>
+                        </Flex>
+                    ),
+                },
+            ];
+        } else {
+            return [
+                {
+                    key: "challenges",
+                    label: (
+                        <Flex align={"center"} gap={10}>
+                            <Book2Bold />
+                            <Link to={"/challenges"}>题库</Link>
+                        </Flex>
+                    ),
+                },
+                {
+                    key: "games",
+                    label: (
+                        <Flex align={"center"} gap={10}>
+                            <FlagBold />
+                            <Link to={"/games"}>比赛</Link>
+                        </Flex>
+                    ),
+                },
+                {
+                    key: "teams",
+                    label: (
+                        <Flex align={"center"} gap={10}>
+                            <UsersGroupTwoRoundedBold />
+                            <Link to={"/teams"}>团队</Link>
+                        </Flex>
+                    ),
+                },
+            ];
+        }
+    }, [mode]);
+
+    return (
+        <Menu
+            mode={"horizontal"}
+            css={css`
+                flex: 1;
+                background-color: transparent;
+                border: none;
+            `}
+            overflowedIndicator={<HamburgerMenuLinear />}
+            triggerSubMenuAction={"click"}
+            selectedKeys={[location.pathname.split("/").slice(-1)[0]]}
+            items={menuItems}
+        />
+    );
+}
+
 export default function Navbar() {
     const themeStore = useThemeStore();
     const authStore = useAuthStore();
@@ -293,46 +413,7 @@ export default function Navbar() {
                     `}
                 >
                     <Logo />
-                    <Menu
-                        mode={"horizontal"}
-                        css={css`
-                            flex: 1;
-                            background-color: transparent;
-                            border: none;
-                        `}
-                        overflowedIndicator={<HamburgerMenuLinear />}
-                        triggerSubMenuAction={"click"}
-                        selectedKeys={[location.pathname]}
-                        items={[
-                            {
-                                key: "/challenges",
-                                label: (
-                                    <Flex align={"center"} gap={10}>
-                                        <Book2Bold />
-                                        <Link to={"/challenges"}>题库</Link>
-                                    </Flex>
-                                ),
-                            },
-                            {
-                                key: "/games",
-                                label: (
-                                    <Flex align={"center"} gap={10}>
-                                        <FlagBold />
-                                        <Link to={"/games"}>比赛</Link>
-                                    </Flex>
-                                ),
-                            },
-                            {
-                                key: "/teams",
-                                label: (
-                                    <Flex align={"center"} gap={10}>
-                                        <UsersGroupTwoRoundedBold />
-                                        <Link to={"/teams"}>团队</Link>
-                                    </Flex>
-                                ),
-                            },
-                        ]}
-                    />
+                    <NavMenu />
                 </Flex>
                 <div
                     css={css`

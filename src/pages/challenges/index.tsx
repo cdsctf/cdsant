@@ -34,18 +34,18 @@ export default function () {
     }, [sharedStore?.refresh]);
 
     const columns: Array<ProColumnType<ChallengeWithStatus>> = [
-        {
-            title: "ID",
-            dataIndex: "id",
-            key: "id",
-            width: "5%",
-            search: false,
-            sorter: true,
-            sortDirections: ["ascend", "descend", "ascend"],
-            defaultSortOrder: "descend",
-            renderText: (id: number) =>
-                `# ${id?.toString(16).padStart(6, "0").toUpperCase()}`,
-        },
+        // {
+        //     title: "ID",
+        //     dataIndex: "id",
+        //     key: "id",
+        //     width: "5%",
+        //     search: false,
+        //     sorter: true,
+        //     sortDirections: ["ascend", "descend", "ascend"],
+        //     defaultSortOrder: "descend",
+        //     renderText: (id: number) =>
+        //         `# ${id?.toString(16).padStart(6, "0").toUpperCase()}`,
+        // },
         {
             title: "标题",
             dataIndex: "title",
@@ -92,6 +92,18 @@ export default function () {
             search: false,
             ellipsis: {
                 showTitle: false,
+            },
+        },
+        {
+            title: "创建于",
+            dataIndex: "created_at",
+            key: "created_at",
+            width: "10%",
+            search: false,
+            sortDirections: ["descend", "ascend"],
+            sorter: true,
+            renderText: (created_at: number) => {
+                return new Date(created_at * 1000).toLocaleString();
             },
         },
         // {
@@ -169,6 +181,7 @@ export default function () {
                 sticky={{
                     offsetHeader: 64,
                 }}
+                toolBarRender={false}
                 actionRef={ref}
                 bordered
                 pagination={{

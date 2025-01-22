@@ -4,7 +4,7 @@ import { Env } from "./env";
 import { Submission } from "./submission";
 
 export interface Challenge {
-    id?: number;
+    id?: string;
     title?: string;
     description?: string;
     category?: number;
@@ -23,7 +23,7 @@ export interface Challenge {
 }
 
 export interface ChallengeGetRequest {
-    id?: number;
+    id?: string;
     title?: string;
     description?: string;
     category?: number;
@@ -37,7 +37,7 @@ export interface ChallengeGetRequest {
 }
 
 export interface ChallengeUpdateRequest {
-    id?: number;
+    id?: string;
     title?: string;
     description?: string;
     category?: number;
@@ -68,7 +68,7 @@ export interface ChallengeCreateRequest {
 }
 
 export interface ChallengeDeleteRequest {
-    id?: number;
+    id?: string;
 }
 
 export interface ChallengeStatus {
@@ -79,7 +79,7 @@ export interface ChallengeStatus {
 }
 
 export interface ChallengeStatusRequest {
-    challenge_ids: Array<number>;
+    challenge_ids: Array<string>;
     user_id?: number;
     team_id?: number;
     game_id?: number;

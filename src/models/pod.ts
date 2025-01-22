@@ -13,7 +13,7 @@ export interface Pod {
     user: User;
     team_id: number;
     team: Team;
-    challenge_id: number;
+    challenge_id: string;
     challenge: Challenge;
     removed_at: number;
     nats?: Array<Nat>;
@@ -24,7 +24,7 @@ export interface PodGetRequest {
     game_id?: number;
     user_id?: number;
     team_id?: number;
-    challenge_id?: number;
+    challenge_id?: string;
     is_available?: boolean;
     page?: number;
     size?: number;
@@ -33,7 +33,7 @@ export interface PodGetRequest {
 export interface PodCreateRequest {
     game_id?: number;
     team_id?: number;
-    challenge_id?: number;
+    challenge_id?: string;
 }
 
 export interface PodRemoveRequest {

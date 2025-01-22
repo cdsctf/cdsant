@@ -9,7 +9,7 @@ export interface Submission {
     status?: Status;
     user_id?: number;
     user?: User;
-    challenge_id?: number;
+    challenge_id?: string;
     challenge?: Challenge;
     team_id?: number;
     team?: Team;
@@ -34,7 +34,7 @@ export enum Status {
 
 export interface SubmissionCreateRequest {
     flag?: string;
-    challenge_id?: number;
+    challenge_id?: string;
     team_id?: number;
     game_id?: number;
 }
@@ -45,7 +45,7 @@ export interface SubmissionFindRequest {
     status?: number;
     user_id?: number;
     is_detailed?: boolean;
-    challenge_id?: number;
+    challenge_id?: string;
     team_id?: number;
     game_id?: number;
     size?: number;
