@@ -79,11 +79,61 @@ export default createBrowserRouter([
                                     return {
                                         Component: (
                                             await import(
-                                                "@/pages/settings/challenges/[id]"
+                                                "@/pages/settings/challenges/[id]/layout"
                                             )
                                         ).default,
                                     };
                                 },
+                                children: [
+                                    {
+                                        index: true,
+                                        lazy: async () => {
+                                            return {
+                                                Component: (
+                                                    await import(
+                                                        "@/pages/settings/challenges/[id]"
+                                                    )
+                                                ).default,
+                                            };
+                                        },
+                                    },
+                                    {
+                                        path: "flags",
+                                        lazy: async () => {
+                                            return {
+                                                Component: (
+                                                    await import(
+                                                        "@/pages/settings/challenges/[id]/flags"
+                                                    )
+                                                ).default,
+                                            };
+                                        },
+                                    },
+                                    {
+                                        path: "pods",
+                                        lazy: async () => {
+                                            return {
+                                                Component: (
+                                                    await import(
+                                                        "@/pages/settings/challenges/[id]/pods"
+                                                    )
+                                                ).default,
+                                            };
+                                        },
+                                    },
+                                    {
+                                        path: "attachments",
+                                        lazy: async () => {
+                                            return {
+                                                Component: (
+                                                    await import(
+                                                        "@/pages/settings/challenges/[id]/attachments"
+                                                    )
+                                                ).default,
+                                            };
+                                        },
+                                    },
+                                ],
                             },
                         ],
                     },

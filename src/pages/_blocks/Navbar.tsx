@@ -26,7 +26,7 @@ import MoonLinear from "~icons/solar/moon-linear";
 import UserCircleLinear from "~icons/solar/user-circle-linear";
 import RoundArrowLeftLinear from "~icons/solar/round-arrow-left-linear";
 import UserRoundedOutline from "~icons/solar/user-rounded-outline";
-import { Link, useLocation, useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import {
     cloneElement,
     createContext,
@@ -63,7 +63,13 @@ function Logo() {
         <Button
             type="text"
             onClick={() =>
-                navigate(mode === "game" ? `/games/${game?.id}` : "/")
+                navigate(
+                    mode === "game"
+                        ? `/games/${game?.id}`
+                        : mode === "setting"
+                          ? "/settings"
+                          : "/"
+                )
             }
             css={css`
                 display: flex;
