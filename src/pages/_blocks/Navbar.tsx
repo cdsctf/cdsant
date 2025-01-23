@@ -12,19 +12,20 @@ import {
     Flex,
     Tooltip,
 } from "antd";
-import LogoutLineDuotone from "~icons/solar/logout-linear";
-import Book2Bold from "~icons/solar/book-2-bold";
-import FlagBold from "~icons/solar/flag-bold";
-import UsersGroupTwoRoundedBold from "~icons/solar/users-group-two-rounded-bold";
-import StarFallMinimalistic2Bold from "~icons/solar/star-fall-minimalistic-2-bold";
-import CupStarBold from "~icons/solar/cup-star-bold";
+import LogoutLinear from "~icons/solar/logout-linear";
+import Book2Linear from "~icons/solar/book-2-linear";
+import FlagLinear from "~icons/solar/flag-linear";
+import UsersGroupTwoRoundedLinear from "~icons/solar/users-group-two-rounded-linear";
+import StarFallMinimalistic2Linear from "~icons/solar/star-fall-minimalistic-2-linear";
+import CupStarLinear from "~icons/solar/cup-star-linear";
 import HamburgerMenuLinear from "~icons/solar/hamburger-menu-linear";
 import SettingsOutline from "~icons/solar/settings-outline";
 import PlanetLinear from "~icons/solar/planet-linear";
-import Sun2Bold from "~icons/solar/sun-2-bold";
-import MoonBold from "~icons/solar/moon-bold";
-import UserCircleBold from "~icons/solar/user-circle-bold";
-import RoundArrowLeftBold from "~icons/solar/round-arrow-left-bold";
+import Sun2Linear from "~icons/solar/sun-2-linear";
+import MoonLinear from "~icons/solar/moon-linear";
+import UserCircleLinear from "~icons/solar/user-circle-linear";
+import RoundArrowLeftLinear from "~icons/solar/round-arrow-left-linear";
+import UserRoundedOutline from "~icons/solar/user-rounded-outline";
 import { Link, useLocation, useNavigate, useParams } from "react-router";
 import {
     cloneElement,
@@ -149,7 +150,7 @@ function NavDropdown() {
                                         ? `/api/users/${authStore?.user?.id}/avatar`
                                         : undefined
                                 }
-                                icon={<UserCircleBold />}
+                                icon={<UserCircleLinear />}
                             />
                             <Flex vertical>
                                 <span
@@ -210,7 +211,7 @@ function NavDropdown() {
                     {
                         key: "4",
                         label: "退出登录",
-                        icon: <LogoutLineDuotone />,
+                        icon: <LogoutLinear />,
                         danger: true,
                         onClick: () => {
                             authStore.clear();
@@ -232,7 +233,7 @@ function NavDropdown() {
                                 ? `/api/users/${authStore?.user?.id}/avatar`
                                 : undefined
                         }
-                        icon={<UserCircleBold />}
+                        icon={<UserCircleLinear />}
                         css={css`
                             cursor: pointer;
                         `}
@@ -251,24 +252,16 @@ function NavMenu() {
             return [
                 {
                     key: "challenges",
+                    icon: <StarFallMinimalistic2Linear />,
                     label: (
-                        <Flex align={"center"} gap={10}>
-                            <StarFallMinimalistic2Bold />
-                            <Link to={`/games/${game?.id}/challenges`}>
-                                题目
-                            </Link>
-                        </Flex>
+                        <Link to={`/games/${game?.id}/challenges`}>题目</Link>
                     ),
                 },
                 {
                     key: "scoreboard",
+                    icon: <CupStarLinear />,
                     label: (
-                        <Flex align={"center"} gap={10}>
-                            <CupStarBold />
-                            <Link to={`/games/${game?.id}/scoreboard`}>
-                                积分榜
-                            </Link>
-                        </Flex>
+                        <Link to={`/games/${game?.id}/scoreboard`}>积分榜</Link>
                     ),
                 },
             ];
@@ -276,69 +269,41 @@ function NavMenu() {
             return [
                 {
                     key: "challenges",
-                    label: (
-                        <Flex align={"center"} gap={10}>
-                            <Book2Bold />
-                            <Link to={"/challenges"}>题库</Link>
-                        </Flex>
-                    ),
+                    icon: <Book2Linear />,
+                    label: <Link to={"/settings/challenges"}>题库</Link>,
                 },
                 {
                     key: "games",
-                    label: (
-                        <Flex align={"center"} gap={10}>
-                            <FlagBold />
-                            <Link to={"/games"}>比赛</Link>
-                        </Flex>
-                    ),
+                    icon: <FlagLinear />,
+                    label: <Link to={"/settings/games"}>比赛</Link>,
                 },
                 {
                     key: "teams",
-                    label: (
-                        <Flex align={"center"} gap={10}>
-                            <UsersGroupTwoRoundedBold />
-                            <Link to={"/teams"}>团队</Link>
-                        </Flex>
-                    ),
+                    icon: <UsersGroupTwoRoundedLinear />,
+                    label: <Link to={"/settings/teams"}>团队</Link>,
                 },
                 {
                     key: "users",
-                    label: (
-                        <Flex align={"center"} gap={10}>
-                            <UsersGroupTwoRoundedBold />
-                            <Link to={"/users"}>用户</Link>
-                        </Flex>
-                    ),
+                    icon: <UserRoundedOutline />,
+                    label: <Link to={"/settings/users"}>用户</Link>,
                 },
             ];
         } else {
             return [
                 {
                     key: "challenges",
-                    label: (
-                        <Flex align={"center"} gap={10}>
-                            <Book2Bold />
-                            <Link to={"/challenges"}>题库</Link>
-                        </Flex>
-                    ),
+                    icon: <Book2Linear />,
+                    label: <Link to={"/challenges"}>题库</Link>,
                 },
                 {
                     key: "games",
-                    label: (
-                        <Flex align={"center"} gap={10}>
-                            <FlagBold />
-                            <Link to={"/games"}>比赛</Link>
-                        </Flex>
-                    ),
+                    icon: <FlagLinear />,
+                    label: <Link to={"/games"}>比赛</Link>,
                 },
                 {
                     key: "teams",
-                    label: (
-                        <Flex align={"center"} gap={10}>
-                            <UsersGroupTwoRoundedBold />
-                            <Link to={"/teams"}>团队</Link>
-                        </Flex>
-                    ),
+                    icon: <UsersGroupTwoRoundedLinear />,
+                    label: <Link to={"/teams"}>团队</Link>,
                 },
             ];
         }
@@ -430,10 +395,9 @@ export default function Navbar() {
                                     navigate(mode === "game" ? "/games" : "/")
                                 }
                                 shape={"circle"}
-                                color={"primary"}
-                                variant={"text"}
+                                type={"text"}
                             >
-                                <RoundArrowLeftBold />
+                                <RoundArrowLeftLinear />
                             </Button>
                         </Tooltip>
                     )}
@@ -442,10 +406,14 @@ export default function Navbar() {
                         onClick={() =>
                             themeStore?.setDarkMode(!themeStore?.darkMode)
                         }
-                        shape={"circle"}
-                    >
-                        {themeStore?.darkMode ? <Sun2Bold /> : <MoonBold />}
-                    </Button>
+                        icon={
+                            themeStore?.darkMode ? (
+                                <Sun2Linear />
+                            ) : (
+                                <MoonLinear />
+                            )
+                        }
+                    ></Button>
                     {authStore?.user ? (
                         <NavDropdown />
                     ) : (

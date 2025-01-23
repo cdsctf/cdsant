@@ -36,6 +36,7 @@
         "@ant-design/v5-patch-for-react-19": "^1.0.3",
         "@emotion/react": "^11.14.0",
         "@eslint/js": "^9.18.0",
+        "@iconify-icon/react": "^2.3.0",
         "@iconify-json/solar": "^1.2.2",
         "@svgr/core": "^8.1.0",
         "@svgr/plugin-jsx": "^8.1.0",

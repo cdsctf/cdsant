@@ -6,7 +6,7 @@ import { Flex, Modal, Grid, Divider, Space, Input, Button, theme } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { MarkdownRender } from "../utils/MarkdownRender";
 import DownloadMinimalisticOutline from "~icons/solar/download-minimalistic-outline";
-import FlagBold from "~icons/solar/flag-bold";
+import FlagLinear from "~icons/solar/flag-linear";
 import { getSubmissionById, postSubmission } from "@/api/submission";
 import useMode from "@/hooks/useMode";
 import { useParams } from "react-router";
@@ -102,11 +102,23 @@ export default function ChallengeModal(props: ChallengeModalProps) {
             game_id: mode === "game" ? Number(id) : undefined,
         })
             .then((res) => {
-                setPod(res.data);
-                notificationStore?.api?.success({
-                    key: key,
-                    message: "创建成功",
-                });
+                switch (res.code) {
+                    case 200: {
+                        setPod(res.data);
+                        notificationStore?.api?.success({
+                            key: key,
+                            message: "创建成功",
+                        });
+                        break;
+                    }
+                    default: {
+                        notificationStore?.api?.error({
+                            key: key,
+                            message: "发生错误",
+                            description: res.msg,
+                        });
+                    }
+                }
             })
             .finally(() => {
                 setPodCreateLoading(false);
@@ -346,7 +358,7 @@ export default function ChallengeModal(props: ChallengeModalProps) {
                     <Space.Compact size={"large"}>
                         <Input
                             allowClear
-                            addonBefore={<FlagBold />}
+                            addonBefore={<FlagLinear />}
                             value={flag}
                             onChange={(e) => setFlag(e.target.value)}
                         />

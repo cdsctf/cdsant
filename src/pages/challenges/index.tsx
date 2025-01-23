@@ -34,23 +34,11 @@ export default function () {
     }, [sharedStore?.refresh]);
 
     const columns: Array<ProColumnType<ChallengeWithStatus>> = [
-        // {
-        //     title: "ID",
-        //     dataIndex: "id",
-        //     key: "id",
-        //     width: "5%",
-        //     search: false,
-        //     sorter: true,
-        //     sortDirections: ["ascend", "descend", "ascend"],
-        //     defaultSortOrder: "descend",
-        //     renderText: (id: number) =>
-        //         `# ${id?.toString(16).padStart(6, "0").toUpperCase()}`,
-        // },
         {
             title: "标题",
             dataIndex: "title",
             key: "title",
-            width: "10%",
+            width: "15%",
             ellipsis: {
                 showTitle: false,
             },
@@ -135,7 +123,7 @@ export default function () {
         {
             title: "",
             key: "action",
-            width: "5%",
+            width: "10%",
             search: false,
             hideInSetting: true,
             render: (_, data) => (

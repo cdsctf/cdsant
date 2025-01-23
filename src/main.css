@@ -1,3 +1,13 @@
 body {
     margin: 0;
 }
+
+.iconify {
+    aspect-ratio: 1;
+}
+
+.ant-btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

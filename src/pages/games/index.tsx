@@ -104,15 +104,16 @@ export default function () {
                     搜索
                 </Button>
             </Space.Compact>
-            <Flex
-                vertical
-                gap={16}
+            <div
                 css={css`
+                    display: flex;
+                    flex-direction: column;
+                    gap: 16px;
                     flex: 1;
                 `}
             >
                 {games?.map((game) => <GameCard key={game?.id} game={game} />)}
-            </Flex>
+            </div>
             <Flex justify={"center"}>
                 <Pagination
                     showSizeChanger
