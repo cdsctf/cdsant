@@ -19,6 +19,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import TrashBinTrashOutline from "~icons/solar/trash-bin-trash-outline";
 import PenNewSquareLinear from "~icons/solar/pen-new-square-linear";
+import AddSquareLinear from "~icons/solar/add-square-linear";
 
 export default function () {
     const categoryStore = useCategoryStore();
@@ -150,7 +151,14 @@ export default function () {
             },
         },
         {
-            title: "",
+            title: (
+                <Button
+                    type={"text"}
+                    size={"small"}
+                    icon={<AddSquareLinear />}
+                />
+            ),
+            align: "center",
             key: "action",
             width: "10%",
             search: false,
