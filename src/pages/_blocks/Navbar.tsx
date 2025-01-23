@@ -307,7 +307,7 @@ function NavMenu() {
                 },
             ];
         }
-    }, [mode]);
+    }, [mode, game?.id]);
 
     return (
         <Menu
@@ -329,7 +329,6 @@ export default function Navbar() {
     const themeStore = useThemeStore();
     const authStore = useAuthStore();
 
-    const location = useLocation();
     const navigate = useNavigate();
     const { id } = useParams();
     const { token } = useToken();

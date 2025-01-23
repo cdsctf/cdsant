@@ -38,26 +38,28 @@ export default function GameCard(props: GameCardProps) {
                 css={css`
                     display: flex;
                     flex-direction: column;
-                    justify-content: space-between;
+                    justify-content: flex-start;
                     flex: 1;
-                    padding: 12px;
+                    margin: 12px;
                     overflow: hidden;
                 `}
             >
-                <h2
+                <h3
                     css={css`
-                        font-size: 1.2rem;
+                        font-size: 1rem;
                     `}
                 >
                     {game?.title}
-                </h2>
-                <p
+                </h3>
+                <span
                     css={css`
                         font-size: 0.9rem;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
                     `}
                 >
                     {game?.sketch}
-                </p>
+                </span>
             </div>
             <div
                 css={css`

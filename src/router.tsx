@@ -58,6 +58,35 @@ export default createBrowserRouter([
                             };
                         },
                     },
+                    {
+                        path: "challenges",
+                        children: [
+                            {
+                                index: true,
+                                lazy: async () => {
+                                    return {
+                                        Component: (
+                                            await import(
+                                                "@/pages/settings/challenges"
+                                            )
+                                        ).default,
+                                    };
+                                },
+                            },
+                            {
+                                path: ":id",
+                                lazy: async () => {
+                                    return {
+                                        Component: (
+                                            await import(
+                                                "@/pages/settings/challenges/[id]"
+                                            )
+                                        ).default,
+                                    };
+                                },
+                            },
+                        ],
+                    },
                 ],
             },
             {

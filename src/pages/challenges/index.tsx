@@ -177,7 +177,7 @@ export default function () {
                     defaultPageSize: 12,
                     showSizeChanger: true,
                 }}
-                rowKey={nanoid}
+                rowKey={(item) => item.id || nanoid()}
                 request={async (params, sort, filter) => {
                     const getChallengesResponse = await getChallenges({
                         title: params.title ? params.title : undefined,
