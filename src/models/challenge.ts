@@ -1,5 +1,4 @@
 import { Flag } from "./flag";
-import { Hint } from "./hint";
 import { Env } from "./env";
 import { Submission } from "./submission";
 
@@ -11,15 +10,10 @@ export interface Challenge {
     has_attachment?: boolean;
     is_public?: boolean;
     is_dynamic?: boolean;
-    duration?: number;
-    image_name?: string;
-    memory_limit?: number;
-    cpu_limit?: number;
-    ports?: Array<number>;
-    envs?: Array<Env>;
+    env?: Env;
     flags?: Array<Flag>;
-    hints?: Array<Hint>;
-    updated_at?: string;
+    updated_at?: number;
+    created_at?: number;
 }
 
 export interface ChallengeGetRequest {
@@ -30,7 +24,6 @@ export interface ChallengeGetRequest {
     is_public?: boolean;
     is_dynamic?: boolean;
     is_detailed?: boolean;
-    difficulty?: number;
     page?: number;
     size?: number;
     sorts?: string;
@@ -44,12 +37,7 @@ export interface ChallengeUpdateRequest {
     has_attachment?: boolean;
     is_public?: boolean;
     is_dynamic?: boolean;
-    duration?: number;
-    image_name?: string;
-    memory_limit?: number;
-    cpu_limit?: number;
-    ports?: Array<number>;
-    envs?: Array<Env>;
+    env?: Env;
     flags?: Array<Flag>;
 }
 
@@ -59,12 +47,7 @@ export interface ChallengeCreateRequest {
     category?: number;
     is_public?: boolean;
     is_dynamic?: boolean;
-    duration?: number;
-    image_name?: string;
-    memory_limit?: number;
-    cpu_limit?: number;
-    ports?: Array<number>;
-    envs?: Array<Env>;
+    env?: Env;
 }
 
 export interface ChallengeDeleteRequest {

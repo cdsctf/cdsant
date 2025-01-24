@@ -15,11 +15,12 @@ import {
 } from "@ant-design/pro-components";
 import { css } from "@emotion/react";
 import { Button, Flex, Grid, Popconfirm, Switch } from "antd";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import TrashBinTrashOutline from "~icons/solar/trash-bin-trash-outline";
 import PenNewSquareLinear from "~icons/solar/pen-new-square-linear";
 import AddSquareLinear from "~icons/solar/add-square-linear";
+import ChallengeCreateModal from "../_blocks/ChallengeCreateModal";
 
 export default function () {
     const categoryStore = useCategoryStore();
@@ -27,6 +28,9 @@ export default function () {
     const sharedStore = useSharedStore();
     const screens = Grid.useBreakpoint();
     const navigate = useNavigate();
+
+    const [challengeCreateModalOpen, setChallengeCreateModalOpen] =
+        useState<boolean>(false);
 
     const ref = useRef<ActionType>(null);
 
@@ -156,6 +160,9 @@ export default function () {
                     type={"text"}
                     size={"small"}
                     icon={<AddSquareLinear />}
+                    onClick={() => {
+                        setChallengeCreateModalOpen(true);
+                    }}
                 />
             ),
             align: "center",
@@ -203,59 +210,65 @@ export default function () {
     ];
 
     return (
-        <div
-            css={css`
-                padding: 3rem ${screens.lg ? "8rem" : "1rem"};
-            `}
-        >
-            <ProTable<Challenge>
-                columns={columns}
-                sticky={{
-                    offsetHeader: 64,
-                }}
-                toolBarRender={false}
-                bordered
-                pagination={{
-                    pageSizeOptions: [12, 24, 48, 100],
-                    defaultPageSize: 12,
-                    showSizeChanger: true,
-                }}
-                actionRef={ref}
-                rowKey={(item) => item.id || nanoid()}
-                tableStyle={{
-                    padding: "1rem",
-                }}
-                request={async (params, sort, filter) => {
-                    const res = await getChallenges({
-                        title: params.title ? params.title : undefined,
-                        is_public: filter.is_public
-                            ? Boolean(filter.is_public?.[0])
-                            : undefined,
-                        category: filter.category
-                            ? Number(filter.category[0])
-                            : undefined,
-                        page: params.current,
-                        size: params.pageSize,
-                        sorts: Object.keys(sort)
-                            .map((key) => {
-                                if (sort[key] === "ascend") {
-                                    return `${key}`;
-                                } else if (sort[key] === "descend") {
-                                    return `-${key}`;
-                                } else {
-                                    return null;
-                                }
-                            })
-                            .join(","),
-                    });
+        <>
+            <div
+                css={css`
+                    padding: 3rem ${screens.lg ? "8rem" : "1rem"};
+                `}
+            >
+                <ProTable<Challenge>
+                    columns={columns}
+                    sticky={{
+                        offsetHeader: 64,
+                    }}
+                    toolBarRender={false}
+                    bordered
+                    pagination={{
+                        pageSizeOptions: [12, 24, 48, 100],
+                        defaultPageSize: 12,
+                        showSizeChanger: true,
+                    }}
+                    actionRef={ref}
+                    rowKey={(item) => item.id || nanoid()}
+                    tableStyle={{
+                        padding: "1rem",
+                    }}
+                    request={async (params, sort, filter) => {
+                        const res = await getChallenges({
+                            title: params.title ? params.title : undefined,
+                            is_public: filter.is_public
+                                ? Boolean(filter.is_public?.[0])
+                                : undefined,
+                            category: filter.category
+                                ? Number(filter.category[0])
+                                : undefined,
+                            page: params.current,
+                            size: params.pageSize,
+                            sorts: Object.keys(sort)
+                                .map((key) => {
+                                    if (sort[key] === "ascend") {
+                                        return `${key}`;
+                                    } else if (sort[key] === "descend") {
+                                        return `-${key}`;
+                                    } else {
+                                        return null;
+                                    }
+                                })
+                                .join(","),
+                        });
 
-                    return {
-                        data: res.data,
-                        success: res.code === 200,
-                        total: res.total,
-                    };
-                }}
+                        return {
+                            data: res.data,
+                            success: res.code === 200,
+                            total: res.total,
+                        };
+                    }}
+                />
+            </div>
+            <ChallengeCreateModal
+                open={challengeCreateModalOpen}
+                onClose={() => setChallengeCreateModalOpen(false)}
             />
-        </div>
+        </>
     );
 }
