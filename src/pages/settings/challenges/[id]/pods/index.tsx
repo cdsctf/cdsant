@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, InputNumber } from "antd";
+import { Button, Flex, Form, Input, InputNumber, Space } from "antd";
 import { useContext, useEffect } from "react";
 import { Context } from "../context";
 import CheckCircleLinear from "~icons/solar/check-circle-linear";
@@ -81,6 +81,7 @@ export default function () {
             onFinish={() => handleChallengeUpdate()}
             autoComplete="off"
         >
+            <h3>基本</h3>
             <Flex
                 align={"center"}
                 css={css`
@@ -106,9 +107,44 @@ export default function () {
                     required
                     initialValue={1800}
                 >
-                    <InputNumber min={10} size={"large"} />
+                    <InputNumber
+                        min={10}
+                        size={"large"}
+                        css={css`
+                            width: 150px;
+                        `}
+                    />
+                </Form.Item>
+                <Form.Item
+                    name={["cpu_limit"]}
+                    label={"CPU 限制"}
+                    required
+                    initialValue={2}
+                >
+                    <InputNumber
+                        min={2}
+                        size={"large"}
+                        css={css`
+                            width: 150px;
+                        `}
+                    />
+                </Form.Item>
+                <Form.Item
+                    name={["memory_limit"]}
+                    label={"内存限制（MB）"}
+                    required
+                    initialValue={32}
+                >
+                    <InputNumber
+                        min={32}
+                        size={"large"}
+                        css={css`
+                            width: 150px;
+                        `}
+                    />
                 </Form.Item>
             </Flex>
+            <h3>端口</h3>
             <Form.List name={["ports"]}>
                 {(fields, { add, remove }) => (
                     <Flex
@@ -146,6 +182,7 @@ export default function () {
                     </Flex>
                 )}
             </Form.List>
+            <h3>环境变量</h3>
             <Form.List name={["envs"]}>
                 {(fields, { add, remove }) => (
                     <Flex
@@ -161,22 +198,20 @@ export default function () {
                                     gap: 8px;
                                 `}
                             >
-                                <Form.Item
-                                    name={[name, "key"]}
-                                    {...restFields}
-                                    label={"k"}
-                                    layout={"horizontal"}
-                                >
-                                    <Input />
-                                </Form.Item>
-                                <Form.Item
-                                    name={[name, "value"]}
-                                    {...restFields}
-                                    label={"v"}
-                                    layout={"horizontal"}
-                                >
-                                    <Input />
-                                </Form.Item>
+                                <Space.Compact>
+                                    <Form.Item
+                                        name={[name, "key"]}
+                                        {...restFields}
+                                    >
+                                        <Input addonBefore={"K"} />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name={[name, "value"]}
+                                        {...restFields}
+                                    >
+                                        <Input addonBefore={"V"} />
+                                    </Form.Item>
+                                </Space.Compact>
                                 <Button
                                     type={"text"}
                                     icon={<MinusCircleLinear />}

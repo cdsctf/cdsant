@@ -7,17 +7,18 @@ import {
     ChallengeUpdateRequest,
     ChallengeDeleteRequest,
 } from "@/models/challenge";
+import { Metadata } from "@/models/media";
 import { Response } from "@/types";
-import { alovaInstance } from "@/utils/alova";
+import { alova } from "@/utils/alova";
 
 export async function getChallenges(request: ChallengeGetRequest) {
-    return alovaInstance.Get<Response<Array<Challenge>>>("/challenges", {
+    return alova.Get<Response<Array<Challenge>>>("/challenges", {
         params: request,
     });
 }
 
 export async function getChallengeStatus(request: ChallengeStatusRequest) {
-    return alovaInstance.Post<Response<Record<string, ChallengeStatus>>>(
+    return alova.Post<Response<Record<string, ChallengeStatus>>>(
         "/challenges/status",
         request,
         {
@@ -27,7 +28,7 @@ export async function getChallengeStatus(request: ChallengeStatusRequest) {
 }
 
 export async function updateChallenge(request: ChallengeUpdateRequest) {
-    return alovaInstance.Put<Response<Challenge>>(
+    return alova.Put<Response<Challenge>>(
         `/challenges/${request?.id}`,
         request,
         {
@@ -37,13 +38,23 @@ export async function updateChallenge(request: ChallengeUpdateRequest) {
 }
 
 export async function createChallenge(request: ChallengeCreateRequest) {
-    return alovaInstance.Post<Response<Challenge>>("/challenges", request, {
+    return alova.Post<Response<Challenge>>("/challenges", request, {
         cacheFor: 0,
     });
 }
 
 export async function deleteChallenge(request: ChallengeDeleteRequest) {
-    return alovaInstance.Delete<Response<never>>(`/challenges/${request.id}`, {
+    return alova.Delete<Response<never>>(`/challenges/${request.id}`, {
         cacheFor: 0,
     });
+}
+
+export async function getChallengeAttachmentMetadata(id: string) {
+    return alova.Get<Response<Metadata>>(
+        `/challenges/${id}/attachment/metadata`
+    );
+}
+
+export async function deleteChallengeAttachment(id: string) {
+    return alova.Delete<Response<never>>(`/challenges/${id}/attachment`);
 }

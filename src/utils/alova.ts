@@ -1,10 +1,10 @@
 import { createAlova } from "alova";
-import adapterFetch from "alova/fetch";
 import ReactHook from "alova/react";
 import globalRouter from "./globalRouter";
 import { useNotificationStore } from "@/stores/notification";
+import adapterFetch from "alova/fetch";
 
-export const alovaInstance = createAlova({
+export const alova = createAlova({
     baseURL: "/api",
     requestAdapter: adapterFetch(),
     timeout: 5000,

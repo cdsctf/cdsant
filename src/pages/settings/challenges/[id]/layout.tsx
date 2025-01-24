@@ -97,7 +97,7 @@ export default function () {
                                         <Link
                                             to={`/settings/challenges/${challenge?.id}`}
                                         >
-                                            基本信息
+                                            基本
                                         </Link>
                                     ),
                                 },
