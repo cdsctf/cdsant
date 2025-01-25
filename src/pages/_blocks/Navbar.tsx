@@ -44,6 +44,7 @@ import { Game } from "@/models/game";
 import { getGames } from "@/api/game";
 import useMode from "@/hooks/useMode";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
+import { useConfigStore } from "@/stores/config";
 
 const { useToken } = theme;
 const { Header } = Layout;
@@ -56,7 +57,7 @@ const NavbarCtx = createContext<{
 function Logo() {
     const navigate = useNavigate();
     const screens = Grid.useBreakpoint();
-    const sharedStore = useSharedStore();
+    const configStore = useConfigStore();
     const { mode, game } = useContext(NavbarCtx);
 
     return (
@@ -98,9 +99,7 @@ function Logo() {
                         font-size: 1.25rem;
                     `}
                 >
-                    {mode === "game"
-                        ? game?.title
-                        : sharedStore?.config?.site?.title}
+                    {mode === "game" ? game?.title : configStore?.meta?.title}
                 </h2>
             )}
         </Button>
