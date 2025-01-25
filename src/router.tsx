@@ -137,6 +137,49 @@ export default createBrowserRouter([
                             },
                         ],
                     },
+                    {
+                        path: "games",
+                        children: [
+                            {
+                                index: true,
+                                lazy: async () => {
+                                    return {
+                                        Component: (
+                                            await import(
+                                                "@/pages/settings/games"
+                                            )
+                                        ).default,
+                                    };
+                                },
+                            },
+                            {
+                                path: ":id",
+                                lazy: async () => {
+                                    return {
+                                        Component: (
+                                            await import(
+                                                "@/pages/settings/games/[id]/layout"
+                                            )
+                                        ).default,
+                                    };
+                                },
+                                children: [
+                                    {
+                                        index: true,
+                                        lazy: async () => {
+                                            return {
+                                                Component: (
+                                                    await import(
+                                                        "@/pages/settings/games/[id]"
+                                                    )
+                                                ).default,
+                                            };
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
                 ],
             },
             {

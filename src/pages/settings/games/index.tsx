@@ -1,10 +1,4 @@
-import {
-    deleteChallenge,
-    getChallenges,
-    updateChallenge,
-} from "@/api/challenge";
-import { Challenge } from "@/models/challenge";
-import { useCategoryStore } from "@/stores/category";
+import { deleteGame, getGames, updateGame } from "@/api/game";
 import { useNotificationStore } from "@/stores/notification";
 import { useSharedStore } from "@/stores/shared";
 import {
@@ -14,22 +8,23 @@ import {
     ProTable,
 } from "@ant-design/pro-components";
 import { css } from "@emotion/react";
-import { Button, Flex, Grid, Popconfirm, Switch } from "antd";
+import { Button, Flex, Grid, Popconfirm, Switch, Tag } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import TrashBinTrashOutline from "~icons/solar/trash-bin-trash-outline";
 import PenNewSquareLinear from "~icons/solar/pen-new-square-linear";
 import AddSquareLinear from "~icons/solar/add-square-linear";
-import ChallengeCreateModal from "./_blocks/ChallengeCreateModal";
+import { Game } from "@/models/game";
+import GameCreateModal from "./_blocks/GameCreateModal";
+import { GamePoster } from "@/components/widgets/GamePoster";
 
 export default function () {
-    const categoryStore = useCategoryStore();
     const notificationStore = useNotificationStore();
     const sharedStore = useSharedStore();
     const screens = Grid.useBreakpoint();
     const navigate = useNavigate();
 
-    const [challengeCreateModalOpen, setChallengeCreateModalOpen] =
+    const [gameCreateModalOpen, setGameCreateModalOpen] =
         useState<boolean>(false);
 
     const ref = useRef<ActionType>(null);
@@ -38,11 +33,11 @@ export default function () {
         ref?.current?.reload();
     }, [sharedStore?.refresh]);
 
-    const columns: Array<ProColumnType<Challenge>> = [
+    const columns: Array<ProColumnType<Game>> = [
         {
-            title: "公开",
-            dataIndex: "is_public",
-            key: "is_public",
+            title: "可见",
+            dataIndex: "is_enabled",
+            key: "is_enabled",
             width: "5%",
             align: "center",
             ellipsis: {
@@ -53,11 +48,11 @@ export default function () {
             filterMultiple: false,
             filters: [
                 {
-                    text: "公开",
+                    text: "可见",
                     value: true,
                 },
                 {
-                    text: "私密",
+                    text: "隐藏",
                     value: false,
                 },
             ],
@@ -67,14 +62,14 @@ export default function () {
                         value={Boolean(isPublic)}
                         size={"small"}
                         onChange={(checked) => {
-                            updateChallenge({
-                                id: record.id,
-                                is_public: checked,
+                            updateGame({
+                                id: Number(record.id),
+                                is_enabled: checked,
                             })
                                 .then((_) => {
                                     notificationStore?.api?.success({
                                         message: "更新成功",
-                                        description: `题目 ${record.title} 已设置为 ${checked ? "公开" : "私密"}`,
+                                        description: `比赛 ${record.title} 已设置为 ${checked ? "可见" : "隐藏"}`,
                                     });
                                 })
                                 .finally(() => {
@@ -89,9 +84,27 @@ export default function () {
             title: "ID",
             dataIndex: "id",
             key: "id",
-            width: "10%",
+            width: "5%",
             ellipsis: {
                 showTitle: false,
+            },
+        },
+        {
+            title: "海报",
+            key: "poster",
+            width: "15%",
+            search: false,
+            render: (_, data) => {
+                return (
+                    <div
+                        css={css`
+                            height: 100%;
+                            aspect-ratio: 16/9;
+                        `}
+                    >
+                        <GamePoster gameId={data.id!} />
+                    </div>
+                );
             },
         },
         {
@@ -99,44 +112,6 @@ export default function () {
             dataIndex: "title",
             key: "title",
             width: "15%",
-            ellipsis: {
-                showTitle: false,
-            },
-        },
-        {
-            title: "分类",
-            dataIndex: "category",
-            key: "category",
-            width: "10%",
-            search: false,
-            renderText: (categoryId: number) => {
-                const category = categoryStore?.getCategory(categoryId);
-                return (
-                    <Flex
-                        align={"center"}
-                        gap={12}
-                        css={css`
-                            color: ${category?.color};
-                        `}
-                    >
-                        {category?.icon}
-                        {category?.name?.toUpperCase()}
-                    </Flex>
-                );
-            },
-            filtered: true,
-            filterMultiple: false,
-            filters: categoryStore?.categories?.map((category) => ({
-                text: category?.name?.toUpperCase(),
-                value: Number(category?.id),
-            })),
-        },
-        {
-            title: "描述",
-            dataIndex: "description",
-            key: "description",
-            width: "30%",
-            search: false,
             ellipsis: {
                 showTitle: false,
             },
@@ -155,13 +130,37 @@ export default function () {
             },
         },
         {
+            title: "状态",
+            key: "status",
+            width: "10%",
+            align: "center",
+            search: false,
+            sortDirections: ["descend", "ascend"],
+            defaultSortOrder: "descend",
+            render: (_, data) => {
+                const started_at = new Date(Number(data?.started_at) * 1000);
+                const ended_at = new Date(Number(data?.ended_at) * 1000);
+                const now = new Date();
+
+                if (started_at > now) {
+                    return <Tag color={"blue"}>未开始</Tag>;
+                }
+
+                if (ended_at < now) {
+                    return <Tag color={"red"}>已结束</Tag>;
+                }
+
+                return <Tag color={"green"}>进行中</Tag>;
+            },
+        },
+        {
             title: (
                 <Button
                     type={"text"}
                     size={"small"}
                     icon={<AddSquareLinear />}
                     onClick={() => {
-                        setChallengeCreateModalOpen(true);
+                        setGameCreateModalOpen(true);
                     }}
                 />
             ),
@@ -177,19 +176,19 @@ export default function () {
                         type={"text"}
                         icon={<PenNewSquareLinear />}
                         onClick={() => {
-                            navigate(`/settings/challenges/${data.id}`);
+                            navigate(`/settings/games/${data.id}`);
                         }}
                     />
                     <Popconfirm
-                        title={"删除题目"}
-                        description={`你确定要删除题目 ${data.title} 吗？`}
+                        title={"删除比赛"}
+                        description={`你确定要删除比赛 ${data.title} 吗？`}
                         onConfirm={() => {
-                            deleteChallenge({
-                                id: data.id,
+                            deleteGame({
+                                id: Number(data.id),
                             }).then(() => {
                                 notificationStore?.api?.success({
                                     message: "删除成功",
-                                    description: `题目 ${data.title} 已删除`,
+                                    description: `比赛 ${data.title} 已删除`,
                                 });
                                 sharedStore?.setRefresh();
                             });
@@ -216,7 +215,7 @@ export default function () {
                     padding: 3rem ${screens.lg ? "8rem" : "1rem"};
                 `}
             >
-                <ProTable<Challenge>
+                <ProTable<Game>
                     columns={columns}
                     sticky={{
                         offsetHeader: 64,
@@ -234,13 +233,10 @@ export default function () {
                         padding: "1rem",
                     }}
                     request={async (params, sort, filter) => {
-                        const res = await getChallenges({
+                        const res = await getGames({
                             title: params.title ? params.title : undefined,
-                            is_public: filter.is_public
-                                ? Boolean(filter.is_public?.[0])
-                                : undefined,
-                            category: filter.category
-                                ? Number(filter.category[0])
+                            is_enabled: filter.is_enabled
+                                ? Boolean(filter.is_enabled?.[0])
                                 : undefined,
                             page: params.current,
                             size: params.pageSize,
@@ -265,9 +261,9 @@ export default function () {
                     }}
                 />
             </div>
-            <ChallengeCreateModal
-                open={challengeCreateModalOpen}
-                onClose={() => setChallengeCreateModalOpen(false)}
+            <GameCreateModal
+                open={gameCreateModalOpen}
+                onClose={() => setGameCreateModalOpen(false)}
             />
         </>
     );

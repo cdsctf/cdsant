@@ -44,9 +44,7 @@ export async function createChallenge(request: ChallengeCreateRequest) {
 }
 
 export async function deleteChallenge(request: ChallengeDeleteRequest) {
-    return alova.Delete<Response<never>>(`/challenges/${request.id}`, {
-        cacheFor: 0,
-    });
+    return alova.Delete<Response<never>>(`/challenges/${request.id}`);
 }
 
 export async function getChallengeAttachmentMetadata(id: string) {
