@@ -4,12 +4,12 @@ import router from "./router";
 import { useThemeStore } from "./stores/theme";
 import { useEffect } from "react";
 import { useNotificationStore } from "./stores/notification";
-import { useSharedStore } from "./stores/shared";
-import { getConfigs } from "./api/config";
+import { getMetaConfig } from "./api/config";
+import { useConfigStore } from "./stores/config";
 
 function App() {
     const themeStore = useThemeStore();
-    const sharedStore = useSharedStore();
+    const configStore = useConfigStore();
     const notificationStore = useNotificationStore();
     const [notificationApi, notificationContextHolder] =
         notification.useNotification({
@@ -17,8 +17,8 @@ function App() {
         });
 
     function fetchConfigs() {
-        getConfigs().then((res) => {
-            sharedStore.setConfig(res.data);
+        getMetaConfig().then((res) => {
+            configStore.setMeta(res.data);
         });
     }
 

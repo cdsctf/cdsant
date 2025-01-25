@@ -1,10 +1,9 @@
-import { useSharedStore } from "@/stores/shared";
+import { useConfigStore } from "@/stores/config";
 import { css } from "@emotion/react";
-import { Flex, Image, theme } from "antd";
+import { Flex, Image } from "antd";
 
 export default function () {
-    const sharedStore = useSharedStore();
-    const { token } = theme.useToken();
+    const configStore = useConfigStore();
 
     return (
         <div
@@ -31,10 +30,10 @@ export default function () {
                         font-size: 64px;
                     `}
                 >
-                    {sharedStore?.config?.site?.title}
+                    {configStore?.meta?.title}
                 </h1>
             </Flex>
-            <h3>{sharedStore?.config?.site?.description}</h3>
+            <h3>{configStore?.meta?.description}</h3>
         </div>
     );
 }
