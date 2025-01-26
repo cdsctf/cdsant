@@ -1,4 +1,3 @@
-import { Group, User } from "@/models/user";
 import { useNotificationStore } from "@/stores/notification";
 import { useSharedStore } from "@/stores/shared";
 import {
@@ -8,14 +7,16 @@ import {
     ProTable,
 } from "@ant-design/pro-components";
 import { css } from "@emotion/react";
-import { Button, Flex, Grid, Avatar, Popconfirm } from "antd";
+import { Button, Flex, Grid, Avatar, Popconfirm, Tooltip } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import TrashBinTrashOutline from "~icons/solar/trash-bin-trash-outline";
 import PenNewSquareLinear from "~icons/solar/pen-new-square-linear";
 import AddSquareLinear from "~icons/solar/add-square-linear";
-import { deleteUser, getUsers } from "@/api/user";
 import TeamCreateModal from "./_blocks/TeamCreateModal";
+import { deleteTeam, getTeams } from "@/api/team";
+import { Team } from "@/models/team";
+import { User } from "@/models/user";
 
 export default function () {
     const notificationStore = useNotificationStore();
@@ -32,7 +33,7 @@ export default function () {
         ref?.current?.reload();
     }, [sharedStore?.refresh]);
 
-    const columns: Array<ProColumnType<User>> = [
+    const columns: Array<ProColumnType<Team>> = [
         {
             title: "ID",
             dataIndex: "id",
@@ -49,23 +50,24 @@ export default function () {
             align: "center",
             search: false,
             render: (_, data) => {
-                return <Avatar src={`/api/users/${data.id}/avatar`} />;
+                return <Avatar src={`/api/teams/${data.id}/avatar`} />;
             },
         },
         {
-            title: "昵称",
-            dataIndex: "nickname",
-            key: "nickname",
+            title: "团队名",
+            dataIndex: "name",
+            key: "name",
             width: "10%",
             ellipsis: {
                 showTitle: false,
             },
         },
         {
-            title: "用户名",
-            dataIndex: "username",
-            key: "username",
+            title: "标语",
+            dataIndex: "slogan",
+            key: "slogan",
             width: "10%",
+            search: false,
             ellipsis: {
                 showTitle: false,
             },
@@ -80,48 +82,37 @@ export default function () {
             },
         },
         {
-            title: "组",
-            dataIndex: "group",
-            key: "group",
+            title: "成员",
+            dataIndex: "users",
+            key: "users",
             width: "10%",
             search: false,
-            filtered: true,
-            filterMultiple: false,
-            filters: [
-                {
-                    text: "管理员",
-                    value: Group.Admin,
-                },
-                {
-                    text: "普通用户",
-                    value: Group.User,
-                },
-                {
-                    text: "封禁用户",
-                    value: Group.Banned,
-                },
-            ],
-            renderText: (group: number) => {
-                switch (group) {
-                    case Group.Admin:
-                        return "管理员";
-                    case Group.User:
-                        return "普通用户";
-                    case Group.Banned:
-                        return "封禁用户";
-                    default:
-                        return "未知";
-                }
+            renderText: (users: Array<User>) => {
+                return (
+                    <Avatar.Group
+                        max={{
+                            count: 3,
+                        }}
+                    >
+                        {users.map((user) => (
+                            <Tooltip title={user?.username}>
+                                <Avatar
+                                    key={nanoid()}
+                                    src={`/api/users/${user.id}/avatar`}
+                                />
+                            </Tooltip>
+                        ))}
+                    </Avatar.Group>
+                );
             },
         },
         {
             title: "创建于",
             dataIndex: "created_at",
             key: "created_at",
-            width: "15%",
+            width: "10%",
             search: false,
             sortDirections: ["descend", "ascend"],
-            defaultSortOrder: "descend",
             sorter: true,
             renderText: (created_at: number) => {
                 return new Date(created_at * 1000).toLocaleString();
@@ -149,21 +140,20 @@ export default function () {
                         size={"small"}
                         type={"text"}
                         icon={<PenNewSquareLinear />}
-                        disabled={data.id === 1}
                         onClick={() => {
-                            navigate(`/settings/users/${data.id}`);
+                            navigate(`/settings/teams/${data.id}`);
                         }}
                     />
                     <Popconfirm
-                        title={"删除用户"}
-                        description={`你确定要删除用户 ${data.username} 吗？`}
+                        title={"删除团队"}
+                        description={`你确定要删除团队 ${data.name} 吗？`}
                         onConfirm={() => {
-                            deleteUser({
+                            deleteTeam({
                                 id: Number(data.id),
                             }).then(() => {
                                 notificationStore?.api?.success({
                                     message: "删除成功",
-                                    description: `题目 ${data.username} 已删除`,
+                                    description: `团队 ${data.name} 已删除`,
                                 });
                                 sharedStore?.setRefresh();
                             });
@@ -175,7 +165,6 @@ export default function () {
                             size={"small"}
                             type={"text"}
                             danger
-                            disabled={data.id === 1}
                             icon={<TrashBinTrashOutline />}
                         />
                     </Popconfirm>
@@ -191,7 +180,7 @@ export default function () {
                     padding: 3rem ${screens.lg ? "8rem" : "1rem"};
                 `}
             >
-                <ProTable<User>
+                <ProTable<Team>
                     columns={columns}
                     sticky={{
                         offsetHeader: 64,
@@ -208,18 +197,10 @@ export default function () {
                     tableStyle={{
                         padding: "1rem",
                     }}
-                    request={async (params, sort, filter) => {
-                        const res = await getUsers({
+                    request={async (params, sort, _filter) => {
+                        const res = await getTeams({
                             id: params.id ? params.id : undefined,
-                            username: params.username
-                                ? params.username
-                                : undefined,
-                            nickname: params.nickname
-                                ? params.nickname
-                                : undefined,
-                            group: filter.group
-                                ? (filter.group as unknown as Group)
-                                : undefined,
+                            name: params.name ? params.name : undefined,
                             page: params.current,
                             size: params.pageSize,
                             sorts: Object.keys(sort)

@@ -1,14 +1,12 @@
-import { createUser } from "@/api/user";
-import { Group } from "@/models/user";
 import { useNotificationStore } from "@/stores/notification";
 import { useSharedStore } from "@/stores/shared";
 import { css } from "@emotion/react";
-import { Modal, Grid, Form, Input, Select, Flex, Button, Space } from "antd";
-import UserOutline from "~icons/solar/user-outline";
-import MailBoxLinear from "~icons/solar/mailbox-linear";
-import LockPasswordOutline from "~icons/solar/lock-password-outline";
+import { Modal, Grid, Form, Input, Flex, Button, Space } from "antd";
 import { useEffect, useState } from "react";
 import CheckCircleLinear from "~icons/solar/check-circle-linear";
+import UsersGroupTwoRoundedLinear from "~icons/solar/users-group-two-rounded-linear";
+import MailBoxLinear from "~icons/solar/mailbox-linear";
+import { createTeam } from "@/api/team";
 
 export interface TeamCreateModalProps {
     open: boolean;
@@ -22,29 +20,25 @@ export default function TeamCreateModal(props: TeamCreateModalProps) {
     const notificationStore = useNotificationStore();
     const screens = Grid.useBreakpoint();
     const [form] = Form.useForm<{
-        username: string;
-        nickname: string;
+        name: string;
         email: string;
-        group: Group;
-        password: string;
+        slogan: string;
     }>();
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    function handleUserCreate() {
+    function handleTeamCreate() {
         setLoading(true);
-        createUser({
-            username: form.getFieldValue("username"),
-            nickname: form.getFieldValue("nickname"),
+        createTeam({
+            name: form.getFieldValue("name"),
             email: form.getFieldValue("email"),
-            group: form.getFieldValue("group"),
-            password: form.getFieldValue("password"),
+            slogan: form.getFieldValue("slogan"),
         })
             .then((res) => {
                 if (res.code === 200) {
                     notificationStore?.api?.success({
                         message: "创建成功",
-                        description: `用户 ${res?.data?.username} 创建成功`,
+                        description: `团队 ${res?.data?.name} 创建成功`,
                     });
                     sharedStore.setRefresh();
                     onClose();
@@ -78,12 +72,12 @@ export default function TeamCreateModal(props: TeamCreateModalProps) {
             open={open}
             onCancel={onClose}
             onClose={onClose}
-            title={"创建用户"}
+            title={"创建团队"}
         >
             <Form
                 form={form}
                 layout={"vertical"}
-                onFinish={() => handleUserCreate()}
+                onFinish={() => handleTeamCreate()}
                 autoComplete="off"
             >
                 <Space.Compact
@@ -92,48 +86,24 @@ export default function TeamCreateModal(props: TeamCreateModalProps) {
                     `}
                 >
                     <Form.Item
-                        name={"username"}
-                        label={"用户名"}
+                        name={"name"}
+                        label={"团队名"}
                         rules={[
                             {
                                 required: true,
-                                message: "请输入用户名",
-                            },
-                            {
-                                pattern: /^[a-z0-9_]{3,20}$/,
-                                message: "用户名格式不正确",
+                                message: "请输入团队名",
                             },
                         ]}
                         css={css`
                             flex: 1;
                         `}
                     >
-                        <Input prefix={<UserOutline />} size={"large"} />
+                        <Input
+                            prefix={<UsersGroupTwoRoundedLinear />}
+                            size={"large"}
+                        />
                     </Form.Item>
 
-                    <Form.Item
-                        name={"nickname"}
-                        label={"昵称"}
-                        rules={[
-                            {
-                                required: true,
-                                message: "请输入昵称",
-                            },
-                        ]}
-                        css={css`
-                            flex: 1;
-                        `}
-                    >
-                        <Input size={"large"} />
-                    </Form.Item>
-                </Space.Compact>
-
-                <Flex
-                    gap={16}
-                    css={css`
-                        width: 100%;
-                    `}
-                >
                     <Form.Item
                         name={"email"}
                         label={"邮箱"}
@@ -153,42 +123,19 @@ export default function TeamCreateModal(props: TeamCreateModalProps) {
                     >
                         <Input prefix={<MailBoxLinear />} size={"large"} />
                     </Form.Item>
-
-                    <Form.Item
-                        name={"group"}
-                        label={"组"}
-                        initialValue={Group.User}
-                        rules={[
-                            {
-                                required: true,
-                                message: "请选择组",
-                            },
-                        ]}
-                        css={css`
-                            width: 30%;
-                        `}
-                    >
-                        <Select
-                            size={"large"}
-                            options={[
-                                { label: "管理员", value: Group.Admin },
-                                { label: "普通用户", value: Group.User },
-                            ]}
-                        />
-                    </Form.Item>
-                </Flex>
+                </Space.Compact>
 
                 <Form.Item
-                    name={"password"}
-                    label={"预设密码"}
+                    name={"slogan"}
+                    label={"标语"}
                     rules={[
                         {
                             required: true,
-                            message: "请输入预设密码",
+                            message: "请输入标语",
                         },
                     ]}
                 >
-                    <Input prefix={<LockPasswordOutline />} size={"large"} />
+                    <Input.TextArea rows={4} size={"large"} />
                 </Form.Item>
 
                 <Flex

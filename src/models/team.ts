@@ -3,40 +3,36 @@ import { User } from "./user";
 export interface Team {
     id?: number;
     name?: string;
+    slogan?: string;
     description?: string;
     email?: string;
-    captain_id?: number;
-    captain?: User;
     is_locked?: boolean;
+    deleted_at?: string;
     created_at?: string;
     updated_at?: string;
     users?: Array<User>;
 }
 
-export interface TeamFindRequest {
+export interface TeamGetRequest {
     id?: number;
     name?: string;
-    captain_id?: number;
     page?: number;
     size?: number;
-    sort_key?: string;
-    sort_order?: string;
+    sorts?: string;
 }
 
 export interface TeamUpdateRequest {
     id?: number;
     name?: string;
+    slogan?: string;
     description?: string;
     email?: string;
-    captain_id?: number;
-    is_locked?: boolean;
 }
 
 export interface TeamCreateRequest {
-    name: string;
-    description: string;
+    name?: string;
+    slogan?: string;
     email?: string;
-    captain_id: number;
 }
 
 export interface TeamDeleteRequest {
@@ -48,7 +44,7 @@ export interface TeamJoinRequest {
     token: string;
 }
 
-export interface TeamLeaveRequest {
+export interface TeamQuitRequest {
     id: number;
 }
 
@@ -61,6 +57,11 @@ export interface TeamUpdateInviteTokenRequest {
 }
 
 export interface TeamDeleteUserRequest {
-    id: number;
+    team_id: number;
+    user_id: number;
+}
+
+export interface TeamCreateUserRequest {
+    team_id: number;
     user_id: number;
 }

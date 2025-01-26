@@ -332,7 +332,11 @@ function NavMenu() {
             `}
             overflowedIndicator={<HamburgerMenuLinear />}
             triggerSubMenuAction={"click"}
-            selectedKeys={[location.pathname.split("/").slice(-1)[0]]}
+            selectedKeys={[
+                location.pathname.split("/").slice(1)[0],
+                location.pathname.split("/").slice(2)[0],
+                location.pathname.split("/").slice(3)[0],
+            ]}
             items={menuItems}
         />
     );

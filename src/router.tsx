@@ -181,6 +181,61 @@ export default createBrowserRouter([
                         ],
                     },
                     {
+                        path: "teams",
+                        children: [
+                            {
+                                index: true,
+                                lazy: async () => {
+                                    return {
+                                        Component: (
+                                            await import(
+                                                "@/pages/settings/teams"
+                                            )
+                                        ).default,
+                                    };
+                                },
+                            },
+                            {
+                                path: ":id",
+                                lazy: async () => {
+                                    return {
+                                        Component: (
+                                            await import(
+                                                "@/pages/settings/teams/[id]/layout"
+                                            )
+                                        ).default,
+                                    };
+                                },
+                                children: [
+                                    {
+                                        index: true,
+                                        lazy: async () => {
+                                            return {
+                                                Component: (
+                                                    await import(
+                                                        "@/pages/settings/teams/[id]"
+                                                    )
+                                                ).default,
+                                            };
+                                        },
+                                    },
+                                    {
+                                        path: "users",
+                                        lazy: async () => {
+                                            return {
+                                                Component: (
+                                                    await import(
+                                                        "@/pages/settings/teams/[id]/users"
+                                                    )
+                                                ).default,
+                                            };
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
                         path: "users",
                         children: [
                             {

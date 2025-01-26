@@ -120,8 +120,6 @@ export default function () {
             key: "created_at",
             width: "15%",
             search: false,
-            sortDirections: ["descend", "ascend"],
-            defaultSortOrder: "descend",
             sorter: true,
             renderText: (created_at: number) => {
                 return new Date(created_at * 1000).toLocaleString();
@@ -163,7 +161,7 @@ export default function () {
                             }).then(() => {
                                 notificationStore?.api?.success({
                                     message: "删除成功",
-                                    description: `题目 ${data.username} 已删除`,
+                                    description: `用户 ${data.username} 已删除`,
                                 });
                                 sharedStore?.setRefresh();
                             });
