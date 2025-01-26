@@ -23,7 +23,6 @@ export interface UserGetRequest {
     id?: number;
     name?: string;
     username?: string;
-    nickname?: string;
     email?: string;
     group?: Group;
     page?: number;

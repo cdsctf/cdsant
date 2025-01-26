@@ -212,9 +212,7 @@ export default function () {
                             username: params.username
                                 ? params.username
                                 : undefined,
-                            nickname: params.nickname
-                                ? params.nickname
-                                : undefined,
+                            name: params.nickname ? params.nickname : undefined,
                             group: filter.group
                                 ? (filter.group as unknown as Group)
                                 : undefined,

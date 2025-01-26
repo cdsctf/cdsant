@@ -3,16 +3,15 @@ import { Context } from "../context";
 import { Alert, Avatar, Button, Flex, Popconfirm } from "antd";
 import { nanoid, ProColumnType, ProTable } from "@ant-design/pro-components";
 import { User } from "@/models/user";
-import { useNavigate } from "react-router";
 import AddSquareLinear from "~icons/solar/add-square-linear";
 import LinkBrokenMinimalisticLinear from "~icons/solar/link-broken-minimalistic-linear";
 import { deleteUserTeam } from "@/api/team";
 import { useNotificationStore } from "@/stores/notification";
 import { useSharedStore } from "@/stores/shared";
+import UserTeamCreateModal from "./_blocks/UserTeamCreateModal";
 
 export default function () {
     const { team } = useContext(Context);
-    const navigate = useNavigate();
     const notificationStore = useNotificationStore();
     const sharedStore = useSharedStore();
 
@@ -79,7 +78,7 @@ export default function () {
             ),
             align: "center",
             key: "action",
-            width: "10%",
+            width: "5%",
             search: false,
             hideInSetting: true,
             render: (_, data) => (
@@ -129,8 +128,8 @@ export default function () {
                 bordered
                 search={false}
                 pagination={{
-                    pageSizeOptions: [12, 24, 48, 100],
-                    defaultPageSize: 12,
+                    pageSizeOptions: [10, 20],
+                    defaultPageSize: 10,
                     showSizeChanger: true,
                 }}
                 rowKey={(item) => item.id || nanoid()}
@@ -138,6 +137,10 @@ export default function () {
                     padding: "1rem",
                 }}
                 dataSource={team?.users}
+            />
+            <UserTeamCreateModal
+                open={userTeamCreateModalOpen}
+                onClose={() => setUserTeamCreateModalOpen(false)}
             />
         </div>
     );
