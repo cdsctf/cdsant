@@ -5,11 +5,8 @@ import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useParams } from "react-router";
 import { Context } from "./context";
 import InfoCircleLinear from "~icons/solar/info-circle-linear";
-import BoxMinimalisticLinear from "~icons/solar/box-minimalistic-linear";
 import StarFallMinimalistic2Linear from "~icons/solar/star-fall-minimalistic-2-linear";
 import UsersGroupTwoRoundedLinear from "~icons/solar/users-group-two-rounded-linear";
-import CupStarLinear from "~icons/solar/cup-star-linear";
-import FlagLinear from "~icons/solar/flag-linear";
 import { Game } from "@/models/game";
 import { getGames } from "@/api/game";
 

@@ -1,3 +1,4 @@
+import { Metadata } from "@/models/media";
 import {
     User,
     UserCreateRequest,
@@ -29,4 +30,12 @@ export async function deleteUser(request: UserDeleteRequest) {
 
 export async function updateUser(request: UserUpdateRequest) {
     return alova.Put<Response<User>>(`/users/${request.id}`, request);
+}
+
+export async function getUserAvatarMetadata(id: number) {
+    return alova.Get<Response<Metadata>>(`/users/${id}/avatar/metadata`);
+}
+
+export async function deleteUserAvatar(id: number) {
+    return alova.Delete<Response<never>>(`/users/${id}/avatar`);
 }

@@ -6,6 +6,7 @@ export interface User {
     nickname?: string;
     email?: string;
     group?: Group;
+    description?: string;
     teams?: Array<Team>;
     created_at?: string;
     updated_at?: string;
@@ -37,6 +38,7 @@ export interface UserUpdateRequest {
     email?: string;
     group?: Group;
     password?: string;
+    description?: string;
 }
 
 export interface UserCreateRequest {

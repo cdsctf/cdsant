@@ -15,7 +15,7 @@ import TrashBinTrashOutline from "~icons/solar/trash-bin-trash-outline";
 import PenNewSquareLinear from "~icons/solar/pen-new-square-linear";
 import AddSquareLinear from "~icons/solar/add-square-linear";
 import { deleteUser, getUsers } from "@/api/user";
-import UserCreateModal from "./_blocks/UserCreateModal";
+import TeamCreateModal from "./_blocks/TeamCreateModal";
 
 export default function () {
     const notificationStore = useNotificationStore();
@@ -23,7 +23,7 @@ export default function () {
     const screens = Grid.useBreakpoint();
     const navigate = useNavigate();
 
-    const [userCreateModalOpen, setUserCreateModalOpen] =
+    const [teamCreateModalOpen, setTeamCreateModalOpen] =
         useState<boolean>(false);
 
     const ref = useRef<ActionType>(null);
@@ -134,7 +134,7 @@ export default function () {
                     size={"small"}
                     icon={<AddSquareLinear />}
                     onClick={() => {
-                        setUserCreateModalOpen(true);
+                        setTeamCreateModalOpen(true);
                     }}
                 />
             ),
@@ -243,9 +243,9 @@ export default function () {
                     }}
                 />
             </div>
-            <UserCreateModal
-                open={userCreateModalOpen}
-                onClose={() => setUserCreateModalOpen(false)}
+            <TeamCreateModal
+                open={teamCreateModalOpen}
+                onClose={() => setTeamCreateModalOpen(false)}
             />
         </>
     );

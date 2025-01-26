@@ -44,6 +44,7 @@ import { getGames } from "@/api/game";
 import useMode from "@/hooks/useMode";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { useConfigStore } from "@/stores/config";
+import { Group } from "@/models/user";
 
 const { useToken } = theme;
 const { Header } = Layout;
@@ -204,11 +205,17 @@ function NavDropdown() {
             )}
             menu={{
                 items: [
-                    {
-                        key: "2",
-                        icon: <PlanetLinear />,
-                        label: <Link to={"/settings"}>进入管理面板</Link>,
-                    },
+                    ...(authStore?.user?.group === Group.Admin
+                        ? [
+                              {
+                                  key: "2",
+                                  icon: <PlanetLinear />,
+                                  label: (
+                                      <Link to={"/settings"}>进入管理面板</Link>
+                                  ),
+                              },
+                          ]
+                        : []),
                     {
                         key: "3",
                         icon: <SettingsOutline />,
