@@ -39,7 +39,6 @@ import {
 } from "react";
 import { css } from "@emotion/react";
 import { useAuthStore } from "@/stores/auth";
-import { useSharedStore } from "@/stores/shared";
 import { Game } from "@/models/game";
 import { getGames } from "@/api/game";
 import useMode from "@/hooks/useMode";
@@ -99,7 +98,9 @@ function Logo() {
                         font-size: 1.25rem;
                     `}
                 >
-                    {mode === "game" ? game?.title : configStore?.meta?.title}
+                    {mode === "game"
+                        ? game?.title
+                        : configStore?.config?.meta?.title}
                 </h2>
             )}
         </Button>

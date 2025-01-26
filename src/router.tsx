@@ -180,6 +180,23 @@ export default createBrowserRouter([
                             },
                         ],
                     },
+                    {
+                        path: "users",
+                        children: [
+                            {
+                                index: true,
+                                lazy: async () => {
+                                    return {
+                                        Component: (
+                                            await import(
+                                                "@/pages/settings/users"
+                                            )
+                                        ).default,
+                                    };
+                                },
+                            },
+                        ],
+                    },
                 ],
             },
             {

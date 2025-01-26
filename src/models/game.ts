@@ -69,7 +69,7 @@ export interface GameCreateRequest {
 export interface GameUpdateRequest {
     id?: number;
     title?: string;
-    bio?: string;
+    sketch?: string;
     description?: string;
     is_enabled?: boolean;
     is_public?: boolean;
@@ -79,6 +79,7 @@ export interface GameUpdateRequest {
     parallel_container_limit?: number;
     is_need_write_up?: boolean;
     started_at?: number;
+    frozen_at?: number;
     ended_at?: number;
 }
 

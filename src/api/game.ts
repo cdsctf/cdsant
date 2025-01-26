@@ -7,6 +7,7 @@ import {
     GameUpdateRequest,
     ScoreRecord,
 } from "@/models/game";
+import { Metadata } from "@/models/media";
 import { Response } from "@/types";
 import { alova } from "@/utils/alova";
 
@@ -35,4 +36,20 @@ export async function getScoreboard(
 
 export async function deleteGame(request: GameDeleteRequest) {
     return alova.Delete<Response<never>>(`/games/${request.id}`);
+}
+
+export async function getGamePosterMetadata(id: number) {
+    return alova.Get<Response<Metadata>>(`/games/${id}/poster/metadata`);
+}
+
+export async function deleteGamePoster(id: number) {
+    return alova.Delete<Response<never>>(`/games/${id}/poster`);
+}
+
+export async function getGameIconMetadata(id: number) {
+    return alova.Get<Response<Metadata>>(`/games/${id}/icon/metadata`);
+}
+
+export async function deleteGameIcon(id: number) {
+    return alova.Delete<Response<never>>(`/games/${id}/icon`);
 }

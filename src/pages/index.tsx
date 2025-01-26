@@ -30,10 +30,10 @@ export default function () {
                         font-size: 64px;
                     `}
                 >
-                    {configStore?.meta?.title}
+                    {configStore?.config?.meta?.title}
                 </h1>
             </Flex>
-            <h3>{configStore?.meta?.description}</h3>
+            <h3>{configStore?.config?.meta?.description}</h3>
         </div>
     );
 }

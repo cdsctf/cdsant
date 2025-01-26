@@ -4,7 +4,7 @@ import router from "./router";
 import { useThemeStore } from "./stores/theme";
 import { useEffect } from "react";
 import { useNotificationStore } from "./stores/notification";
-import { getMetaConfig } from "./api/config";
+import { getConfigs } from "./api/config";
 import { useConfigStore } from "./stores/config";
 
 function App() {
@@ -17,8 +17,8 @@ function App() {
         });
 
     function fetchConfigs() {
-        getMetaConfig().then((res) => {
-            configStore.setMeta(res.data);
+        getConfigs().then((res) => {
+            configStore.setConfig(res.data);
         });
     }
 

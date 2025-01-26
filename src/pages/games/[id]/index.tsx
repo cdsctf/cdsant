@@ -9,9 +9,9 @@ import { useParams } from "react-router";
 
 export default function () {
     const { id } = useParams();
-    const [game, setGame] = useState<Game>();
     const { token } = theme.useToken();
     const screens = Grid.useBreakpoint();
+    const [game, setGame] = useState<Game>();
 
     const status = useMemo(() => {
         if (!game) return "loading";
@@ -82,7 +82,8 @@ export default function () {
                         width: 100%;
                     `}
                 >
-                    <div
+                    <Flex
+                        vertical
                         css={css`
                             width: 100%;
                             aspect-ratio: 16 / 9;
@@ -92,7 +93,7 @@ export default function () {
                         `}
                     >
                         <GamePoster gameId={game?.id!} />
-                    </div>
+                    </Flex>
                     <h2
                         css={css`
                             line-height: 1em;
@@ -102,11 +103,11 @@ export default function () {
                         {game?.title}
                     </h2>
                 </div>
-                <div
+                <Flex
+                    vertical
+                    gap={12}
                     css={css`
-                        display: flex;
-                        flex-direction: column;
-                        gap: 1rem;
+                        width: 100%;
                     `}
                 >
                     <Badge.Ribbon
@@ -143,7 +144,7 @@ export default function () {
                     >
                         进入赛场
                     </Button>
-                </div>
+                </Flex>
             </div>
         </Flex>
     );

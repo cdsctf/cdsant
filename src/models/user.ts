@@ -18,7 +18,7 @@ export enum Group {
     Admin = 3,
 }
 
-export interface UserFindRequest {
+export interface UserGetRequest {
     id?: number;
     name?: string;
     username?: string;
@@ -27,8 +27,7 @@ export interface UserFindRequest {
     group?: Group;
     page?: number;
     size?: number;
-    sort_key?: string;
-    sort_order?: string;
+    sorts?: string;
 }
 
 export interface UserUpdateRequest {
