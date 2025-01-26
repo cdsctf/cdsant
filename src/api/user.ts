@@ -13,7 +13,7 @@ export async function login(request: UserLoginRequest) {
     return alova.Post<Response<User>>("/users/login", request);
 }
 
-export async function create(request: UserCreateRequest) {
+export async function createUser(request: UserCreateRequest) {
     return alova.Post<Response<User>>("/users", request);
 }
 

@@ -8,13 +8,14 @@ import {
     ProTable,
 } from "@ant-design/pro-components";
 import { css } from "@emotion/react";
-import { Button, Flex, Grid, Avatar, Popconfirm, Switch } from "antd";
+import { Button, Flex, Grid, Avatar, Popconfirm } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import TrashBinTrashOutline from "~icons/solar/trash-bin-trash-outline";
 import PenNewSquareLinear from "~icons/solar/pen-new-square-linear";
 import AddSquareLinear from "~icons/solar/add-square-linear";
 import { deleteUser, getUsers } from "@/api/user";
+import UserCreateModal from "./_blocks/UserCreateModal";
 
 export default function () {
     const notificationStore = useNotificationStore();
@@ -244,6 +245,10 @@ export default function () {
                     }}
                 />
             </div>
+            <UserCreateModal
+                open={userCreateModalOpen}
+                onClose={() => setUserCreateModalOpen(false)}
+            />
         </>
     );
 }
