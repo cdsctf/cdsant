@@ -66,7 +66,6 @@ export default function () {
             is_need_write_up: game?.is_need_write_up,
             member_limit_min: game?.member_limit_min,
             member_limit_max: game?.member_limit_max,
-            parallel_container_limit: game?.parallel_container_limit,
         });
     }, [game]);
 
@@ -89,9 +88,6 @@ export default function () {
             is_need_write_up: form.getFieldValue("is_need_write_up"),
             member_limit_min: form.getFieldValue("member_limit_min"),
             member_limit_max: form.getFieldValue("member_limit_max"),
-            parallel_container_limit: form.getFieldValue(
-                "parallel_container_limit"
-            ),
         }).then((res) => {
             if (res.code === 200) {
                 notificationStore?.api?.success({
@@ -378,6 +374,50 @@ export default function () {
             <Form.Item name={"description"} label={"描述（支持 Markdown）"}>
                 <Input.TextArea rows={12} />
             </Form.Item>
+            <Space.Compact
+                css={css`
+                    width: 100%;
+                `}
+            >
+                <Form.Item
+                    name={"member_limit_min"}
+                    label={"团队最小人数"}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                    css={css`
+                        width: 100%;
+                    `}
+                >
+                    <InputNumber
+                        min={1}
+                        css={css`
+                            width: 100%;
+                        `}
+                    />
+                </Form.Item>
+                <Form.Item
+                    name={"member_limit_max"}
+                    label={"团队最大人数"}
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                    css={css`
+                        width: 100%;
+                    `}
+                >
+                    <InputNumber
+                        min={1}
+                        css={css`
+                            width: 100%;
+                        `}
+                    />
+                </Form.Item>
+            </Space.Compact>
             <Flex
                 justify={"space-between"}
                 css={css`
@@ -470,72 +510,6 @@ export default function () {
                     />
                 </Form.Item>
             </Space.Compact>
-
-            <Flex gap={16}>
-                <Space.Compact
-                    css={css`
-                        width: 80%;
-                    `}
-                >
-                    <Form.Item
-                        name={"member_limit_min"}
-                        label={"团队最小人数"}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                        css={css`
-                            width: 100%;
-                        `}
-                    >
-                        <InputNumber
-                            min={1}
-                            css={css`
-                                width: 100%;
-                            `}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        name={"member_limit_max"}
-                        label={"团队最大人数"}
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                        css={css`
-                            width: 100%;
-                        `}
-                    >
-                        <InputNumber
-                            min={1}
-                            css={css`
-                                width: 100%;
-                            `}
-                        />
-                    </Form.Item>
-                </Space.Compact>
-                <Form.Item
-                    name={"parallel_container_limit"}
-                    label={"团队容器最大并行数"}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                    css={css`
-                        width: 20%;
-                    `}
-                >
-                    <InputNumber
-                        min={1}
-                        css={css`
-                            width: 100%;
-                        `}
-                    />
-                </Form.Item>
-            </Flex>
 
             <Form.Item>
                 <Flex justify={"flex-end"}>

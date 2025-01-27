@@ -144,8 +144,10 @@ export default function ChallengeModal(props: ChallengeModalProps) {
     }
 
     useEffect(() => {
-        if (challenge?.is_dynamic) {
+        if (challenge?.is_dynamic && open) {
             fetchPods();
+        } else {
+            setPod(undefined);
         }
     }, [challenge, open]);
 
@@ -282,9 +284,16 @@ export default function ChallengeModal(props: ChallengeModalProps) {
                                         Number(pod.removed_at) * 1000
                                     ).toLocaleString()} 时自动销毁`}
                                 </span>
-                                <Flex justify={"space-between"} gap={24}>
+                                <Flex
+                                    justify={"space-between"}
+                                    gap={24}
+                                    css={css`
+                                        width: 100%;
+                                    `}
+                                >
                                     <Flex
                                         vertical
+                                        gap={8}
                                         css={css`
                                             flex: 1;
                                         `}

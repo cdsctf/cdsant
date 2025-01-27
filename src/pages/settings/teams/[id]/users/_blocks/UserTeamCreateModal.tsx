@@ -1,8 +1,8 @@
 import { useNotificationStore } from "@/stores/notification";
 import { useSharedStore } from "@/stores/shared";
 import { css } from "@emotion/react";
-import { Modal, Grid, Flex, Button, AutoComplete, Avatar, theme } from "antd";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { Modal, Grid, Flex, Button, Avatar, theme } from "antd";
+import { useContext, useEffect, useState } from "react";
 import CheckCircleLinear from "~icons/solar/check-circle-linear";
 import { createUserTeam } from "@/api/team";
 import { Context } from "../../context";
@@ -75,7 +75,13 @@ export default function UserTeamCreateModal(props: UserTeamCreateModalProps) {
             onClose={onClose}
             title={"添加团队成员"}
         >
-            <Flex vertical gap={16}>
+            <Flex
+                vertical
+                gap={16}
+                css={css`
+                    padding: 1rem 0;
+                `}
+            >
                 <Button
                     onClick={() => setUserSelectModalOpen(true)}
                     size={"large"}

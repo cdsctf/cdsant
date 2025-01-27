@@ -13,8 +13,6 @@ export interface Game {
     member_limit_min?: number;
     member_limit_max?: number;
 
-    parallel_container_limit?: number;
-
     started_at?: number;
     frozen_at?: number;
     ended_at?: number;
@@ -47,8 +45,9 @@ export interface GameSubmissionGetRequest {
     status?: Status;
 }
 
-export interface GameChallengeFindRequest {
+export interface GameChallengeGetRequest {
     game_id?: number;
+    challenge_id?: string;
     is_enabled?: boolean;
 }
 
@@ -58,10 +57,9 @@ export interface GameCreateRequest {
     description?: string;
     is_enabled?: boolean;
     is_public?: boolean;
+    is_need_write_up?: boolean;
     member_limit_min?: number;
     member_limit_max?: number;
-    parallel_container_limit?: number;
-    is_need_write_up?: boolean;
     started_at?: number;
     ended_at?: number;
 }
@@ -73,11 +71,9 @@ export interface GameUpdateRequest {
     description?: string;
     is_enabled?: boolean;
     is_public?: boolean;
-    password?: string;
+    is_need_write_up?: boolean;
     member_limit_min?: number;
     member_limit_max?: number;
-    parallel_container_limit?: number;
-    is_need_write_up?: boolean;
     started_at?: number;
     frozen_at?: number;
     ended_at?: number;

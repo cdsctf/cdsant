@@ -2,7 +2,7 @@ import { Challenge } from "./challenge";
 import { Game } from "./game";
 
 export interface GameChallenge {
-    challenge_id?: number;
+    challenge_id?: string;
     challenge?: Challenge;
     game_id?: number;
     game?: Game;
@@ -16,8 +16,8 @@ export interface GameChallenge {
 }
 
 export interface GameChallengeUpdateRequest {
-    challenge_id?: number;
     game_id?: number;
+    challenge_id?: string;
     is_enabled?: boolean;
     max_pts?: number;
     min_pts?: number;
@@ -28,13 +28,13 @@ export interface GameChallengeUpdateRequest {
 }
 
 export interface GameChallengeDeleteRequest {
-    challenge_id?: number;
+    challenge_id?: string;
     game_id?: number;
 }
 
 export interface GameChallengeCreateRequest {
     game_id?: number;
-    challenge_id?: number;
+    challenge_id?: string;
     is_enabled?: boolean;
     max_pts?: number;
     min_pts?: number;

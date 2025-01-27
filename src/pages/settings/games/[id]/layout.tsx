@@ -97,7 +97,7 @@ export default function () {
                                     icon: <StarFallMinimalistic2Linear />,
                                     label: (
                                         <Link
-                                            to={`/settings/challenges/${game?.id}/challenges`}
+                                            to={`/settings/games/${game?.id}/challenges`}
                                         >
                                             题目
                                         </Link>
@@ -108,7 +108,7 @@ export default function () {
                                     icon: <UsersGroupTwoRoundedLinear />,
                                     label: (
                                         <Link
-                                            to={`/settings/challenges/${game?.id}/teams`}
+                                            to={`/settings/games/${game?.id}/teams`}
                                         >
                                             团队
                                         </Link>
