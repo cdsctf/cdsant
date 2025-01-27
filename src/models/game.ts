@@ -45,12 +45,6 @@ export interface GameSubmissionGetRequest {
     status?: Status;
 }
 
-export interface GameChallengeGetRequest {
-    game_id?: number;
-    challenge_id?: string;
-    is_enabled?: boolean;
-}
-
 export interface GameCreateRequest {
     title?: string;
     sketch?: string;

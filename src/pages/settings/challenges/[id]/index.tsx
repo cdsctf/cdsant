@@ -16,6 +16,7 @@ export default function () {
     const { challenge } = useContext(Context);
     const [form] = Form.useForm<{
         title: string;
+        tags: Array<string>;
         category: number;
         description: string;
         is_dynamic: boolean;
@@ -25,6 +26,7 @@ export default function () {
     useEffect(() => {
         form.setFieldsValue({
             title: challenge?.title,
+            tags: challenge?.tags,
             category: challenge?.category,
             description: challenge?.description,
             is_dynamic: challenge?.is_dynamic,
@@ -36,6 +38,7 @@ export default function () {
         updateChallenge({
             id: challenge?.id,
             title: form.getFieldValue("title"),
+            tags: form.getFieldValue("tags"),
             category: form.getFieldValue("category"),
             description: form.getFieldValue("description"),
             is_dynamic: form.getFieldValue("is_dynamic"),
@@ -106,6 +109,15 @@ export default function () {
                     />
                 </Form.Item>
             </Flex>
+            <Form.Item name={"tags"} label={"标签"}>
+                <Select
+                    mode={"tags"}
+                    options={[]}
+                    css={css`
+                        width: 100%;
+                    `}
+                />
+            </Form.Item>
             <Form.Item name={"description"} label={"描述（支持 Markdown）"}>
                 <Input.TextArea rows={12} />
             </Form.Item>

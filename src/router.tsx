@@ -188,6 +188,18 @@ export default createBrowserRouter([
                                             };
                                         },
                                     },
+                                    {
+                                        path: "teams",
+                                        lazy: async () => {
+                                            return {
+                                                Component: (
+                                                    await import(
+                                                        "@/pages/settings/games/[id]/teams"
+                                                    )
+                                                ).default,
+                                            };
+                                        },
+                                    },
                                 ],
                             },
                         ],

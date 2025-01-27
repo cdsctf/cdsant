@@ -2,14 +2,34 @@ import { Game } from "./game";
 import { Team } from "./team";
 
 export interface GameTeam {
-    id?: number;
     team_id?: number;
-    team?: Team;
     game_id?: number;
-    game?: Game;
+    is_allowed?: boolean;
+
     rank?: number;
     pts?: number;
-    solved?: number;
+
+    team?: Team;
+    game?: Game;
+}
+
+export interface GameTeamGetRequest {
+    game_id?: number;
+    team_id?: number;
+}
+
+export interface GameTeamCreateRequest {
+    game_id?: number;
+    team_id?: number;
+}
+
+export interface GameTeamUpdateRequest {
+    game_id?: number;
+    team_id?: number;
     is_allowed?: boolean;
-    signature?: string;
+}
+
+export interface GameTeamDeleteRequest {
+    game_id?: number;
+    team_id?: number;
 }

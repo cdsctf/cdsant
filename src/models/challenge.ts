@@ -5,6 +5,7 @@ import { Submission } from "./submission";
 export interface Challenge {
     id?: string;
     title?: string;
+    tags?: Array<string>;
     description?: string;
     category?: number;
     has_attachment?: boolean;
@@ -32,6 +33,7 @@ export interface ChallengeGetRequest {
 export interface ChallengeUpdateRequest {
     id?: string;
     title?: string;
+    tags?: Array<string>;
     description?: string;
     category?: number;
     has_attachment?: boolean;

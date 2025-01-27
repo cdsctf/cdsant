@@ -1,6 +1,5 @@
 import {
     Game,
-    GameChallengeGetRequest,
     GameCreateRequest,
     GameDeleteRequest,
     GameGetRequest,
@@ -10,10 +9,18 @@ import {
 } from "@/models/game";
 import {
     GameChallenge,
+    GameChallengeGetRequest,
     GameChallengeCreateRequest,
     GameChallengeDeleteRequest,
     GameChallengeUpdateRequest,
 } from "@/models/game_challenge";
+import {
+    GameTeam,
+    GameTeamCreateRequest,
+    GameTeamDeleteRequest,
+    GameTeamGetRequest,
+    GameTeamUpdateRequest,
+} from "@/models/game_team";
 import { Metadata } from "@/models/media";
 import { Response } from "@/types";
 import { alova } from "@/utils/alova";
@@ -87,6 +94,36 @@ export async function updateGameChallenge(request: GameChallengeUpdateRequest) {
 export async function deleteGameChallenge(request: GameChallengeDeleteRequest) {
     return alova.Delete<Response<never>>(
         `/games/${request.game_id}/challenges/${request.challenge_id}`,
+        request
+    );
+}
+
+export async function getGameTeams(request: GameTeamGetRequest) {
+    return alova.Get<Response<Array<GameTeam>>>(
+        `/games/${request.game_id}/teams`,
+        {
+            params: request,
+        }
+    );
+}
+
+export async function createGameTeam(request: GameTeamCreateRequest) {
+    return alova.Post<Response<GameTeam>>(
+        `/games/${request.game_id}/teams`,
+        request
+    );
+}
+
+export async function updateGameTeam(request: GameTeamUpdateRequest) {
+    return alova.Put<Response<GameTeam>>(
+        `/games/${request.game_id}/teams/${request.team_id}`,
+        request
+    );
+}
+
+export async function deleteGameTeam(request: GameTeamDeleteRequest) {
+    return alova.Delete<Response<never>>(
+        `/games/${request.game_id}/challenges/${request.team_id}`,
         request
     );
 }

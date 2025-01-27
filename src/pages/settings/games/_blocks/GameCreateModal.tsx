@@ -36,7 +36,6 @@ export default function GameCreateModal(props: GameCreateModalProps) {
             is_public: false,
             member_limit_min: 1,
             member_limit_max: 3,
-            parallel_container_limit: 2,
             is_need_write_up: true,
             started_at: Math.ceil(
                 new Date(form.getFieldValue("started_at")).getTime() / 1000

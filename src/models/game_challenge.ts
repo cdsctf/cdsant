@@ -15,6 +15,15 @@ export interface GameChallenge {
     third_blood_reward_ratio?: number;
 }
 
+export interface GameChallengeGetRequest {
+    game_id?: number;
+    challenge_id?: string;
+    category?: number;
+    is_enabled?: boolean;
+    page?: number;
+    size?: number;
+}
+
 export interface GameChallengeUpdateRequest {
     game_id?: number;
     challenge_id?: string;
