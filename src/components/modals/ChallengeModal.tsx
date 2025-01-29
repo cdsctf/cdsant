@@ -17,15 +17,12 @@ import { Pod } from "@/models/pod";
 import { useInterval } from "ahooks";
 
 export interface ChallengeModalProps {
-    open: boolean;
-    onClose: () => void;
     challenge?: Challenge;
     status?: ChallengeStatus;
 }
 
 export default function ChallengeModal(props: ChallengeModalProps) {
-    const { open, onClose, challenge } = props;
-    const screens = Grid.useBreakpoint();
+    const { challenge } = props;
     const { token } = theme.useToken();
 
     const sharedStore = useSharedStore();
@@ -177,7 +174,7 @@ export default function ChallengeModal(props: ChallengeModalProps) {
     }
 
     useEffect(() => {
-        if (challenge?.is_dynamic && open) {
+        if (challenge?.is_dynamic) {
             fetchPods();
         } else {
             setPod(undefined);
@@ -236,192 +233,179 @@ export default function ChallengeModal(props: ChallengeModalProps) {
     }, [submissionId]);
 
     return (
-        <Modal
-            centered
-            open={open}
-            onOk={() => onClose()}
-            onCancel={() => onClose()}
-            footer={null}
-            closable={false}
-            width={screens.md ? "40vw" : "90vw"}
-            destroyOnClose
+        <Flex
+            vertical
+            justify={"space-between"}
+            gap={20}
+            css={css`
+                width: 100%;
+                min-height: 40vh;
+                max-height: 80vh;
+                position: relative;
+            `}
         >
-            <Flex
-                vertical
-                justify={"space-between"}
-                gap={20}
-                css={css`
-                    width: 100%;
-                    min-height: 40vh;
-                    max-height: 80vh;
-                    position: relative;
-                `}
-            >
-                <Flex vertical gap={15}>
-                    <Flex
-                        justify={"start"}
-                        align={"center"}
-                        gap={15}
-                        css={css`
-                            font-size: 1.125rem;
-                            color: ${category?.color};
-                        `}
-                    >
-                        {category?.icon}
-                        <span>{challenge?.title}</span>
-                    </Flex>
-                    <Divider
-                        variant={"dashed"}
-                        css={css`
-                            margin: 0;
-                        `}
-                    />
-                </Flex>
-                {challenge?.has_attachment && (
-                    <div
-                        css={css`
-                            position: absolute;
-                            top: 0;
-                            right: 0;
-                        `}
-                    >
-                        <Button
-                            type={"text"}
-                            icon={<DownloadMinimalisticOutline />}
-                            shape={"round"}
-                            target={"_blank"}
-                            href={`/api/challenges/${challenge?.id}/attachment`}
-                        >
-                            下载附件
-                        </Button>
-                    </div>
-                )}
-                <MarkdownRender
-                    src={challenge?.description}
+            <Flex vertical gap={15}>
+                <Flex
+                    justify={"start"}
+                    align={"center"}
+                    gap={15}
                     css={css`
-                        flex: 1;
-                        overflow: scroll;
+                        font-size: 1.125rem;
+                        color: ${category?.color};
+                    `}
+                >
+                    {category?.icon}
+                    <span>{challenge?.title}</span>
+                </Flex>
+                <Divider
+                    variant={"dashed"}
+                    css={css`
+                        margin: 0;
                     `}
                 />
-                {challenge?.is_dynamic && (
-                    <>
-                        {pod?.id ? (
-                            <Flex vertical align={"center"} gap={15}>
-                                <span
-                                    css={css`
-                                        color: ${token.colorTextDescription};
-                                        user-select: none;
-                                    `}
-                                >
-                                    {`容器将于 ${new Date(
-                                        (Number(pod.started_at) +
-                                            (Number(pod.renew) + 1) *
-                                                Number(pod.duration)) *
-                                            1000
-                                    ).toLocaleString()} 时自动销毁`}
-                                </span>
-                                <Flex
-                                    justify={"space-between"}
-                                    gap={24}
-                                    css={css`
-                                        width: 100%;
-                                    `}
-                                >
-                                    <Flex
-                                        vertical
-                                        gap={8}
-                                        css={css`
-                                            flex: 1;
-                                        `}
-                                    >
-                                        {pod?.nats
-                                            ?.split(",")
-                                            .map((pair) => pair.split("="))
-                                            .map(
-                                                ([src, dst]: Array<string>) => (
-                                                    <Flex key={src}>
-                                                        <Input
-                                                            addonBefore={src}
-                                                            value={dst}
-                                                            css={css`
-                                                                caret-color: transparent;
-                                                            `}
-                                                        />
-                                                    </Flex>
-                                                )
-                                            )}
-                                    </Flex>
-                                    <Flex
-                                        align={"center"}
-                                        justify={"center"}
-                                        gap={12}
-                                    >
-                                        <Button
-                                            color={"primary"}
-                                            variant={"solid"}
-                                            onClick={() => handlePodRenew()}
-                                        >
-                                            续期
-                                        </Button>
-                                        <Button
-                                            variant={"solid"}
-                                            color={"red"}
-                                            onClick={() => handlePodStop()}
-                                            loading={podStopLoading}
-                                        >
-                                            停止
-                                        </Button>
-                                    </Flex>
-                                </Flex>
-                            </Flex>
-                        ) : (
-                            <Flex justify={"space-between"} align={"center"}>
+            </Flex>
+            {challenge?.has_attachment && (
+                <div
+                    css={css`
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                    `}
+                >
+                    <Button
+                        type={"text"}
+                        icon={<DownloadMinimalisticOutline />}
+                        shape={"round"}
+                        target={"_blank"}
+                        href={`/api/challenges/${challenge?.id}/attachment`}
+                    >
+                        下载附件
+                    </Button>
+                </div>
+            )}
+            <MarkdownRender
+                src={challenge?.description}
+                css={css`
+                    flex: 1;
+                    overflow: scroll;
+                `}
+            />
+            {challenge?.is_dynamic && (
+                <>
+                    {pod?.id ? (
+                        <Flex vertical align={"center"} gap={15}>
+                            <span
+                                css={css`
+                                    color: ${token.colorTextDescription};
+                                    user-select: none;
+                                `}
+                            >
+                                {`容器将于 ${new Date(
+                                    (Number(pod.started_at) +
+                                        (Number(pod.renew) + 1) *
+                                            Number(pod.duration)) *
+                                        1000
+                                ).toLocaleString()} 时自动销毁`}
+                            </span>
+                            <Flex
+                                justify={"space-between"}
+                                gap={24}
+                                css={css`
+                                    width: 100%;
+                                `}
+                            >
                                 <Flex
                                     vertical
+                                    gap={8}
                                     css={css`
-                                        color: ${token.colorTextDescription};
-                                        user-select: none;
+                                        flex: 1;
                                     `}
                                 >
-                                    <span>本题需要使用动态容器，</span>
-                                    <span>点击“启动”进行容器下发。</span>
+                                    {pod?.nats
+                                        ?.split(",")
+                                        .map((pair) => pair.split("="))
+                                        .map(([src, dst]: Array<string>) => (
+                                            <Flex key={src}>
+                                                <Input
+                                                    addonBefore={src}
+                                                    value={dst}
+                                                    css={css`
+                                                        caret-color: transparent;
+                                                    `}
+                                                />
+                                            </Flex>
+                                        ))}
                                 </Flex>
-                                <Button
-                                    variant={"solid"}
-                                    color={"green"}
-                                    onClick={() => handlePodCreate()}
-                                    loading={podCreateLoading}
+                                <Flex
+                                    align={"center"}
+                                    justify={"center"}
+                                    gap={12}
                                 >
-                                    启动
-                                </Button>
+                                    <Button
+                                        color={"primary"}
+                                        variant={"solid"}
+                                        onClick={() => handlePodRenew()}
+                                    >
+                                        续期
+                                    </Button>
+                                    <Button
+                                        variant={"solid"}
+                                        color={"red"}
+                                        onClick={() => handlePodStop()}
+                                        loading={podStopLoading}
+                                    >
+                                        停止
+                                    </Button>
+                                </Flex>
                             </Flex>
-                        )}
-                    </>
-                )}
-                <Flex vertical gap={20}>
-                    <Divider
-                        variant={"dashed"}
-                        css={css`
-                            margin: 0;
-                        `}
+                        </Flex>
+                    ) : (
+                        <Flex justify={"space-between"} align={"center"}>
+                            <Flex
+                                vertical
+                                css={css`
+                                    color: ${token.colorTextDescription};
+                                    user-select: none;
+                                `}
+                            >
+                                <span>本题需要使用动态容器，</span>
+                                <span>点击“启动”进行容器下发。</span>
+                            </Flex>
+                            <Button
+                                variant={"solid"}
+                                color={"green"}
+                                onClick={() => handlePodCreate()}
+                                loading={podCreateLoading}
+                            >
+                                启动
+                            </Button>
+                        </Flex>
+                    )}
+                </>
+            )}
+            <Flex vertical gap={20}>
+                <Divider
+                    variant={"dashed"}
+                    css={css`
+                        margin: 0;
+                    `}
+                />
+                <Space.Compact size={"large"}>
+                    <Input
+                        allowClear
+                        addonBefore={<FlagLinear />}
+                        value={flag}
+                        onChange={(e) => setFlag(e.target.value)}
                     />
-                    <Space.Compact size={"large"}>
-                        <Input
-                            allowClear
-                            addonBefore={<FlagLinear />}
-                            value={flag}
-                            onChange={(e) => setFlag(e.target.value)}
-                        />
-                        <Button
-                            type={"primary"}
-                            loading={submitLoading}
-                            onClick={() => handleFlagSubmit()}
-                        >
-                            提交
-                        </Button>
-                    </Space.Compact>
-                </Flex>
+                    <Button
+                        type={"primary"}
+                        loading={submitLoading}
+                        onClick={() => handleFlagSubmit()}
+                    >
+                        提交
+                    </Button>
+                </Space.Compact>
             </Flex>
-        </Modal>
+        </Flex>
     );
 }

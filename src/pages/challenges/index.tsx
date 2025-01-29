@@ -11,7 +11,7 @@ import {
     ProTable,
 } from "@ant-design/pro-components";
 import { css } from "@emotion/react";
-import { Button, Flex, Grid } from "antd";
+import { Button, Flex, Grid, Modal } from "antd";
 import { useEffect, useRef, useState } from "react";
 import PlayCircleLinear from "~icons/solar/play-circle-linear";
 
@@ -230,12 +230,21 @@ export default function () {
                     };
                 }}
             />
-            <ChallengeModal
-                onClose={() => setModalOpen(false)}
+            <Modal
+                centered
                 open={modalOpen}
-                challenge={selectedChallenge}
-                status={selectedChallenge}
-            />
+                onOk={() => setModalOpen(false)}
+                onCancel={() => setModalOpen(false)}
+                footer={null}
+                closable={false}
+                width={screens.md ? "40vw" : "90vw"}
+                destroyOnClose
+            >
+                <ChallengeModal
+                    challenge={selectedChallenge}
+                    status={selectedChallenge}
+                />
+            </Modal>
         </div>
     );
 }

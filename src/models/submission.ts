@@ -39,7 +39,7 @@ export interface SubmissionCreateRequest {
     game_id?: number;
 }
 
-export interface SubmissionFindRequest {
+export interface SubmissionGetRequest {
     id?: number;
     flag?: string;
     status?: number;

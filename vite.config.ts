@@ -29,13 +29,13 @@ export default defineConfig(({ mode }) => {
                         });
                     },
                 },
+                "^/api/pods/.+/wsrx": {
+                    target: apiUrl.replace("http", "ws"),
+                    ws: true,
+                },
                 "/metrics": {
                     target: apiUrl,
                     changeOrigin: true,
-                },
-                "/api/proxies": {
-                    target: apiUrl.replace("http", "ws"),
-                    ws: true,
                 },
             },
         },
