@@ -3,12 +3,10 @@ import { Game } from "@/models/game";
 import { css } from "@emotion/react";
 import {
     Flex,
-    Form,
     Input,
     InputNumber,
     Pagination,
     Space,
-    theme,
     Grid,
     Button,
 } from "antd";
@@ -17,7 +15,6 @@ import HashtagBold from "~icons/solar/hashtag-bold";
 import GameCard from "./_blocks/GameCard";
 
 export default function () {
-    const { token } = theme.useToken();
     const screens = Grid.useBreakpoint();
     const [games, setGames] = useState<Array<Game>>();
     const [total, setTotal] = useState<number>();

@@ -1,33 +1,36 @@
-import { Game } from "./game";
-import { User } from "./user";
-import { Team } from "./team";
-import { Challenge } from "./challenge";
+// import { Game } from "./game";
+// import { User } from "./user";
+// import { Team } from "./team";
+// import { Challenge } from "./challenge";
 import { Nat } from "./nat";
 
 export interface Pod {
-    id: number;
-    name: string;
+    id: string;
     game_id: number;
-    game: Game;
+    // game: Game;
     user_id: number;
-    user: User;
+    // user: User;
     team_id: number;
-    team: Team;
+    // team: Team;
     challenge_id: string;
-    challenge: Challenge;
-    removed_at: number;
-    nats?: Array<Nat>;
+    // challenge: Challenge;
+    nats?: string;
+    ports?: Array<number>;
+
+    status?: string;
+    reason?: string;
+
+    renew?: number;
+    duration?: number;
+    started_at?: number;
 }
 
 export interface PodGetRequest {
-    id?: number;
+    id?: string;
     game_id?: number;
     user_id?: number;
     team_id?: number;
     challenge_id?: string;
-    is_available?: boolean;
-    page?: number;
-    size?: number;
 }
 
 export interface PodCreateRequest {
@@ -37,11 +40,11 @@ export interface PodCreateRequest {
 }
 
 export interface PodRemoveRequest {
-    id: number;
+    id: string;
 }
 
 export interface PodRenewRequest {
-    id: number;
+    id: string;
     team_id?: number;
     game_id?: number;
 }

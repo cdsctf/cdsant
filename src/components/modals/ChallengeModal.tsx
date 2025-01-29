@@ -14,7 +14,7 @@ import { useNotificationStore } from "@/stores/notification";
 import { createPod, getPods, renewPod, stopPod } from "@/api/pods";
 import { useAuthStore } from "@/stores/auth";
 import { Pod } from "@/models/pod";
-import { nanoid } from "@ant-design/pro-components";
+import { useInterval } from "ahooks";
 
 export interface ChallengeModalProps {
     open: boolean;
@@ -54,9 +54,29 @@ export default function ChallengeModal(props: ChallengeModalProps) {
             user_id: mode !== "game" ? authStore?.user?.id : undefined,
             game_id: mode === "game" ? Number(id) : undefined,
         }).then((res) => {
-            const p = res.data?.[0];
-            if (Number(p?.removed_at) * 1000 > Number(new Date())) {
+            if (res.code === 200) {
+                const p = res.data?.[0];
                 setPod(p);
+
+                if (p?.status !== "waiting") {
+                    setPodCreateLoading(false);
+                }
+
+                if (p?.status === "running") {
+                    notificationStore?.api?.destroy("pod");
+                }
+
+                if (
+                    p?.status === "waiting" &&
+                    p?.reason !== "ContainerCreating"
+                ) {
+                    notificationStore?.api?.info({
+                        key: "pod",
+                        message: "容器创建时发生错误，即将触发销毁",
+                        description: p?.reason,
+                    });
+                    setPodStopLoading(true);
+                }
             }
         });
     }
@@ -65,21 +85,29 @@ export default function ChallengeModal(props: ChallengeModalProps) {
         renewPod({
             id: pod?.id!,
         }).then((res) => {
-            setPod(res.data);
-            notificationStore?.api?.success({
-                message: "续期成功",
-            });
+            if (res.code === 200) {
+                notificationStore?.api?.success({
+                    message: "续期成功",
+                });
+            }
+
+            if (res.code === 400) {
+                notificationStore?.api?.error({
+                    message: "续期失败",
+                    description: res.msg,
+                });
+            }
         });
     }
 
     function handlePodStop() {
-        setPodStopLoading(true);
         stopPod({
             id: pod?.id!,
         })
             .then((_) => {
                 notificationStore?.api?.info({
-                    message: "已停止",
+                    key: "pod-stop",
+                    message: "已下发容器停止命令",
                 });
                 setPod(undefined);
             })
@@ -88,42 +116,47 @@ export default function ChallengeModal(props: ChallengeModalProps) {
             });
     }
 
+    useEffect(() => {
+        if (podStopLoading) {
+            handlePodStop();
+        }
+    }, [podStopLoading]);
+
     function handlePodCreate() {
-        const key = nanoid();
         setPodCreateLoading(true);
         notificationStore?.api?.info({
-            key: key,
-            message: "正在创建容器",
-            description: "这可能需要一些时间",
+            key: "pod",
+            message: "正在发送容器创建请求",
             duration: null,
         });
         createPod({
             challenge_id: challenge?.id,
             game_id: mode === "game" ? Number(id) : undefined,
-        })
-            .then((res) => {
-                switch (res.code) {
-                    case 200: {
-                        setPod(res.data);
-                        notificationStore?.api?.success({
-                            key: key,
-                            message: "创建成功",
-                        });
-                        break;
-                    }
-                    default: {
-                        notificationStore?.api?.error({
-                            key: key,
-                            message: "发生错误",
-                            description: res.msg,
-                        });
-                    }
+        }).then((res) => {
+            switch (res.code) {
+                case 200: {
+                    setPod(res.data);
+                    notificationStore?.api?.success({
+                        key: "pod",
+                        message: "已下发容器启动命令",
+                        description: "这可能需要一些时间",
+                        duration: null,
+                    });
+                    fetchPods();
+                    break;
                 }
-            })
-            .finally(() => {
-                setPodCreateLoading(false);
-            });
+                default: {
+                    notificationStore?.api?.error({
+                        key: "pod",
+                        message: "发生错误",
+                        description: res.msg,
+                    });
+                }
+            }
+        });
     }
+
+    useInterval(fetchPods, 1000);
 
     function handleFlagSubmit() {
         setSubmitLoading(true);
@@ -281,7 +314,10 @@ export default function ChallengeModal(props: ChallengeModalProps) {
                                     `}
                                 >
                                     {`容器将于 ${new Date(
-                                        Number(pod.removed_at) * 1000
+                                        (Number(pod.started_at) +
+                                            (Number(pod.renew) + 1) *
+                                                Number(pod.duration)) *
+                                            1000
                                     ).toLocaleString()} 时自动销毁`}
                                 </span>
                                 <Flex
@@ -298,17 +334,22 @@ export default function ChallengeModal(props: ChallengeModalProps) {
                                             flex: 1;
                                         `}
                                     >
-                                        {pod?.nats?.map((nat) => (
-                                            <Flex key={nat?.src}>
-                                                <Input
-                                                    addonBefore={nat?.src}
-                                                    value={nat?.entry}
-                                                    css={css`
-                                                        caret-color: transparent;
-                                                    `}
-                                                />
-                                            </Flex>
-                                        ))}
+                                        {pod?.nats
+                                            ?.split(",")
+                                            .map((pair) => pair.split("="))
+                                            .map(
+                                                ([src, dst]: Array<string>) => (
+                                                    <Flex key={src}>
+                                                        <Input
+                                                            addonBefore={src}
+                                                            value={dst}
+                                                            css={css`
+                                                                caret-color: transparent;
+                                                            `}
+                                                        />
+                                                    </Flex>
+                                                )
+                                            )}
                                     </Flex>
                                     <Flex
                                         align={"center"}
