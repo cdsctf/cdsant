@@ -98,12 +98,12 @@ export default createBrowserRouter([
                                         },
                                     },
                                     {
-                                        path: "flags",
+                                        path: "script",
                                         lazy: async () => {
                                             return {
                                                 Component: (
                                                     await import(
-                                                        "@/pages/settings/challenges/[id]/flags"
+                                                        "@/pages/settings/challenges/[id]/script"
                                                     )
                                                 ).default,
                                             };

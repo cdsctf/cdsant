@@ -1,4 +1,3 @@
-import { Flag } from "./flag";
 import { Env } from "./env";
 import { Submission } from "./submission";
 
@@ -12,7 +11,7 @@ export interface Challenge {
     is_public?: boolean;
     is_dynamic?: boolean;
     env?: Env;
-    flags?: Array<Flag>;
+    script?: string;
     updated_at?: number;
     created_at?: number;
 }
@@ -40,7 +39,7 @@ export interface ChallengeUpdateRequest {
     is_public?: boolean;
     is_dynamic?: boolean;
     env?: Env;
-    flags?: Array<Flag>;
+    script?: string;
 }
 
 export interface ChallengeCreateRequest {

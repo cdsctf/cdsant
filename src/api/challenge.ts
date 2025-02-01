@@ -47,6 +47,10 @@ export async function deleteChallenge(request: ChallengeDeleteRequest) {
     return alova.Delete<Response<never>>(`/challenges/${request.id}`);
 }
 
+export async function lintChallengeScript(id: string) {
+    return alova.Get<Response<never>>(`/challenges/${id}/lint`);
+}
+
 export async function getChallengeAttachmentMetadata(id: string) {
     return alova.Get<Response<Metadata>>(
         `/challenges/${id}/attachment/metadata`

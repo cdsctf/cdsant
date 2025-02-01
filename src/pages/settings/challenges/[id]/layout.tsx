@@ -102,13 +102,13 @@ export default function () {
                                     ),
                                 },
                                 {
-                                    key: "flags",
+                                    key: "script",
                                     icon: <FlagLinear />,
                                     label: (
                                         <Link
-                                            to={`/settings/challenges/${challenge?.id}/flags`}
+                                            to={`/settings/challenges/${challenge?.id}/script`}
                                         >
-                                            Flag
+                                            脚本
                                         </Link>
                                     ),
                                 },

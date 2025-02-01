@@ -382,7 +382,7 @@ export default function Navbar() {
                         : "#fff"};
                     box-shadow: ${token.boxShadowTertiary};
                     border-bottom: 1px solid rgba(5, 5, 5, 0.06);
-                    z-index: 2;
+                    z-index: 5;
                 `}
             >
                 <Flex
