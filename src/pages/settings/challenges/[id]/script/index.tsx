@@ -11,8 +11,8 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-rust";
 import "ace-builds/src-noconflict/theme-github_dark";
 import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/ext-language_tools";
 import { useThemeStore } from "@/stores/theme";
-import Ansi from "ansi-to-react";
 import { AnsiUp } from "ansi_up";
 
 export default function () {
@@ -87,9 +87,8 @@ export default function () {
                         showLineNumbers: true,
                         tabSize: 4,
                     }}
-                    style={{
-                        width: "100%",
-                    }}
+                    width={"100%"}
+                    height={"52vh"}
                 />
             </Form.Item>
             <div
