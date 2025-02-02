@@ -8,7 +8,7 @@ import {
     ProTable,
 } from "@ant-design/pro-components";
 import { css } from "@emotion/react";
-import { Button, Flex, Grid, Popconfirm, Switch, Tag } from "antd";
+import { Button, Flex, Grid, Modal, Popconfirm, Switch, Tag } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import TrashBinTrashOutline from "~icons/solar/trash-bin-trash-outline";
@@ -262,10 +262,21 @@ export default function () {
                     }}
                 />
             </div>
-            <GameCreateModal
+            <Modal
+                centered
+                footer={null}
+                closable={false}
+                width={screens.md ? "40vw" : "90vw"}
+                destroyOnClose
                 open={gameCreateModalOpen}
+                onCancel={() => setGameCreateModalOpen(false)}
                 onClose={() => setGameCreateModalOpen(false)}
-            />
+                title={"创建比赛"}
+            >
+                <GameCreateModal
+                    onClose={() => setGameCreateModalOpen(false)}
+                />
+            </Modal>
         </>
     );
 }

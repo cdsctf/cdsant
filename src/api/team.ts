@@ -5,6 +5,8 @@ import {
     TeamDeleteRequest,
     TeamDeleteUserRequest,
     TeamGetRequest,
+    TeamJoinRequest,
+    TeamRegiserRequest,
     TeamUpdateRequest,
 } from "@/models/team";
 import { alova } from "@/utils/alova";
@@ -19,6 +21,10 @@ export async function getTeams(request: TeamGetRequest) {
 
 export async function createTeam(request: TeamCreateRequest) {
     return alova.Post<Response<Team>>("/teams", request);
+}
+
+export async function registerTeam(request: TeamRegiserRequest) {
+    return alova.Post<Response<Team>>("/teams/register", request);
 }
 
 export async function deleteTeam(request: TeamDeleteRequest) {
@@ -51,6 +57,11 @@ export async function deleteUserTeam(request: TeamDeleteUserRequest) {
     );
 }
 
-export async function joinTeam() {}
+export async function joinTeam(request: TeamJoinRequest) {
+    return alova.Post<Response<never>>(
+        `/teams/${request.team_id}/join`,
+        request
+    );
+}
 
 export async function quitTeam() {}

@@ -94,32 +94,6 @@ export default function () {
                 return new Date(created_at * 1000).toLocaleString();
             },
         },
-        // {
-        //     title: "前三血",
-        //     dataIndex: "bloods",
-        //     key: "bloods",
-        //     width: "5%",
-        //     search: false,
-        //     renderText: (bloods: Array<Submission>) => {
-        //         return (
-        //             <Flex gap={12}>
-        //                 {bloods.map((blood, index) => (
-        //                     <Tag
-        //                         color={
-        //                             index === 0
-        //                                 ? "#FFC107"
-        //                                 : index === 1
-        //                                   ? "#9E9E9E"
-        //                                   : "#FF9800"
-        //                         }
-        //                     >
-        //                         {blood?.user?.username}
-        //                     </Tag>
-        //                 ))}
-        //             </Flex>
-        //         );
-        //     },
-        // },
         {
             title: "",
             key: "action",

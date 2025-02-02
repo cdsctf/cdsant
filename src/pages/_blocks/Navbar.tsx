@@ -378,10 +378,11 @@ export default function Navbar() {
                     position: sticky;
                     top: 0;
                     background-color: ${themeStore.darkMode
-                        ? "#001529"
-                        : "#fff"};
+                        ? "#0015297d"
+                        : "#ffffff7d"};
                     box-shadow: ${token.boxShadowTertiary};
                     border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+                    backdrop-filter: blur(10px);
                     z-index: 5;
                 `}
             >

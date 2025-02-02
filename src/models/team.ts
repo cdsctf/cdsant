@@ -16,6 +16,7 @@ export interface Team {
 export interface TeamGetRequest {
     id?: number;
     name?: string;
+    user_id?: number;
     page?: number;
     size?: number;
     sorts?: string;
@@ -27,12 +28,20 @@ export interface TeamUpdateRequest {
     slogan?: string;
     description?: string;
     email?: string;
+    password?: string;
 }
 
 export interface TeamCreateRequest {
     name?: string;
     slogan?: string;
     email?: string;
+    password?: string;
+}
+
+export interface TeamRegiserRequest {
+    name?: string;
+    email?: string;
+    password?: string;
 }
 
 export interface TeamDeleteRequest {
@@ -40,8 +49,9 @@ export interface TeamDeleteRequest {
 }
 
 export interface TeamJoinRequest {
-    id: number;
-    token: string;
+    user_id?: number;
+    team_id: number;
+    password: string;
 }
 
 export interface TeamQuitRequest {

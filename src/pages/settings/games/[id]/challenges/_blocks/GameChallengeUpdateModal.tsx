@@ -23,13 +23,12 @@ import { curve } from "@/utils/math";
 export interface GameChallengeCreateModalProps {
     gameChallenge?: GameChallenge;
     onClose: () => void;
-    open: boolean;
 }
 
 export default function GameChallengeCreateModal(
     props: GameChallengeCreateModalProps
 ) {
-    const { gameChallenge, onClose, open } = props;
+    const { gameChallenge, onClose } = props;
     const screens = Grid.useBreakpoint();
     const categoryStore = useCategoryStore();
     const sharedStore = useSharedStore();
@@ -95,134 +94,85 @@ export default function GameChallengeCreateModal(
     }
 
     useEffect(() => {
-        if (open) {
-            form.setFieldValue("difficulty", gameChallenge?.difficulty);
-            form.setFieldValue(
-                "first_blood_reward_ratio",
-                gameChallenge?.first_blood_reward_ratio
-            );
-            form.setFieldValue(
-                "second_blood_reward_ratio",
-                gameChallenge?.second_blood_reward_ratio
-            );
-            form.setFieldValue(
-                "third_blood_reward_ratio",
-                gameChallenge?.third_blood_reward_ratio
-            );
-            form.setFieldValue("min_pts", gameChallenge?.min_pts);
-            form.setFieldValue("max_pts", gameChallenge?.max_pts);
-        }
-    }, [gameChallenge, open]);
+        form.setFieldValue("difficulty", gameChallenge?.difficulty);
+        form.setFieldValue(
+            "first_blood_reward_ratio",
+            gameChallenge?.first_blood_reward_ratio
+        );
+        form.setFieldValue(
+            "second_blood_reward_ratio",
+            gameChallenge?.second_blood_reward_ratio
+        );
+        form.setFieldValue(
+            "third_blood_reward_ratio",
+            gameChallenge?.third_blood_reward_ratio
+        );
+        form.setFieldValue("min_pts", gameChallenge?.min_pts);
+        form.setFieldValue("max_pts", gameChallenge?.max_pts);
+    }, [gameChallenge]);
 
     return (
-        <Modal
-            centered
-            footer={null}
-            closable={false}
-            width={screens.lg ? "40vw" : "90vw"}
-            destroyOnClose
-            open={open}
-            onCancel={onClose}
-            onClose={onClose}
-            title={"更新比赛题目"}
+        <Flex
+            vertical
+            gap={16}
+            css={css`
+                padding: 1rem 0;
+            `}
         >
-            <Flex
-                vertical
-                gap={16}
+            <Button
+                size={"large"}
+                disabled
                 css={css`
-                    padding: 1rem 0;
+                    height: 4rem;
                 `}
             >
-                <Button
-                    size={"large"}
-                    disabled
-                    css={css`
-                        height: 4rem;
-                    `}
-                >
-                    <Flex gap={8} align={"center"}>
-                        <Flex
-                            align={"center"}
-                            css={css`
-                                color: ${categoryStore?.getCategory(
-                                    gameChallenge?.challenge?.category
-                                )?.color};
-                            `}
-                        >
-                            {
-                                categoryStore?.getCategory(
-                                    gameChallenge?.challenge?.category
-                                )?.icon
-                            }
-                        </Flex>
-                        <span>{gameChallenge?.challenge?.title}</span>
-                        <span
-                            css={css`
-                                color: ${token.colorTextSecondary};
-                            `}
-                        >{`<${gameChallenge?.challenge?.id}>`}</span>
+                <Flex gap={8} align={"center"}>
+                    <Flex
+                        align={"center"}
+                        css={css`
+                            color: ${categoryStore?.getCategory(
+                                gameChallenge?.challenge?.category
+                            )?.color};
+                        `}
+                    >
+                        {
+                            categoryStore?.getCategory(
+                                gameChallenge?.challenge?.category
+                            )?.icon
+                        }
                     </Flex>
-                </Button>
-                <Form
-                    form={form}
-                    layout={"vertical"}
-                    onFinish={() => handleUpdateGameChallenge()}
-                    css={css`
-                        width: 100%;
-                    `}
-                >
-                    <Flex vertical>
-                        <Flex
-                            gap={16}
-                            css={css`
-                                width: 100%;
-                            `}
-                        >
-                            <Space.Compact
-                                size={"large"}
-                                css={css`
-                                    width: 100%;
-                                `}
-                            >
-                                <Form.Item
-                                    name={"min_pts"}
-                                    label={"最小分值"}
-                                    css={css`
-                                        width: 100%;
-                                    `}
-                                >
-                                    <InputNumber
-                                        css={css`
-                                            width: 100%;
-                                        `}
-                                    />
-                                </Form.Item>
-                                <Form.Item
-                                    name={"max_pts"}
-                                    label={"最大分值"}
-                                    css={css`
-                                        width: 100%;
-                                    `}
-                                >
-                                    <InputNumber
-                                        css={css`
-                                            width: 100%;
-                                        `}
-                                    />
-                                </Form.Item>
-                            </Space.Compact>
-                            <Form.Item name={"difficulty"} label={"难度"}>
-                                <InputNumber size={"large"} />
-                            </Form.Item>
-                        </Flex>
+                    <span>{gameChallenge?.challenge?.title}</span>
+                    <span
+                        css={css`
+                            color: ${token.colorTextSecondary};
+                        `}
+                    >{`<${gameChallenge?.challenge?.id}>`}</span>
+                </Flex>
+            </Button>
+            <Form
+                form={form}
+                layout={"vertical"}
+                onFinish={() => handleUpdateGameChallenge()}
+                css={css`
+                    width: 100%;
+                `}
+            >
+                <Flex vertical>
+                    <Flex
+                        gap={16}
+                        css={css`
+                            width: 100%;
+                        `}
+                    >
                         <Space.Compact
+                            size={"large"}
                             css={css`
                                 width: 100%;
                             `}
                         >
                             <Form.Item
-                                name={"first_blood_reward_ratio"}
-                                label={"一血奖励（%）"}
+                                name={"min_pts"}
+                                label={"最小分值"}
                                 css={css`
                                     width: 100%;
                                 `}
@@ -234,21 +184,8 @@ export default function GameChallengeCreateModal(
                                 />
                             </Form.Item>
                             <Form.Item
-                                name={"second_blood_reward_ratio"}
-                                label={"二血奖励（%）"}
-                                css={css`
-                                    width: 100%;
-                                `}
-                            >
-                                <InputNumber
-                                    css={css`
-                                        width: 100%;
-                                    `}
-                                />
-                            </Form.Item>
-                            <Form.Item
-                                name={"third_blood_reward_ratio"}
-                                label={"三血奖励（%）"}
+                                name={"max_pts"}
+                                label={"最大分值"}
                                 css={css`
                                     width: 100%;
                                 `}
@@ -260,46 +197,93 @@ export default function GameChallengeCreateModal(
                                 />
                             </Form.Item>
                         </Space.Compact>
+                        <Form.Item name={"difficulty"} label={"难度"}>
+                            <InputNumber size={"large"} />
+                        </Form.Item>
                     </Flex>
-                    <Flex justify={"center"}>
-                        <ReactECharts
-                            option={{
-                                xAxis: {
-                                    type: "category",
-                                    data: [
-                                        0, 10, 20, 30, 40, 50, 60, 70, 80, 90,
-                                        100,
-                                    ],
-                                },
-                                yAxis: {
-                                    type: "value",
-                                },
-                                series: series,
-                            }}
-                            style={{
-                                height: "300px",
-                                width: "580px",
-                            }}
-                        />
-                    </Flex>
-                    <Flex
+                    <Space.Compact
                         css={css`
-                            display: flex;
-                            justify-content: flex-end;
+                            width: 100%;
                         `}
                     >
-                        <Button
-                            size={"large"}
-                            type={"primary"}
-                            loading={loading}
-                            htmlType={"submit"}
-                            icon={<CheckCircleLinear />}
+                        <Form.Item
+                            name={"first_blood_reward_ratio"}
+                            label={"一血奖励（%）"}
+                            css={css`
+                                width: 100%;
+                            `}
                         >
-                            确定
-                        </Button>
-                    </Flex>
-                </Form>
-            </Flex>
-        </Modal>
+                            <InputNumber
+                                css={css`
+                                    width: 100%;
+                                `}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            name={"second_blood_reward_ratio"}
+                            label={"二血奖励（%）"}
+                            css={css`
+                                width: 100%;
+                            `}
+                        >
+                            <InputNumber
+                                css={css`
+                                    width: 100%;
+                                `}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            name={"third_blood_reward_ratio"}
+                            label={"三血奖励（%）"}
+                            css={css`
+                                width: 100%;
+                            `}
+                        >
+                            <InputNumber
+                                css={css`
+                                    width: 100%;
+                                `}
+                            />
+                        </Form.Item>
+                    </Space.Compact>
+                </Flex>
+                <Flex justify={"center"}>
+                    <ReactECharts
+                        option={{
+                            xAxis: {
+                                type: "category",
+                                data: [
+                                    0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+                                ],
+                            },
+                            yAxis: {
+                                type: "value",
+                            },
+                            series: series,
+                        }}
+                        style={{
+                            height: "300px",
+                            width: "580px",
+                        }}
+                    />
+                </Flex>
+                <Flex
+                    css={css`
+                        display: flex;
+                        justify-content: flex-end;
+                    `}
+                >
+                    <Button
+                        size={"large"}
+                        type={"primary"}
+                        loading={loading}
+                        htmlType={"submit"}
+                        icon={<CheckCircleLinear />}
+                    >
+                        确定
+                    </Button>
+                </Flex>
+            </Form>
+        </Flex>
     );
 }

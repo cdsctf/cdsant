@@ -14,7 +14,7 @@ import {
     ProTable,
 } from "@ant-design/pro-components";
 import { css } from "@emotion/react";
-import { Button, Flex, Grid, Popconfirm, Switch } from "antd";
+import { Button, Flex, Grid, Modal, Popconfirm, Switch } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import TrashBinTrashOutline from "~icons/solar/trash-bin-trash-outline";
@@ -265,10 +265,21 @@ export default function () {
                     }}
                 />
             </div>
-            <ChallengeCreateModal
+            <Modal
+                centered
+                footer={null}
+                closable={false}
+                width={screens.md ? "40vw" : "90vw"}
+                destroyOnClose
                 open={challengeCreateModalOpen}
+                onCancel={() => setChallengeCreateModalOpen(false)}
                 onClose={() => setChallengeCreateModalOpen(false)}
-            />
+                title={"创建题目"}
+            >
+                <ChallengeCreateModal
+                    onClose={() => setChallengeCreateModalOpen(false)}
+                />
+            </Modal>
         </>
     );
 }

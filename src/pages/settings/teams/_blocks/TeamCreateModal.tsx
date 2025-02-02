@@ -23,6 +23,7 @@ export default function TeamCreateModal(props: TeamCreateModalProps) {
         name: string;
         email: string;
         slogan: string;
+        password: string;
     }>();
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -33,6 +34,7 @@ export default function TeamCreateModal(props: TeamCreateModalProps) {
             name: form.getFieldValue("name"),
             email: form.getFieldValue("email"),
             slogan: form.getFieldValue("slogan"),
+            password: form.getFieldValue("password"),
         })
             .then((res) => {
                 if (res.code === 200) {
@@ -124,6 +126,19 @@ export default function TeamCreateModal(props: TeamCreateModalProps) {
                         <Input prefix={<MailBoxLinear />} size={"large"} />
                     </Form.Item>
                 </Space.Compact>
+
+                <Form.Item
+                    name={"password"}
+                    label={"预设密码"}
+                    rules={[
+                        {
+                            required: true,
+                            message: "请输入预设密码",
+                        },
+                    ]}
+                >
+                    <Input size={"large"} />
+                </Form.Item>
 
                 <Form.Item
                     name={"slogan"}

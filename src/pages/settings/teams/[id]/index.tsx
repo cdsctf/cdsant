@@ -1,14 +1,4 @@
-import {
-    Button,
-    Flex,
-    Form,
-    Input,
-    Image,
-    Space,
-    Upload,
-    theme,
-    Select,
-} from "antd";
+import { Button, Flex, Form, Input, Image, Space, Upload, theme } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "./context";
 import CheckCircleLinear from "~icons/solar/check-circle-linear";
@@ -21,7 +11,6 @@ import MailBoxLinear from "~icons/solar/mailbox-linear";
 import LockPasswordOutline from "~icons/solar/lock-password-outline";
 import { Metadata } from "@/models/media";
 import TrashBinTrashLinear from "~icons/solar/trash-bin-trash-linear";
-import { Group } from "@/models/user";
 import {
     deleteTeamAvatar,
     getTeamAvatarMetadata,
@@ -41,6 +30,7 @@ export default function () {
     const [form] = Form.useForm<{
         name: string;
         email: string;
+        password: string;
         slogan: string;
         description: string;
     }>();
@@ -59,6 +49,7 @@ export default function () {
             id: team?.id!,
             name: form.getFieldValue("name"),
             email: form.getFieldValue("email"),
+            password: form.getFieldValue("password"),
             slogan: form.getFieldValue("slogan"),
             description: form.getFieldValue("description"),
         }).then((res) => {
@@ -256,6 +247,10 @@ export default function () {
 
             <Form.Item name={"description"} label={"简介（支持 Markdown）"}>
                 <Input.TextArea rows={8} />
+            </Form.Item>
+
+            <Form.Item name={"password"} label={"密码（若需修改）"}>
+                <Input size={"large"} prefix={<LockPasswordOutline />} />
             </Form.Item>
 
             <Form.Item>

@@ -4,7 +4,7 @@ import CheckCircleLinear from "~icons/solar/check-circle-linear";
 import { useCategoryStore } from "@/stores/category";
 import { css } from "@emotion/react";
 import { Button, Flex, Grid, Modal, theme } from "antd";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Context } from "../../context";
 import { useNotificationStore } from "@/stores/notification";
 import ChallengeSelectModal from "./ChallengeSelectModal";
@@ -12,18 +12,17 @@ import { useSharedStore } from "@/stores/shared";
 
 export interface GameChallengeCreateModalProps {
     onClose: () => void;
-    open: boolean;
 }
 
 export default function GameChallengeCreateModal(
     props: GameChallengeCreateModalProps
 ) {
-    const { onClose, open } = props;
-    const screens = Grid.useBreakpoint();
+    const { onClose } = props;
     const categoryStore = useCategoryStore();
     const sharedStore = useSharedStore();
     const notificationStore = useNotificationStore();
     const { token } = theme.useToken();
+    const screens = Grid.useBreakpoint();
     const { game } = useContext(Context);
 
     const [challengeSelectModalOpen, setChallengeSelectModalOpen] =
@@ -53,24 +52,8 @@ export default function GameChallengeCreateModal(
             });
     }
 
-    useEffect(() => {
-        if (open) {
-            setSelectedChallenge(undefined);
-        }
-    }, [open]);
-
     return (
-        <Modal
-            centered
-            footer={null}
-            closable={false}
-            width={screens.md ? "40vw" : "90vw"}
-            destroyOnClose
-            open={open}
-            onCancel={onClose}
-            onClose={onClose}
-            title={"添加比赛题目"}
-        >
+        <>
             <Flex
                 vertical
                 gap={16}
@@ -129,11 +112,22 @@ export default function GameChallengeCreateModal(
                     </Button>
                 </Flex>
             </Flex>
-            <ChallengeSelectModal
+            <Modal
+                centered
+                footer={null}
+                closable={false}
+                width={screens.md ? "50vw" : "80vw"}
+                destroyOnClose
                 open={challengeSelectModalOpen}
+                onCancel={() => setChallengeSelectModalOpen(false)}
                 onClose={() => setChallengeSelectModalOpen(false)}
-                onConfirm={(challenge) => setSelectedChallenge(challenge)}
-            />
-        </Modal>
+                title={"选择题目"}
+            >
+                <ChallengeSelectModal
+                    onClose={() => setChallengeSelectModalOpen(false)}
+                    onConfirm={(challenge) => setSelectedChallenge(challenge)}
+                />
+            </Modal>
+        </>
     );
 }

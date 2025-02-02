@@ -2,17 +2,16 @@ import { createGame } from "@/api/game";
 import { useNotificationStore } from "@/stores/notification";
 import { useSharedStore } from "@/stores/shared";
 import { css } from "@emotion/react";
-import { Modal, Grid, Form, Input, Button, Space, DatePicker } from "antd";
+import { Grid, Form, Input, Button, Space, DatePicker } from "antd";
 import { useState } from "react";
 import CheckCircleLinear from "~icons/solar/check-circle-linear";
 
 export interface GameCreateModalProps {
-    open: boolean;
     onClose: () => void;
 }
 
 export default function GameCreateModal(props: GameCreateModalProps) {
-    const { open, onClose } = props;
+    const { onClose } = props;
 
     const sharedStore = useSharedStore();
     const notificationStore = useNotificationStore();
@@ -67,111 +66,99 @@ export default function GameCreateModal(props: GameCreateModalProps) {
     }
 
     return (
-        <Modal
-            centered
-            footer={null}
-            closable={false}
-            width={screens.md ? "40vw" : "90vw"}
-            destroyOnClose
-            open={open}
-            onCancel={onClose}
-            onClose={onClose}
-            title={"创建比赛"}
+        <Form
+            form={form}
+            layout={"vertical"}
+            onFinish={() => handleChallengeCreate()}
         >
-            <Form
-                form={form}
-                layout={"vertical"}
-                onFinish={() => handleChallengeCreate()}
+            <Form.Item
+                name={"title"}
+                label={"标题"}
+                rules={[
+                    {
+                        required: true,
+                        message: "请输入标题",
+                    },
+                ]}
+            >
+                <Input size={"large"} />
+            </Form.Item>
+            <Form.Item
+                name={"sketch"}
+                label={"简述"}
+                rules={[
+                    {
+                        required: true,
+                        message: "请输入简述",
+                    },
+                ]}
+            >
+                <Input.TextArea rows={4} />
+            </Form.Item>
+
+            <Space.Compact
+                css={css`
+                    width: 100%;
+                `}
             >
                 <Form.Item
-                    name={"title"}
-                    label={"标题"}
+                    name={"started_at"}
+                    label={"开始于"}
                     rules={[
                         {
                             required: true,
-                            message: "请输入标题",
+                            message: "请输入开始时间",
                         },
                     ]}
-                >
-                    <Input size={"large"} />
-                </Form.Item>
-                <Form.Item
-                    name={"sketch"}
-                    label={"简述"}
-                    rules={[
-                        {
-                            required: true,
-                            message: "请输入简述",
-                        },
-                    ]}
-                >
-                    <Input.TextArea rows={4} />
-                </Form.Item>
-
-                <Space.Compact
                     css={css`
                         width: 100%;
                     `}
                 >
-                    <Form.Item
-                        name={"started_at"}
-                        label={"开始于"}
-                        rules={[
-                            {
-                                required: true,
-                                message: "请输入开始时间",
-                            },
-                        ]}
+                    <DatePicker
+                        showTime
                         css={css`
                             width: 100%;
                         `}
-                    >
-                        <DatePicker
-                            showTime
-                            css={css`
-                                width: 100%;
-                            `}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        name={"ended_at"}
-                        label={"结束于"}
-                        rules={[
-                            {
-                                required: true,
-                                message: "请输入结束时间",
-                            },
-                        ]}
-                        css={css`
-                            width: 100%;
-                        `}
-                    >
-                        <DatePicker
-                            showTime
-                            css={css`
-                                width: 100%;
-                            `}
-                        />
-                    </Form.Item>
-                </Space.Compact>
-
+                    />
+                </Form.Item>
                 <Form.Item
+                    name={"ended_at"}
+                    label={"结束于"}
+                    rules={[
+                        {
+                            required: true,
+                            message: "请输入结束时间",
+                        },
+                    ]}
                     css={css`
-                        display: flex;
-                        justify-content: flex-end;
+                        width: 100%;
                     `}
                 >
-                    <Button
-                        size={"large"}
-                        type={"primary"}
-                        loading={loading}
-                        htmlType={"submit"}
-                        icon={<CheckCircleLinear />}
-                    >
-                        确定
-                    </Button>
+                    <DatePicker
+                        showTime
+                        css={css`
+                            width: 100%;
+                        `}
+                    />
                 </Form.Item>
-            </Form>
-        </Modal>
+            </Space.Compact>
+
+            <Form.Item
+                css={css`
+                    display: flex;
+                    justify-content: flex-end;
+                `}
+            >
+                <Button
+                    size={"large"}
+                    type={"primary"}
+                    loading={loading}
+                    htmlType={"submit"}
+                    icon={<CheckCircleLinear />}
+                >
+                    确定
+                </Button>
+            </Form.Item>
+        </Form>
     );
 }

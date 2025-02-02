@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "../context";
-import { Button, Flex, Popconfirm, Switch } from "antd";
+import { Button, Flex, Grid, Modal, Popconfirm, Switch } from "antd";
 import {
     ActionType,
     nanoid,
@@ -27,6 +27,7 @@ export default function () {
     const { game } = useContext(Context);
     const notificationStore = useNotificationStore();
     const sharedStore = useSharedStore();
+    const screens = Grid.useBreakpoint();
     const categoryStore = useCategoryStore();
 
     const [gameChallengeCreateModalOpen, setGameChallengeCreateModalOpen] =
@@ -218,15 +219,38 @@ export default function () {
                     };
                 }}
             />
-            <GameChallengeCreateModal
+
+            <Modal
+                centered
+                footer={null}
+                closable={false}
+                width={screens.md ? "40vw" : "90vw"}
+                destroyOnClose
                 open={gameChallengeCreateModalOpen}
+                onCancel={() => setGameChallengeCreateModalOpen(false)}
                 onClose={() => setGameChallengeCreateModalOpen(false)}
-            />
-            <GameChallengeUpdateModal
-                gameChallenge={selectedGameChallenge}
+                title={"添加比赛题目"}
+            >
+                <GameChallengeCreateModal
+                    onClose={() => setGameChallengeCreateModalOpen(false)}
+                />
+            </Modal>
+            <Modal
+                centered
+                footer={null}
+                closable={false}
+                width={screens.lg ? "40vw" : "90vw"}
+                destroyOnClose
                 open={gameChallengeUpdateModalOpen}
+                onCancel={() => setGameChallengeUpdateModalOpen(false)}
                 onClose={() => setGameChallengeUpdateModalOpen(false)}
-            />
+                title={"更新比赛题目"}
+            >
+                <GameChallengeUpdateModal
+                    gameChallenge={selectedGameChallenge}
+                    onClose={() => setGameChallengeUpdateModalOpen(false)}
+                />
+            </Modal>
         </div>
     );
 }
