@@ -27,6 +27,7 @@ export function GamePoster(props: GamePosterProps) {
                 css={css`
                     width: 100%;
                     height: 100%;
+                    aspect-ratio: 16/9;
                     background-color: ${token.colorBgContainerDisabled};
                     display: flex;
                     justify-content: center;
@@ -53,6 +54,9 @@ export function GamePoster(props: GamePosterProps) {
             onError={() => setErr(true)}
             height={"100%"}
             {...rest}
+            css={css`
+                aspect-ratio: 16/9;
+            `}
         />
     );
 }

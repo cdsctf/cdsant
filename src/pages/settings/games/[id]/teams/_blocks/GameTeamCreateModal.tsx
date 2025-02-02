@@ -2,7 +2,7 @@ import { createGameTeam } from "@/api/game";
 import CheckCircleLinear from "~icons/solar/check-circle-linear";
 import { css } from "@emotion/react";
 import { Avatar, Button, Flex, Grid, Modal, theme } from "antd";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Context } from "../../context";
 import { useNotificationStore } from "@/stores/notification";
 import TeamSelectModal from "./TeamSelectModal";
@@ -11,11 +11,10 @@ import { Team } from "@/models/team";
 
 export interface GameTeamCreateModalProps {
     onClose: () => void;
-    open: boolean;
 }
 
 export default function GameTeamCreateModal(props: GameTeamCreateModalProps) {
-    const { onClose, open } = props;
+    const { onClose } = props;
     const screens = Grid.useBreakpoint();
     const sharedStore = useSharedStore();
     const notificationStore = useNotificationStore();
@@ -48,24 +47,8 @@ export default function GameTeamCreateModal(props: GameTeamCreateModalProps) {
             });
     }
 
-    useEffect(() => {
-        if (open) {
-            setSelectedTeam(undefined);
-        }
-    }, [open]);
-
     return (
-        <Modal
-            centered
-            footer={null}
-            closable={false}
-            width={screens.md ? "40vw" : "90vw"}
-            destroyOnClose
-            open={open}
-            onCancel={onClose}
-            onClose={onClose}
-            title={"添加比赛团队"}
-        >
+        <>
             <Flex
                 vertical
                 gap={16}
@@ -113,11 +96,22 @@ export default function GameTeamCreateModal(props: GameTeamCreateModalProps) {
                     </Button>
                 </Flex>
             </Flex>
-            <TeamSelectModal
+            <Modal
+                centered
+                footer={null}
+                closable={false}
+                width={screens.md ? "30vw" : "80vw"}
+                destroyOnClose
                 open={teamSelectModalOpen}
+                onCancel={() => setTeamSelectModalOpen(false)}
                 onClose={() => setTeamSelectModalOpen(false)}
-                onConfirm={(team) => setSelectedTeam(team)}
-            />
-        </Modal>
+                title={"选择团队"}
+            >
+                <TeamSelectModal
+                    onClose={() => setTeamSelectModalOpen(false)}
+                    onConfirm={(team) => setSelectedTeam(team)}
+                />
+            </Modal>
+        </>
     );
 }

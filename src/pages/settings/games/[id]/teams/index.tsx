@@ -1,6 +1,15 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "../context";
-import { Alert, Avatar, Button, Flex, Popconfirm, Switch } from "antd";
+import {
+    Alert,
+    Avatar,
+    Button,
+    Flex,
+    Grid,
+    Modal,
+    Popconfirm,
+    Switch,
+} from "antd";
 import {
     ActionType,
     nanoid,
@@ -18,6 +27,7 @@ import GameTeamCreateModal from "./_blocks/GameTeamCreateModal";
 
 export default function () {
     const { game } = useContext(Context);
+    const screens = Grid.useBreakpoint();
     const notificationStore = useNotificationStore();
     const sharedStore = useSharedStore();
 
@@ -192,10 +202,21 @@ export default function () {
                     };
                 }}
             />
-            <GameTeamCreateModal
+            <Modal
+                centered
+                footer={null}
+                closable={false}
+                width={screens.md ? "40vw" : "90vw"}
+                destroyOnClose
                 open={gameTeamCreateModalOpen}
+                onCancel={() => setGameTeamCreateModalOpen(false)}
                 onClose={() => setGameTeamCreateModalOpen(false)}
-            />
+                title={"添加比赛团队"}
+            >
+                <GameTeamCreateModal
+                    onClose={() => setGameTeamCreateModalOpen(false)}
+                />
+            </Modal>
         </div>
     );
 }

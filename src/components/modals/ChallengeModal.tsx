@@ -2,35 +2,40 @@ import { Challenge, ChallengeStatus } from "@/models/challenge";
 import { useCategoryStore } from "@/stores/category";
 import { useSharedStore } from "@/stores/shared";
 import { css } from "@emotion/react";
-import { Flex, Modal, Grid, Divider, Space, Input, Button, theme } from "antd";
+import { Flex, Divider, Space, Input, Button, theme } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { MarkdownRender } from "../utils/MarkdownRender";
 import DownloadMinimalisticOutline from "~icons/solar/download-minimalistic-outline";
 import FlagLinear from "~icons/solar/flag-linear";
 import { getSubmissionById, postSubmission } from "@/api/submission";
-import useMode from "@/hooks/useMode";
-import { useParams } from "react-router";
 import { useNotificationStore } from "@/stores/notification";
 import { createPod, getPods, renewPod, stopPod } from "@/api/pods";
 import { useAuthStore } from "@/stores/auth";
 import { Pod } from "@/models/pod";
 import { useInterval } from "ahooks";
+import { GameTeam } from "@/models/game_team";
 
 export interface ChallengeModalProps {
     challenge?: Challenge;
     status?: ChallengeStatus;
+    gameTeam?: GameTeam;
 }
 
 export default function ChallengeModal(props: ChallengeModalProps) {
-    const { challenge } = props;
+    const { challenge, gameTeam } = props;
     const { token } = theme.useToken();
 
     const sharedStore = useSharedStore();
     const categoryStore = useCategoryStore();
     const authStore = useAuthStore();
     const notificationStore = useNotificationStore();
-    const mode = useMode();
-    const { id } = useParams();
+    const mode = useMemo(() => {
+        if (!!gameTeam) {
+            return "game";
+        }
+
+        return "default";
+    }, [gameTeam]);
 
     const category = useMemo(
         () => categoryStore.getCategory(challenge?.category),
@@ -49,7 +54,8 @@ export default function ChallengeModal(props: ChallengeModalProps) {
         getPods({
             challenge_id: challenge?.id,
             user_id: mode !== "game" ? authStore?.user?.id : undefined,
-            game_id: mode === "game" ? Number(id) : undefined,
+            game_id: mode === "game" ? Number(gameTeam?.game_id) : undefined,
+            team_id: mode === "game" ? Number(gameTeam?.team_id) : undefined,
         }).then((res) => {
             if (res.code === 200) {
                 const p = res.data?.[0];
@@ -128,7 +134,8 @@ export default function ChallengeModal(props: ChallengeModalProps) {
         });
         createPod({
             challenge_id: challenge?.id,
-            game_id: mode === "game" ? Number(id) : undefined,
+            game_id: mode === "game" ? Number(gameTeam?.game_id) : undefined,
+            team_id: mode === "game" ? Number(gameTeam?.team_id) : undefined,
         }).then((res) => {
             switch (res.code) {
                 case 200: {
@@ -160,16 +167,27 @@ export default function ChallengeModal(props: ChallengeModalProps) {
         postSubmission({
             challenge_id: challenge?.id,
             flag: flag,
-            game_id: mode === "game" ? Number(id) : undefined,
+            game_id: mode === "game" ? Number(gameTeam?.game_id) : undefined,
+            team_id: mode === "game" ? Number(gameTeam?.team_id) : undefined,
         }).then((res) => {
-            setSubmissionId(res?.data?.id);
-            setFlag("");
-            notificationStore?.api?.info({
-                key: `submission-${res?.data?.id}`,
-                message: "已提交",
-                description: "请等待审核，这不会太久",
-                duration: null,
-            });
+            if (res.code === 200) {
+                setSubmissionId(res?.data?.id);
+                setFlag("");
+                notificationStore?.api?.info({
+                    key: `submission-${res?.data?.id}`,
+                    message: "已提交",
+                    description: "请等待审核，这不会太久",
+                    duration: null,
+                });
+            }
+
+            if (res.code === 500) {
+                notificationStore?.api?.error({
+                    message: "发生了错误",
+                    description: res.msg,
+                });
+                setSubmitLoading(false);
+            }
         });
     }
 

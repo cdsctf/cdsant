@@ -16,6 +16,7 @@ export interface GameTeam {
 export interface GameTeamGetRequest {
     game_id?: number;
     team_id?: number;
+    user_id?: number;
 }
 
 export interface GameTeamCreateRequest {

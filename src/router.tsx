@@ -39,10 +39,35 @@ export default createBrowserRouter([
                         path: ":id",
                         lazy: async () => {
                             return {
-                                Component: (await import("@/pages/games/[id]"))
-                                    .default,
+                                Component: (
+                                    await import("@/pages/games/[id]/layout")
+                                ).default,
                             };
                         },
+                        children: [
+                            {
+                                index: true,
+                                lazy: async () => {
+                                    return {
+                                        Component: (
+                                            await import("@/pages/games/[id]")
+                                        ).default,
+                                    };
+                                },
+                            },
+                            {
+                                path: "challenges",
+                                lazy: async () => {
+                                    return {
+                                        Component: (
+                                            await import(
+                                                "@/pages/games/[id]/challenges"
+                                            )
+                                        ).default,
+                                    };
+                                },
+                            },
+                        ],
                     },
                 ],
             },
