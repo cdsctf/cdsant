@@ -23,10 +23,11 @@ export interface GetChallengeRequest {
     category?: number;
     is_public?: boolean;
     is_dynamic?: boolean;
-    is_detailed?: boolean;
     page?: number;
     size?: number;
     sorts?: string;
+
+    is_desensitized?: boolean;
 }
 
 export interface UpdateChallengeRequest {

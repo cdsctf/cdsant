@@ -406,16 +406,15 @@ export default function Navbar() {
                     `}
                 >
                     {mode !== "default" && (
-                        <Tooltip title={"返回"}>
+                        <Tooltip title={"退出"}>
                             <Button
                                 onClick={() =>
                                     navigate(mode === "game" ? "/games" : "/")
                                 }
-                                shape={"circle"}
-                                type={"text"}
-                            >
-                                <RoundArrowLeftLinear />
-                            </Button>
+                                variant={"text"}
+                                color={"blue"}
+                                icon={<RoundArrowLeftLinear />}
+                            />
                         </Tooltip>
                     )}
                     <Button

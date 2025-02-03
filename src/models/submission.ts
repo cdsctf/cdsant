@@ -50,6 +50,8 @@ export interface GetSubmissionRequest {
     game_id?: number;
     size?: number;
     page?: number;
+
+    is_desensitized?: boolean;
 }
 
 export interface DeleteSubmissionRequest {

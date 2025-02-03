@@ -7,7 +7,7 @@ import {
     ProTable,
 } from "@ant-design/pro-components";
 import { css } from "@emotion/react";
-import { Button, Flex, Grid, Avatar, Popconfirm, Tooltip, Modal } from "antd";
+import { Button, Flex, Grid, Avatar, Tooltip, Modal } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import PenNewSquareLinear from "~icons/solar/pen-new-square-linear";
@@ -40,15 +40,6 @@ export default function () {
 
     const columns: Array<ProColumnType<Team>> = [
         {
-            title: "ID",
-            dataIndex: "id",
-            key: "id",
-            width: "5%",
-            ellipsis: {
-                showTitle: false,
-            },
-        },
-        {
             title: "头像",
             key: "avatar",
             width: "5%",
@@ -62,7 +53,7 @@ export default function () {
             title: "团队名",
             dataIndex: "name",
             key: "name",
-            width: "10%",
+            width: "20%",
             ellipsis: {
                 showTitle: false,
             },
@@ -71,7 +62,7 @@ export default function () {
             title: "标语",
             dataIndex: "slogan",
             key: "slogan",
-            width: "10%",
+            width: "30%",
             search: false,
             ellipsis: {
                 showTitle: false,

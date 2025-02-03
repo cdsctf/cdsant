@@ -2,7 +2,7 @@ import { Button, Flex, Form, theme } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../context";
 import CheckCircleLinear from "~icons/solar/check-circle-linear";
-import { lintChallengeScript, updateChallenge } from "@/api/challenge";
+import { updateChallengeChecker } from "@/api/challenge";
 import { useNotificationStore } from "@/stores/notification";
 import { useSharedStore } from "@/stores/shared";
 import { useKeyPress } from "ahooks";
@@ -32,25 +32,19 @@ export default function () {
     const [lint, setLint] = useState<string>();
 
     function handleChallengeUpdate() {
-        updateChallenge({
+        updateChallengeChecker({
             id: challenge?.id,
             checker: form.getFieldValue("checker"),
         }).then((res) => {
             if (res.code === 200) {
                 notificationStore?.api?.success({
+                    key: "challenge-checker-update",
                     message: "更新成功",
-                    description: `题目 ${res?.data?.title} 脚本信息已更新`,
+                    description: `题目 ${challenge?.title} 脚本信息已更新`,
                 });
                 sharedStore.setRefresh();
-                handleLintChallengeScript();
+                setLint(res?.msg);
             }
-        });
-    }
-
-    function handleLintChallengeScript() {
-        lintChallengeScript(challenge?.id!).then((res) => {
-            setLint(res?.msg);
-            console.log(res?.msg);
         });
     }
 

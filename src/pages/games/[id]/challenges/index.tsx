@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "../context";
 import { useNavigate, useParams } from "react-router";
-import { Avatar, Button, Flex, Grid, Layout, Modal, theme } from "antd";
+import { Avatar, Button, Flex, Grid, Layout, List, Modal, theme } from "antd";
 import StarsMinimalisticLinear from "~icons/solar/stars-minimalistic-linear";
 import CupStarLinear from "~icons/solar/cup-star-linear";
 import { css } from "@emotion/react";
@@ -14,10 +14,11 @@ import { Challenge, ChallengeStatus } from "@/models/challenge";
 import { useCategoryStore } from "@/stores/category";
 import PlayCircleLinear from "~icons/solar/play-circle-linear";
 import { nanoid } from "nanoid";
-import { getGameChallenges } from "@/api/game";
+import { getGameChallenges, getGameNotice } from "@/api/game";
 import { getChallengeStatus } from "@/api/challenge";
 import ChallengeModal from "@/components/modals/ChallengeModal";
 import { useSharedStore } from "@/stores/shared";
+import { GameNotice } from "@/models/game_notice";
 
 const { Content, Sider } = Layout;
 
@@ -49,6 +50,20 @@ export default function () {
             }
         }
     }, [selfGameTeam, gtLoaded]);
+
+    const [gameNotices, setGameNotices] = useState<Array<GameNotice>>();
+
+    function fetchGameNotice() {
+        getGameNotice({
+            game_id: Number(id),
+        }).then((res) => {
+            setGameNotices(res.data);
+        });
+    }
+
+    useEffect(() => {
+        fetchGameNotice();
+    }, []);
 
     const columns: Array<ProColumnType<ChallengeWithStatus>> = [
         {
@@ -210,63 +225,110 @@ export default function () {
                     `}
                 >
                     <Flex
+                        vertical
                         gap={20}
                         css={css`
-                            margin: 2rem 2rem;
+                            height: calc(100vh - 64px);
                             padding: 2rem;
-                            background-color: ${token.colorBgContainer};
-                            border-radius: ${token.borderRadiusLG}px;
-                            box-shadow: ${token.boxShadowTertiary};
                         `}
-                        align={"center"}
                     >
-                        <Flex gap={15} align={"center"}>
-                            <Avatar
-                                size={49}
-                                src={`/api/teams/${selfGameTeam?.team_id}/avatar`}
-                            />
-                            <Flex vertical gap={5}>
-                                <span
-                                    css={css`
-                                        text-overflow: ellipsis;
-                                        flex-wrap: nowrap;
-                                        overflow: hidden;
-                                        font-size: 1rem;
-                                        font-weight: 600;
-                                    `}
-                                >
-                                    {selfGameTeam?.team?.name}
-                                </span>
-                                <span
-                                    css={css`
-                                        font-size: 0.75rem;
-                                        color: ${token.colorTextDescription};
-                                    `}
-                                >
-                                    {`# ${selfGameTeam?.team?.id
-                                        ?.toString(16)
-                                        .padStart(6, "0")}`}
-                                </span>
+                        <Flex
+                            gap={20}
+                            css={css`
+                                padding: 2rem;
+                                background-color: ${token.colorBgContainer};
+                                border-radius: ${token.borderRadiusLG}px;
+                                box-shadow: ${token.boxShadowTertiary};
+                            `}
+                            align={"center"}
+                        >
+                            <Flex gap={15} align={"center"}>
+                                <Avatar
+                                    size={49}
+                                    src={`/api/teams/${selfGameTeam?.team_id}/avatar`}
+                                />
+                                <Flex vertical gap={5}>
+                                    <span
+                                        css={css`
+                                            text-overflow: ellipsis;
+                                            flex-wrap: nowrap;
+                                            overflow: hidden;
+                                            font-size: 1rem;
+                                            font-weight: 600;
+                                        `}
+                                    >
+                                        {selfGameTeam?.team?.name}
+                                    </span>
+                                    <span
+                                        css={css`
+                                            font-size: 0.75rem;
+                                            color: ${token.colorTextDescription};
+                                        `}
+                                    >
+                                        {`# ${selfGameTeam?.team?.id
+                                            ?.toString(16)
+                                            .padStart(6, "0")}`}
+                                    </span>
+                                </Flex>
+                            </Flex>
+                            <Flex
+                                vertical
+                                gap={5}
+                                align={"end"}
+                                css={css`
+                                    flex: 1;
+                                `}
+                            >
+                                <Flex gap={5} align={"center"} wrap={"nowrap"}>
+                                    <StarsMinimalisticLinear />
+                                    <span>分数</span>
+                                    <span>{selfGameTeam?.pts}</span>
+                                </Flex>
+                                <Flex gap={5} align={"center"} wrap={"nowrap"}>
+                                    <CupStarLinear />
+                                    <span>排名</span>
+                                    <span>{selfGameTeam?.rank}</span>
+                                </Flex>
                             </Flex>
                         </Flex>
                         <Flex
                             vertical
-                            gap={5}
-                            align={"end"}
                             css={css`
                                 flex: 1;
+                                overflow: auto;
+                                padding: 1.5rem;
+                                background-color: ${token.colorBgContainer};
+                                border-radius: ${token.borderRadiusLG}px;
+                                box-shadow: ${token.boxShadowTertiary};
                             `}
                         >
-                            <Flex gap={5} align={"center"} wrap={"nowrap"}>
-                                <StarsMinimalisticLinear />
-                                <span>分数</span>
-                                <span>{selfGameTeam?.pts}</span>
-                            </Flex>
-                            <Flex gap={5} align={"center"} wrap={"nowrap"}>
-                                <CupStarLinear />
-                                <span>排名</span>
-                                <span>{selfGameTeam?.rank}</span>
-                            </Flex>
+                            <List
+                                itemLayout={"horizontal"}
+                                dataSource={gameNotices}
+                                renderItem={(item, _index) => (
+                                    <List.Item>
+                                        <List.Item.Meta
+                                            title={
+                                                <Flex gap={10} vertical>
+                                                    <span>{item.title}</span>
+                                                    <span
+                                                        css={css`
+                                                            font-size: 0.6rem;
+                                                        `}
+                                                    >
+                                                        {new Date(
+                                                            Number(
+                                                                item.created_at
+                                                            ) * 1000
+                                                        ).toLocaleString()}
+                                                    </span>
+                                                </Flex>
+                                            }
+                                            description={item.content}
+                                        />
+                                    </List.Item>
+                                )}
+                            />
                         </Flex>
                     </Flex>
                 </Sider>

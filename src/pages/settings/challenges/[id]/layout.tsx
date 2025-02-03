@@ -29,7 +29,7 @@ export default function () {
     function fetchChallenge() {
         getChallenges({
             id: id,
-            is_detailed: true,
+            is_desensitized: false,
         }).then((res) => {
             setChallenge(res?.data?.[0]);
         });
