@@ -15,6 +15,11 @@ import {
     GameChallengeUpdateRequest,
 } from "@/models/game_challenge";
 import {
+    CreateGameNoticeRequest,
+    DeleteGameNoticeRequest,
+    GetGameNoticeRequest,
+} from "@/models/game_notice";
+import {
     GameTeam,
     GameTeamCreateRequest,
     GameTeamDeleteRequest,
@@ -124,6 +129,26 @@ export async function updateGameTeam(request: GameTeamUpdateRequest) {
 export async function deleteGameTeam(request: GameTeamDeleteRequest) {
     return alova.Delete<Response<never>>(
         `/games/${request.game_id}/challenges/${request.team_id}`,
+        request
+    );
+}
+
+export async function getGameNotice(request: GetGameNoticeRequest) {
+    return alova.Get<Response<GameTeam>>(`/games/${request.game_id}/notices`, {
+        params: request,
+    });
+}
+
+export async function createGameNotice(request: CreateGameNoticeRequest) {
+    return alova.Post<Response<GameTeam>>(
+        `/games/${request.game_id}/notices`,
+        request
+    );
+}
+
+export async function deleteGameNotice(request: DeleteGameNoticeRequest) {
+    return alova.Delete<Response<never>>(
+        `/games/${request.game_id}/notices/${request.id}`,
         request
     );
 }
