@@ -4,6 +4,7 @@ import { useCategoryStore } from "@/stores/category";
 import { css } from "@emotion/react";
 import {
     Button,
+    DatePicker,
     Flex,
     Form,
     Grid,
@@ -19,6 +20,7 @@ import { useSharedStore } from "@/stores/shared";
 import { GameChallenge } from "@/models/game_challenge";
 import ReactECharts from "echarts-for-react";
 import { curve } from "@/utils/math";
+import dayjs, { Dayjs } from "dayjs";
 
 export interface GameChallengeCreateModalProps {
     gameChallenge?: GameChallenge;
@@ -29,14 +31,17 @@ export default function GameChallengeCreateModal(
     props: GameChallengeCreateModalProps
 ) {
     const { gameChallenge, onClose } = props;
-    const screens = Grid.useBreakpoint();
     const categoryStore = useCategoryStore();
     const sharedStore = useSharedStore();
     const notificationStore = useNotificationStore();
     const { token } = theme.useToken();
     const { game } = useContext(Context);
 
-    const [form] = Form.useForm<GameChallenge>();
+    const [form] = Form.useForm<
+        GameChallenge & {
+            frozen_at: Dayjs;
+        }
+    >();
     const minPtsValue = Form.useWatch("min_pts", form);
     const maxPtsValue = Form.useWatch("max_pts", form);
     const difficultyValue = Form.useWatch("difficulty", form);
@@ -77,6 +82,9 @@ export default function GameChallengeCreateModal(
             ),
             min_pts: form.getFieldValue("min_pts"),
             max_pts: form.getFieldValue("max_pts"),
+            frozen_at: Math.ceil(
+                form.getFieldValue("frozen_at").toDate().getTime() / 1000
+            ),
         })
             .then((res) => {
                 if (res.code === 200) {
@@ -94,21 +102,15 @@ export default function GameChallengeCreateModal(
     }
 
     useEffect(() => {
-        form.setFieldValue("difficulty", gameChallenge?.difficulty);
-        form.setFieldValue(
-            "first_blood_reward_ratio",
-            gameChallenge?.first_blood_reward_ratio
-        );
-        form.setFieldValue(
-            "second_blood_reward_ratio",
-            gameChallenge?.second_blood_reward_ratio
-        );
-        form.setFieldValue(
-            "third_blood_reward_ratio",
-            gameChallenge?.third_blood_reward_ratio
-        );
-        form.setFieldValue("min_pts", gameChallenge?.min_pts);
-        form.setFieldValue("max_pts", gameChallenge?.max_pts);
+        form.setFieldsValue({
+            difficulty: gameChallenge?.difficulty,
+            first_blood_reward_ratio: gameChallenge?.first_blood_reward_ratio,
+            second_blood_reward_ratio: gameChallenge?.second_blood_reward_ratio,
+            third_blood_reward_ratio: gameChallenge?.third_blood_reward_ratio,
+            min_pts: gameChallenge?.min_pts,
+            max_pts: gameChallenge?.max_pts,
+            frozen_at: dayjs(Number(gameChallenge?.frozen_at) * 1000),
+        });
     }, [gameChallenge]);
 
     return (
@@ -201,6 +203,23 @@ export default function GameChallengeCreateModal(
                             <InputNumber size={"large"} />
                         </Form.Item>
                     </Flex>
+                    <Form.Item
+                        label={"冻结时间"}
+                        name={"frozen_at"}
+                        rules={[
+                            {
+                                required: true,
+                                message: "请输入冻结时间",
+                            },
+                        ]}
+                    >
+                        <DatePicker
+                            showTime
+                            css={css`
+                                width: 100%;
+                            `}
+                        />
+                    </Form.Item>
                     <Space.Compact
                         css={css`
                             width: 100%;

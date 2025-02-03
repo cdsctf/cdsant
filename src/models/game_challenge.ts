@@ -13,6 +13,7 @@ export interface GameChallenge {
     first_blood_reward_ratio?: number;
     second_blood_reward_ratio?: number;
     third_blood_reward_ratio?: number;
+    frozen_at?: number;
 }
 
 export interface GetGameChallengeRequest {
@@ -34,6 +35,7 @@ export interface UpdateGameChallengeRequest {
     first_blood_reward_ratio?: number;
     second_blood_reward_ratio?: number;
     third_blood_reward_ratio?: number;
+    frozen_at?: number;
 }
 
 export interface DeleteGameChallengeRequest {
