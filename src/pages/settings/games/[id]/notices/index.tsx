@@ -1,15 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "../context";
-import {
-    Alert,
-    Avatar,
-    Button,
-    Flex,
-    Grid,
-    Modal,
-    Popconfirm,
-    Switch,
-} from "antd";
+import { Button, Flex, Grid, Modal, Popconfirm } from "antd";
 import {
     ActionType,
     nanoid,
@@ -20,9 +11,9 @@ import AddSquareLinear from "~icons/solar/add-square-linear";
 import LinkBrokenMinimalisticLinear from "~icons/solar/link-broken-minimalistic-linear";
 import { useNotificationStore } from "@/stores/notification";
 import { useSharedStore } from "@/stores/shared";
-import { deleteGameTeam, getGameTeams, updateGameTeam } from "@/api/game";
-import { GameTeam } from "@/models/game_team";
-import GameTeamCreateModal from "./_blocks/GameTeamCreateModal";
+import { deleteGameNotice, getGameNotice } from "@/api/game";
+import GameNoticeCreateModal from "./_blocks/GameNoticeCreateModal";
+import { GameNotice } from "@/models/game_notice";
 
 export default function () {
     const { game } = useContext(Context);
@@ -30,7 +21,7 @@ export default function () {
     const notificationStore = useNotificationStore();
     const sharedStore = useSharedStore();
 
-    const [gameTeamCreateModalOpen, setGameTeamCreateModalOpen] =
+    const [gameNoticeCreateModalOpen, setGameNoticeCreateModalOpen] =
         useState<boolean>(false);
 
     const ref = useRef<ActionType>(null);
@@ -39,77 +30,32 @@ export default function () {
         ref?.current?.reload();
     }, [game, sharedStore?.refresh]);
 
-    const columns: Array<ProColumnType<GameTeam>> = [
+    const columns: Array<ProColumnType<GameNotice>> = [
         {
-            title: "允许",
-            dataIndex: "is_allowed",
-            key: "is_allowed",
-            align: "center",
-            width: "5%",
-            renderText: (is_allowed: boolean, data: GameTeam) => {
-                return (
-                    <Switch
-                        checked={is_allowed}
-                        size={"small"}
-                        onChange={(checked) => {
-                            updateGameTeam({
-                                team_id: data.team_id,
-                                game_id: game?.id,
-                                is_allowed: checked,
-                            })
-                                .then((_) => {
-                                    notificationStore?.api?.success({
-                                        message: "更新成功",
-                                        description: `比赛团队 ${data.team?.name} 已设置为 ${checked ? "允许参赛" : "禁止参赛"}`,
-                                    });
-                                })
-                                .finally(() => {
-                                    sharedStore?.setRefresh();
-                                });
-                        }}
-                    />
-                );
-            },
-        },
-        {
-            title: "ID",
-            dataIndex: ["team", "id"],
-            key: "id",
-            width: "10%",
-            ellipsis: {
-                showTitle: false,
-            },
-        },
-        {
-            title: "头像",
-            key: "avatar",
-            width: "10%",
+            title: "标题",
+            dataIndex: "title",
+            key: "title",
+            width: "20%",
             align: "center",
             search: false,
-            render: (_, data) => {
-                return <Avatar src={`/api/teams/${data?.team_id}/avatar`} />;
-            },
         },
         {
-            title: "团队名",
-            dataIndex: ["team", "name"],
-            key: "name",
+            title: "内容",
+            dataIndex: "content",
+            key: "content",
             width: "30%",
             ellipsis: {
                 showTitle: false,
             },
         },
         {
-            title: "当前分值",
-            dataIndex: "pts",
-            key: "pts",
-            width: "10%",
-        },
-        {
-            title: "排名",
-            dataIndex: "rank",
-            key: "rank",
-            width: "10%",
+            title: "发布于",
+            dataIndex: "created_at",
+            key: "created_at",
+            width: "20%",
+            renderText: (created_at: number) => {
+                return new Date(created_at * 1000).toLocaleString();
+            },
         },
         {
             title: (
@@ -118,28 +64,28 @@ export default function () {
                     size={"small"}
                     icon={<AddSquareLinear />}
                     onClick={() => {
-                        setGameTeamCreateModalOpen(true);
+                        setGameNoticeCreateModalOpen(true);
                     }}
                 />
             ),
             align: "center",
             key: "action",
-            width: "10%",
+            width: "20%",
             search: false,
             hideInSetting: true,
             render: (_, data) => (
                 <Flex gap={12} justify={"center"} align={"center"}>
                     <Popconfirm
-                        title={"删除比赛团队"}
-                        description={`你确定要删除比赛团队 ${data?.team?.name} 吗？`}
+                        title={"删除比赛公告"}
+                        description={`你确定要删除比赛公告 ${data?.title} 吗？`}
                         onConfirm={() => {
-                            deleteGameTeam({
+                            deleteGameNotice({
                                 game_id: Number(game?.id),
-                                team_id: Number(data?.team_id),
+                                id: Number(data?.id),
                             }).then(() => {
                                 notificationStore?.api?.success({
                                     message: "删除成功",
-                                    description: `团队 ${data?.team?.name} 已从比赛中删除`,
+                                    description: `公告 ${data?.title} 已删除`,
                                 });
                                 sharedStore?.setRefresh();
                             });
@@ -161,13 +107,7 @@ export default function () {
 
     return (
         <div>
-            <Alert
-                showIcon
-                message={
-                    "若需批量添加比赛团队，建议阅读 API 文档，使用脚本实现。"
-                }
-            />
-            <ProTable<GameTeam>
+            <ProTable<GameNotice>
                 columns={columns}
                 sticky={{
                     offsetHeader: 64,
@@ -181,14 +121,14 @@ export default function () {
                     defaultPageSize: 10,
                     showSizeChanger: true,
                 }}
-                rowKey={(item) => `${item.game_id}/${item.team_id}` || nanoid()}
+                rowKey={(item) => `${item.game_id}/${item.id}` || nanoid()}
                 tableStyle={{
                     padding: "1rem",
                 }}
                 request={async (_params, _sort, _filter) => {
                     if (!game?.id) return {};
 
-                    const res = await getGameTeams({
+                    const res = await getGameNotice({
                         game_id: Number(game?.id),
                     });
 
@@ -205,13 +145,13 @@ export default function () {
                 closable={false}
                 width={screens.md ? "40vw" : "90vw"}
                 destroyOnClose
-                open={gameTeamCreateModalOpen}
-                onCancel={() => setGameTeamCreateModalOpen(false)}
-                onClose={() => setGameTeamCreateModalOpen(false)}
-                title={"添加比赛团队"}
+                open={gameNoticeCreateModalOpen}
+                onCancel={() => setGameNoticeCreateModalOpen(false)}
+                onClose={() => setGameNoticeCreateModalOpen(false)}
+                title={"发布比赛公告"}
             >
-                <GameTeamCreateModal
-                    onClose={() => setGameTeamCreateModalOpen(false)}
+                <GameNoticeCreateModal
+                    onClose={() => setGameNoticeCreateModalOpen(false)}
                 />
             </Modal>
         </div>

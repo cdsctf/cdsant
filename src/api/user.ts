@@ -1,30 +1,30 @@
 import { Metadata } from "@/models/media";
 import {
     User,
-    UserCreateRequest,
-    UserDeleteRequest,
-    UserGetRequest,
+    CreateUserRequest,
+    DeleteUserRequest,
+    GetUserRequest,
     UserLoginRequest,
-    UserUpdateRequest,
+    UpdateUserRequest,
 } from "@/models/user";
 import { Response } from "@/types";
 import { alova } from "@/utils/alova";
 
-export async function getUsers(request: UserGetRequest) {
+export async function getUsers(request: GetUserRequest) {
     return alova.Get<Response<Array<User>>>("/users", {
         params: request,
     });
 }
 
-export async function createUser(request: UserCreateRequest) {
+export async function createUser(request: CreateUserRequest) {
     return alova.Post<Response<User>>("/users", request);
 }
 
-export async function deleteUser(request: UserDeleteRequest) {
+export async function deleteUser(request: DeleteUserRequest) {
     return alova.Delete<Response<never>>(`/users/${request.id}`, request);
 }
 
-export async function updateUser(request: UserUpdateRequest) {
+export async function updateUser(request: UpdateUserRequest) {
     return alova.Put<Response<User>>(`/users/${request.id}`, request);
 }
 

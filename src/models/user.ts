@@ -19,7 +19,7 @@ export enum Group {
     Admin = 3,
 }
 
-export interface UserGetRequest {
+export interface GetUserRequest {
     id?: number;
     name?: string;
     username?: string;
@@ -30,7 +30,7 @@ export interface UserGetRequest {
     sorts?: string;
 }
 
-export interface UserUpdateRequest {
+export interface UpdateUserRequest {
     id: number;
     username?: string;
     nickname?: string;
@@ -40,7 +40,7 @@ export interface UserUpdateRequest {
     description?: string;
 }
 
-export interface UserCreateRequest {
+export interface CreateUserRequest {
     username?: string;
     nickname?: string;
     email?: string;
@@ -48,7 +48,7 @@ export interface UserCreateRequest {
     password?: string;
 }
 
-export interface UserDeleteRequest {
+export interface DeleteUserRequest {
     id: number;
 }
 

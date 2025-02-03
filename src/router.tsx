@@ -137,24 +137,24 @@ export default createBrowserRouter([
                                         },
                                     },
                                     {
-                                        path: "script",
+                                        path: "checker",
                                         lazy: async () => {
                                             return {
                                                 Component: (
                                                     await import(
-                                                        "@/pages/settings/challenges/[id]/script"
+                                                        "@/pages/settings/challenges/[id]/checker"
                                                     )
                                                 ).default,
                                             };
                                         },
                                     },
                                     {
-                                        path: "pods",
+                                        path: "env",
                                         lazy: async () => {
                                             return {
                                                 Component: (
                                                     await import(
-                                                        "@/pages/settings/challenges/[id]/pods"
+                                                        "@/pages/settings/challenges/[id]/env"
                                                     )
                                                 ).default,
                                             };
@@ -234,6 +234,18 @@ export default createBrowserRouter([
                                                 Component: (
                                                     await import(
                                                         "@/pages/settings/games/[id]/teams"
+                                                    )
+                                                ).default,
+                                            };
+                                        },
+                                    },
+                                    {
+                                        path: "notices",
+                                        lazy: async () => {
+                                            return {
+                                                Component: (
+                                                    await import(
+                                                        "@/pages/settings/games/[id]/notices"
                                                     )
                                                 ).default,
                                             };

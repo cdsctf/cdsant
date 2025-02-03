@@ -1,59 +1,60 @@
 import {
     Game,
-    GameCreateRequest,
-    GameDeleteRequest,
-    GameGetRequest,
-    GameScoreboardGetRequest,
-    GameUpdateRequest,
+    CreateGameRequest,
+    DeleteGameRequest,
+    GetGameRequest,
+    GetGameScoreboardRequest,
+    UpdateGameRequest,
     ScoreRecord,
 } from "@/models/game";
 import {
     GameChallenge,
-    GameChallengeGetRequest,
-    GameChallengeCreateRequest,
-    GameChallengeDeleteRequest,
-    GameChallengeUpdateRequest,
+    GetGameChallengeRequest,
+    CreateGameChallengeRequest,
+    DeleteGameChallengeRequest,
+    UpdateGameChallengeRequest,
 } from "@/models/game_challenge";
 import {
     CreateGameNoticeRequest,
     DeleteGameNoticeRequest,
+    GameNotice,
     GetGameNoticeRequest,
 } from "@/models/game_notice";
 import {
     GameTeam,
-    GameTeamCreateRequest,
-    GameTeamDeleteRequest,
-    GameTeamGetRequest,
-    GameTeamUpdateRequest,
+    CreateGameTeamRequest,
+    DeleteGameTeamRequest,
+    GetGameTeamRequest,
+    UpdateGameTeamRequest,
 } from "@/models/game_team";
 import { Metadata } from "@/models/media";
 import { Response } from "@/types";
 import { alova } from "@/utils/alova";
 
-export async function getGames(request: GameGetRequest) {
+export async function getGames(request: GetGameRequest) {
     return alova.Get<Response<Array<Game>>>("/games", {
         params: request,
     });
 }
 
-export async function createGame(request: GameCreateRequest) {
+export async function createGame(request: CreateGameRequest) {
     return alova.Post<Response<Game>>("/games", request);
 }
 
-export async function updateGame(request: GameUpdateRequest) {
+export async function updateGame(request: UpdateGameRequest) {
     return alova.Put<Response<Game>>(`/games/${request.id}`, request);
 }
 
 export async function getScoreboard(
     id: number,
-    request: GameScoreboardGetRequest
+    request: GetGameScoreboardRequest
 ) {
     return alova.Get<Response<Array<ScoreRecord>>>(`/games/${id}/scoreboard`, {
         params: request,
     });
 }
 
-export async function deleteGame(request: GameDeleteRequest) {
+export async function deleteGame(request: DeleteGameRequest) {
     return alova.Delete<Response<never>>(`/games/${request.id}`);
 }
 
@@ -73,7 +74,7 @@ export async function deleteGameIcon(id: number) {
     return alova.Delete<Response<never>>(`/games/${id}/icon`);
 }
 
-export async function getGameChallenges(request: GameChallengeGetRequest) {
+export async function getGameChallenges(request: GetGameChallengeRequest) {
     return alova.Get<Response<Array<GameChallenge>>>(
         `/games/${request.game_id}/challenges`,
         {
@@ -82,28 +83,28 @@ export async function getGameChallenges(request: GameChallengeGetRequest) {
     );
 }
 
-export async function createGameChallenge(request: GameChallengeCreateRequest) {
+export async function createGameChallenge(request: CreateGameChallengeRequest) {
     return alova.Post<Response<GameChallenge>>(
         `/games/${request.game_id}/challenges`,
         request
     );
 }
 
-export async function updateGameChallenge(request: GameChallengeUpdateRequest) {
+export async function updateGameChallenge(request: UpdateGameChallengeRequest) {
     return alova.Put<Response<GameChallenge>>(
         `/games/${request.game_id}/challenges/${request.challenge_id}`,
         request
     );
 }
 
-export async function deleteGameChallenge(request: GameChallengeDeleteRequest) {
+export async function deleteGameChallenge(request: DeleteGameChallengeRequest) {
     return alova.Delete<Response<never>>(
         `/games/${request.game_id}/challenges/${request.challenge_id}`,
         request
     );
 }
 
-export async function getGameTeams(request: GameTeamGetRequest) {
+export async function getGameTeams(request: GetGameTeamRequest) {
     return alova.Get<Response<Array<GameTeam>>>(
         `/games/${request.game_id}/teams`,
         {
@@ -112,21 +113,21 @@ export async function getGameTeams(request: GameTeamGetRequest) {
     );
 }
 
-export async function createGameTeam(request: GameTeamCreateRequest) {
+export async function createGameTeam(request: CreateGameTeamRequest) {
     return alova.Post<Response<GameTeam>>(
         `/games/${request.game_id}/teams`,
         request
     );
 }
 
-export async function updateGameTeam(request: GameTeamUpdateRequest) {
+export async function updateGameTeam(request: UpdateGameTeamRequest) {
     return alova.Put<Response<GameTeam>>(
         `/games/${request.game_id}/teams/${request.team_id}`,
         request
     );
 }
 
-export async function deleteGameTeam(request: GameTeamDeleteRequest) {
+export async function deleteGameTeam(request: DeleteGameTeamRequest) {
     return alova.Delete<Response<never>>(
         `/games/${request.game_id}/challenges/${request.team_id}`,
         request
@@ -134,13 +135,16 @@ export async function deleteGameTeam(request: GameTeamDeleteRequest) {
 }
 
 export async function getGameNotice(request: GetGameNoticeRequest) {
-    return alova.Get<Response<GameTeam>>(`/games/${request.game_id}/notices`, {
-        params: request,
-    });
+    return alova.Get<Response<Array<GameNotice>>>(
+        `/games/${request.game_id}/notices`,
+        {
+            params: request,
+        }
+    );
 }
 
 export async function createGameNotice(request: CreateGameNoticeRequest) {
-    return alova.Post<Response<GameTeam>>(
+    return alova.Post<Response<GameNotice>>(
         `/games/${request.game_id}/notices`,
         request
     );

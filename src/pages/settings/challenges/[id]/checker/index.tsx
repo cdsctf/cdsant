@@ -22,11 +22,11 @@ export default function () {
     const themeStore = useThemeStore();
     const { challenge } = useContext(Context);
     const [form] = Form.useForm<{
-        script: string;
+        checker: string;
     }>();
 
     useEffect(() => {
-        form.setFieldValue("script", challenge?.script);
+        form.setFieldValue("checker", challenge?.checker);
     }, [challenge]);
 
     const [lint, setLint] = useState<string>();
@@ -34,7 +34,7 @@ export default function () {
     function handleChallengeUpdate() {
         updateChallenge({
             id: challenge?.id,
-            script: form.getFieldValue("script"),
+            checker: form.getFieldValue("checker"),
         }).then((res) => {
             if (res.code === 200) {
                 notificationStore?.api?.success({
@@ -66,7 +66,7 @@ export default function () {
             onFinish={() => handleChallengeUpdate()}
         >
             <Form.Item
-                name={"script"}
+                name={"checker"}
                 css={css`
                     overflow: hidden;
                     border-radius: ${token.borderRadius}px;

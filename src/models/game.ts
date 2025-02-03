@@ -26,7 +26,7 @@ export interface ScoreRecord {
     submissions?: Array<GameSubmission>;
 }
 
-export interface GameGetRequest {
+export interface GetGameRequest {
     id?: number;
     title?: string;
     is_enabled?: boolean;
@@ -35,17 +35,17 @@ export interface GameGetRequest {
     size?: number;
 }
 
-export interface GameScoreboardGetRequest {
+export interface GetGameScoreboardRequest {
     size?: number;
     page?: number;
 }
 
-export interface GameSubmissionGetRequest {
+export interface GetGameSubmissionRequest {
     id?: number;
     status?: Status;
 }
 
-export interface GameCreateRequest {
+export interface CreateGameRequest {
     title?: string;
     sketch?: string;
     description?: string;
@@ -58,7 +58,7 @@ export interface GameCreateRequest {
     ended_at?: number;
 }
 
-export interface GameUpdateRequest {
+export interface UpdateGameRequest {
     id?: number;
     title?: string;
     sketch?: string;
@@ -73,27 +73,27 @@ export interface GameUpdateRequest {
     ended_at?: number;
 }
 
-export interface GameDeleteRequest {
+export interface DeleteGameRequest {
     id?: number;
 }
 
-export interface GameTeamFindRequest {
+export interface GetGameTeamRequest {
     game_id?: number;
     team_id?: number;
 }
 
-export interface GameTeamCreateRequest {
+export interface CreateGameTeamRequest {
     game_id?: number;
     team_id?: number;
 }
 
-export interface GameTeamUpdateRequest {
+export interface UpdateGameTeamRequest {
     game_id?: number;
     team_id?: number;
     is_allowed?: boolean;
 }
 
-export interface GameTeamDeleteRequest {
+export interface DeleteGameTeamRequest {
     game_id?: number;
     team_id?: number;
 }

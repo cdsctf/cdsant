@@ -1,9 +1,3 @@
-// import { Game } from "./game";
-// import { User } from "./user";
-// import { Team } from "./team";
-// import { Challenge } from "./challenge";
-import { Nat } from "./nat";
-
 export interface Pod {
     id: string;
     game_id: number;
@@ -25,7 +19,7 @@ export interface Pod {
     started_at?: number;
 }
 
-export interface PodGetRequest {
+export interface GetPodRequest {
     id?: string;
     game_id?: number;
     user_id?: number;
@@ -33,17 +27,17 @@ export interface PodGetRequest {
     challenge_id?: string;
 }
 
-export interface PodCreateRequest {
+export interface CreatePodRequest {
     game_id?: number;
     team_id?: number;
     challenge_id?: string;
 }
 
-export interface PodRemoveRequest {
+export interface RemovePodRequest {
     id: string;
 }
 
-export interface PodRenewRequest {
+export interface RenewPodRequest {
     id: string;
     team_id?: number;
     game_id?: number;

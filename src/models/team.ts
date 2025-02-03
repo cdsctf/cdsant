@@ -13,7 +13,7 @@ export interface Team {
     users?: Array<User>;
 }
 
-export interface TeamGetRequest {
+export interface GetTeamRequest {
     id?: number;
     name?: string;
     user_id?: number;
@@ -22,7 +22,7 @@ export interface TeamGetRequest {
     sorts?: string;
 }
 
-export interface TeamUpdateRequest {
+export interface UpdateTeamRequest {
     id?: number;
     name?: string;
     slogan?: string;
@@ -31,20 +31,20 @@ export interface TeamUpdateRequest {
     password?: string;
 }
 
-export interface TeamCreateRequest {
+export interface CreateTeamRequest {
     name?: string;
     slogan?: string;
     email?: string;
     password?: string;
 }
 
-export interface TeamRegiserRequest {
+export interface RegisterTeamRequest {
     name?: string;
     email?: string;
     password?: string;
 }
 
-export interface TeamDeleteRequest {
+export interface DeleteTeamRequest {
     id: number;
 }
 
@@ -66,12 +66,12 @@ export interface TeamUpdateInviteTokenRequest {
     id: number;
 }
 
-export interface TeamDeleteUserRequest {
+export interface DeleteTeamUserRequest {
     team_id: number;
     user_id: number;
 }
 
-export interface TeamCreateUserRequest {
+export interface CreateTeamUserRequest {
     team_id: number;
     user_id: number;
 }

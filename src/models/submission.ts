@@ -32,14 +32,14 @@ export enum Status {
     Invalid = 4,
 }
 
-export interface SubmissionCreateRequest {
+export interface CreateSubmissionRequest {
     flag?: string;
     challenge_id?: string;
     team_id?: number;
     game_id?: number;
 }
 
-export interface SubmissionGetRequest {
+export interface GetSubmissionRequest {
     id?: number;
     flag?: string;
     status?: number;
@@ -52,6 +52,6 @@ export interface SubmissionGetRequest {
     page?: number;
 }
 
-export interface SubmissionDeleteRequest {
+export interface DeleteSubmissionRequest {
     id?: number;
 }

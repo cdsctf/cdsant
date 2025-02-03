@@ -15,7 +15,7 @@ export interface GameChallenge {
     third_blood_reward_ratio?: number;
 }
 
-export interface GameChallengeGetRequest {
+export interface GetGameChallengeRequest {
     game_id?: number;
     challenge_id?: string;
     category?: number;
@@ -24,7 +24,7 @@ export interface GameChallengeGetRequest {
     size?: number;
 }
 
-export interface GameChallengeUpdateRequest {
+export interface UpdateGameChallengeRequest {
     game_id?: number;
     challenge_id?: string;
     is_enabled?: boolean;
@@ -36,12 +36,12 @@ export interface GameChallengeUpdateRequest {
     third_blood_reward_ratio?: number;
 }
 
-export interface GameChallengeDeleteRequest {
+export interface DeleteGameChallengeRequest {
     challenge_id?: string;
     game_id?: number;
 }
 
-export interface GameChallengeCreateRequest {
+export interface CreateGameChallengeRequest {
     game_id?: number;
     challenge_id?: string;
     is_enabled?: boolean;

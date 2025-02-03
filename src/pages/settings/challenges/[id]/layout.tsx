@@ -102,22 +102,22 @@ export default function () {
                                     ),
                                 },
                                 {
-                                    key: "script",
+                                    key: "checker",
                                     icon: <FlagLinear />,
                                     label: (
                                         <Link
-                                            to={`/settings/challenges/${challenge?.id}/script`}
+                                            to={`/settings/challenges/${challenge?.id}/checker`}
                                         >
                                             脚本
                                         </Link>
                                     ),
                                 },
                                 {
-                                    key: "pods",
+                                    key: "env",
                                     icon: <BoxMinimalisticLinear />,
                                     label: (
                                         <Link
-                                            to={`/settings/challenges/${challenge?.id}/pods`}
+                                            to={`/settings/challenges/${challenge?.id}/env`}
                                         >
                                             容器
                                         </Link>

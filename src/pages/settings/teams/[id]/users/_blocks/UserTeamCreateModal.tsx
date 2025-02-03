@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 import { Modal, Grid, Flex, Button, Avatar, theme } from "antd";
 import { useContext, useEffect, useState } from "react";
 import CheckCircleLinear from "~icons/solar/check-circle-linear";
-import { createUserTeam } from "@/api/team";
+import { createTeamUser } from "@/api/team";
 import { Context } from "../../context";
 import UserSelectModal from "./UserSelectModal";
 import { User } from "@/models/user";
@@ -31,7 +31,7 @@ export default function UserTeamCreateModal(props: UserTeamCreateModalProps) {
 
     function handleUserTeamCreate() {
         setLoading(true);
-        createUserTeam({
+        createTeamUser({
             team_id: Number(team?.id),
             user_id: selectedUser?.id!,
         })

@@ -11,12 +11,12 @@ export interface Challenge {
     is_public?: boolean;
     is_dynamic?: boolean;
     env?: Env;
-    script?: string;
+    checker?: string;
     updated_at?: number;
     created_at?: number;
 }
 
-export interface ChallengeGetRequest {
+export interface GetChallengeRequest {
     id?: string;
     title?: string;
     description?: string;
@@ -29,7 +29,7 @@ export interface ChallengeGetRequest {
     sorts?: string;
 }
 
-export interface ChallengeUpdateRequest {
+export interface UpdateChallengeRequest {
     id?: string;
     title?: string;
     tags?: Array<string>;
@@ -39,10 +39,15 @@ export interface ChallengeUpdateRequest {
     is_public?: boolean;
     is_dynamic?: boolean;
     env?: Env;
-    script?: string;
+    checker?: string;
 }
 
-export interface ChallengeCreateRequest {
+export interface UpdateChallengeCheckerRequest {
+    id?: string;
+    checker?: string;
+}
+
+export interface CreateChallengeRequest {
     title?: string;
     description?: string;
     category?: number;
@@ -51,7 +56,7 @@ export interface ChallengeCreateRequest {
     env?: Env;
 }
 
-export interface ChallengeDeleteRequest {
+export interface DeleteChallengeRequest {
     id?: string;
 }
 
@@ -62,7 +67,7 @@ export interface ChallengeStatus {
     bloods?: Array<Submission>;
 }
 
-export interface ChallengeStatusRequest {
+export interface GetChallengeStatusRequest {
     challenge_ids: Array<string>;
     user_id?: number;
     team_id?: number;

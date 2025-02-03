@@ -13,24 +13,24 @@ export interface GameTeam {
     game?: Game;
 }
 
-export interface GameTeamGetRequest {
+export interface GetGameTeamRequest {
     game_id?: number;
     team_id?: number;
     user_id?: number;
 }
 
-export interface GameTeamCreateRequest {
+export interface CreateGameTeamRequest {
     game_id?: number;
     team_id?: number;
 }
 
-export interface GameTeamUpdateRequest {
+export interface UpdateGameTeamRequest {
     game_id?: number;
     team_id?: number;
     is_allowed?: boolean;
 }
 
-export interface GameTeamDeleteRequest {
+export interface DeleteGameTeamRequest {
     game_id?: number;
     team_id?: number;
 }

@@ -7,6 +7,7 @@ import { Context } from "./context";
 import InfoCircleLinear from "~icons/solar/info-circle-linear";
 import StarFallMinimalistic2Linear from "~icons/solar/star-fall-minimalistic-2-linear";
 import UsersGroupTwoRoundedLinear from "~icons/solar/users-group-two-rounded-linear";
+import VolumeLoudLinear from "~icons/solar/volume-loud-linear";
 import { Game } from "@/models/game";
 import { getGames } from "@/api/game";
 
@@ -111,6 +112,17 @@ export default function () {
                                             to={`/settings/games/${game?.id}/teams`}
                                         >
                                             团队
+                                        </Link>
+                                    ),
+                                },
+                                {
+                                    key: "notices",
+                                    icon: <VolumeLoudLinear />,
+                                    label: (
+                                        <Link
+                                            to={`/settings/games/${game?.id}/notices`}
+                                        >
+                                            公告
                                         </Link>
                                     ),
                                 },

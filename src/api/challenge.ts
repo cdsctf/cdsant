@@ -1,23 +1,24 @@
 import {
     Challenge,
-    ChallengeCreateRequest,
-    ChallengeGetRequest,
+    CreateChallengeRequest,
+    GetChallengeRequest,
     ChallengeStatus,
-    ChallengeStatusRequest,
-    ChallengeUpdateRequest,
-    ChallengeDeleteRequest,
+    GetChallengeStatusRequest,
+    UpdateChallengeRequest,
+    DeleteChallengeRequest,
+    UpdateChallengeCheckerRequest,
 } from "@/models/challenge";
 import { Metadata } from "@/models/media";
 import { Response } from "@/types";
 import { alova } from "@/utils/alova";
 
-export async function getChallenges(request: ChallengeGetRequest) {
+export async function getChallenges(request: GetChallengeRequest) {
     return alova.Get<Response<Array<Challenge>>>("/challenges", {
         params: request,
     });
 }
 
-export async function getChallengeStatus(request: ChallengeStatusRequest) {
+export async function getChallengeStatus(request: GetChallengeStatusRequest) {
     return alova.Post<Response<Record<string, ChallengeStatus>>>(
         "/challenges/status",
         request,
@@ -27,7 +28,7 @@ export async function getChallengeStatus(request: ChallengeStatusRequest) {
     );
 }
 
-export async function updateChallenge(request: ChallengeUpdateRequest) {
+export async function updateChallenge(request: UpdateChallengeRequest) {
     return alova.Put<Response<Challenge>>(
         `/challenges/${request?.id}`,
         request,
@@ -37,13 +38,25 @@ export async function updateChallenge(request: ChallengeUpdateRequest) {
     );
 }
 
-export async function createChallenge(request: ChallengeCreateRequest) {
+export async function updateChallengeChecker(
+    request: UpdateChallengeCheckerRequest
+) {
+    return alova.Put<Response<never>>(
+        `/challenges/${request?.id}/checker`,
+        request,
+        {
+            cacheFor: 0,
+        }
+    );
+}
+
+export async function createChallenge(request: CreateChallengeRequest) {
     return alova.Post<Response<Challenge>>("/challenges", request, {
         cacheFor: 0,
     });
 }
 
-export async function deleteChallenge(request: ChallengeDeleteRequest) {
+export async function deleteChallenge(request: DeleteChallengeRequest) {
     return alova.Delete<Response<never>>(`/challenges/${request.id}`);
 }
 

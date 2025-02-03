@@ -5,7 +5,7 @@ import { nanoid, ProColumnType, ProTable } from "@ant-design/pro-components";
 import { User } from "@/models/user";
 import AddSquareLinear from "~icons/solar/add-square-linear";
 import LinkBrokenMinimalisticLinear from "~icons/solar/link-broken-minimalistic-linear";
-import { deleteUserTeam } from "@/api/team";
+import { deleteTeamUser } from "@/api/team";
 import { useNotificationStore } from "@/stores/notification";
 import { useSharedStore } from "@/stores/shared";
 import UserTeamCreateModal from "./_blocks/UserTeamCreateModal";
@@ -87,7 +87,7 @@ export default function () {
                         title={"踢出用户"}
                         description={`你确定要踢出用户 ${data.username} 吗？`}
                         onConfirm={() => {
-                            deleteUserTeam({
+                            deleteTeamUser({
                                 team_id: Number(team?.id),
                                 user_id: Number(data.id),
                             }).then(() => {
