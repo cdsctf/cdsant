@@ -10,6 +10,8 @@ import { useNotificationStore } from "@/stores/notification";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { useConfigStore } from "@/stores/config";
 import { useThemeStore } from "@/stores/theme";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { Captcha } from "@/components/widgets/Captcha";
 
 export default function () {
     const authStore = useAuthStore();
@@ -151,28 +153,13 @@ export default function () {
                         </Form.Item>
                         {configStore?.config?.captcha?.provider !== "none" && (
                             <Form.Item>
-                                {configStore?.config?.captcha?.provider ===
-                                    "turnstile" && (
-                                    <Turnstile
-                                        siteKey={String(
-                                            configStore?.config?.captcha
-                                                ?.turnstile?.site_key
-                                        )}
-                                        onSuccess={(token) =>
-                                            form.setFieldsValue({
-                                                captcha: {
-                                                    content: token,
-                                                },
-                                            })
-                                        }
-                                        options={{
-                                            size: "flexible",
-                                            theme: themeStore?.darkMode
-                                                ? "dark"
-                                                : "light",
-                                        }}
-                                    />
-                                )}
+                                <Captcha
+                                    onChange={(captcha) =>
+                                        form.setFieldsValue({
+                                            captcha,
+                                        })
+                                    }
+                                />
                             </Form.Item>
                         )}
                         <Button

@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "@ant-design/pro-components": "^2.8.4",
+        "@hcaptcha/react-hcaptcha": "^1.11.1",
         "@marsidev/react-turnstile": "^1.1.0",
         "ace-builds": "^1.37.5",
         "ahooks": "^3.8.4",
@@ -20,6 +21,7 @@
         "ansi_up": "^6.0.2",
         "antd": "^5.23.2",
         "clsx": "^2.1.1",
+        "crypto-js": "^4.2.0",
         "dayjs": "^1.11.13",
         "echarts": "^5.6.0",
         "echarts-for-react": "^3.0.2",
@@ -48,6 +50,7 @@
         "@iconify-json/solar": "^1.2.2",
         "@svgr/core": "^8.1.0",
         "@svgr/plugin-jsx": "^8.1.0",
+        "@types/crypto-js": "^4.2.2",
         "@types/node": "^22.10.7",
         "@types/react": "^19.0.7",
         "@types/react-dom": "^19.0.3",

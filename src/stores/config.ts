@@ -13,6 +13,9 @@ export interface ConfigState {
             turnstile?: {
                 site_key?: string;
             };
+            hcaptcha?: {
+                site_key?: string;
+            };
         };
     };
     setConfig: (config: ConfigState["config"]) => void;
