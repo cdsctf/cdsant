@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "@ant-design/pro-components": "^2.8.4",
+        "@marsidev/react-turnstile": "^1.1.0",
         "ace-builds": "^1.37.5",
         "ahooks": "^3.8.4",
         "alova": "^3.2.8",

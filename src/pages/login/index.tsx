@@ -7,14 +7,26 @@ import { useAuthStore } from "@/stores/auth";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useNotificationStore } from "@/stores/notification";
+import { Turnstile } from "@marsidev/react-turnstile";
+import { useConfigStore } from "@/stores/config";
+import { useThemeStore } from "@/stores/theme";
 
 export default function () {
     const authStore = useAuthStore();
     const navigate = useNavigate();
     const notificationStore = useNotificationStore();
+    const configStore = useConfigStore();
+    const themeStore = useThemeStore();
 
     const { token } = theme.useToken();
-    const [form] = Form.useForm();
+    const [form] = Form.useForm<{
+        account: string;
+        password: string;
+        captcha?: {
+            id?: string;
+            content?: string;
+        };
+    }>();
     const screens = Grid.useBreakpoint();
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -24,6 +36,7 @@ export default function () {
         login({
             account: form.getFieldValue("account"),
             password: form.getFieldValue("password"),
+            captcha: form.getFieldValue("captcha"),
         })
             .then((res) => {
                 if (res.code === 200) {
@@ -101,6 +114,10 @@ export default function () {
                         name="login"
                         onFinish={() => handleLogin()}
                         autoComplete="off"
+                        css={css`
+                            display: flex;
+                            flex-direction: column;
+                        `}
                     >
                         <Form.Item
                             name={"account"}
@@ -132,6 +149,32 @@ export default function () {
                                 prefix={<LockPasswordOutline />}
                             />
                         </Form.Item>
+                        {configStore?.config?.captcha?.provider !== "none" && (
+                            <Form.Item>
+                                {configStore?.config?.captcha?.provider ===
+                                    "turnstile" && (
+                                    <Turnstile
+                                        siteKey={String(
+                                            configStore?.config?.captcha
+                                                ?.turnstile?.site_key
+                                        )}
+                                        onSuccess={(token) =>
+                                            form.setFieldsValue({
+                                                captcha: {
+                                                    content: token,
+                                                },
+                                            })
+                                        }
+                                        options={{
+                                            size: "flexible",
+                                            theme: themeStore?.darkMode
+                                                ? "dark"
+                                                : "light",
+                                        }}
+                                    />
+                                )}
+                            </Form.Item>
+                        )}
                         <Button
                             type={"primary"}
                             size={"large"}

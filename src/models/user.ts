@@ -55,6 +55,10 @@ export interface DeleteUserRequest {
 export interface UserLoginRequest {
     account: string;
     password: string;
+    captcha?: {
+        id?: string;
+        content?: string;
+    };
 }
 
 export interface UserRegisterRequest {
@@ -63,4 +67,8 @@ export interface UserRegisterRequest {
     email: string;
     password: string;
     token?: string;
+    captcha?: {
+        id?: string;
+        content?: string;
+    };
 }

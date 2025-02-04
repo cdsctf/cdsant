@@ -8,6 +8,12 @@ export interface ConfigState {
             description?: string;
             keywords?: string;
         };
+        captcha?: {
+            provider?: "none" | "pow" | "image" | "turnstile" | "hcaptcha";
+            turnstile?: {
+                site_key?: string;
+            };
+        };
     };
     setConfig: (config: ConfigState["config"]) => void;
 }
