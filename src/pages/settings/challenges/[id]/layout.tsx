@@ -108,7 +108,7 @@ export default function () {
                                         <Link
                                             to={`/settings/challenges/${challenge?.id}/checker`}
                                         >
-                                            脚本
+                                            评测
                                         </Link>
                                     ),
                                 },

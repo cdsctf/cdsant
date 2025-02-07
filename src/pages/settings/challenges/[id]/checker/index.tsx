@@ -1,4 +1,4 @@
-import { Button, Flex, Form, theme } from "antd";
+import { Alert, Button, Flex, Form, theme } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../context";
 import CheckCircleLinear from "~icons/solar/check-circle-linear";
@@ -59,6 +59,25 @@ export default function () {
             autoComplete="off"
             onFinish={() => handleChallengeUpdate()}
         >
+            <Form.Item>
+                <Flex align={"center"} gap={12}>
+                    <Alert
+                        message={"题目的评测脚本。请确保编译通过且语义正确。"}
+                        showIcon
+                        css={css`
+                            flex: 1;
+                        `}
+                    />
+                    <Button
+                        size={"large"}
+                        type={"primary"}
+                        htmlType={"submit"}
+                        icon={<CheckCircleLinear />}
+                    >
+                        保存
+                    </Button>
+                </Flex>
+            </Form.Item>
             <Form.Item
                 name={"checker"}
                 css={css`
@@ -82,25 +101,14 @@ export default function () {
                         tabSize: 4,
                     }}
                     width={"100%"}
-                    height={"52vh"}
+                    height={"calc(100vh - 24rem)"}
                 />
             </Form.Item>
-            <div
+            <pre
                 dangerouslySetInnerHTML={{
                     __html: new AnsiUp().ansi_to_html(lint || ""),
                 }}
             />
-            <Form.Item>
-                <Flex justify={"flex-end"}>
-                    <Button
-                        type={"primary"}
-                        htmlType={"submit"}
-                        icon={<CheckCircleLinear />}
-                    >
-                        保存
-                    </Button>
-                </Flex>
-            </Form.Item>
         </Form>
     );
 }

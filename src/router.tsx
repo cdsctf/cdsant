@@ -67,6 +67,18 @@ export default createBrowserRouter([
                                     };
                                 },
                             },
+                            {
+                                path: "scoreboard",
+                                lazy: async () => {
+                                    return {
+                                        Component: (
+                                            await import(
+                                                "@/pages/games/[id]/scoreboard"
+                                            )
+                                        ).default,
+                                    };
+                                },
+                            },
                         ],
                     },
                 ],

@@ -28,6 +28,7 @@ import {
     UpdateGameTeamRequest,
 } from "@/models/game_team";
 import { Metadata } from "@/models/media";
+import { Submission } from "@/models/submission";
 import { Response } from "@/types";
 import { alova } from "@/utils/alova";
 
@@ -155,4 +156,17 @@ export async function deleteGameNotice(request: DeleteGameNoticeRequest) {
         `/games/${request.game_id}/notices/${request.id}`,
         request
     );
+}
+
+export async function getGameScoreboard(request: GetGameScoreboardRequest) {
+    return alova.Get<
+        Response<
+            Array<{
+                game_team?: GameTeam;
+                submissions?: Array<Submission>;
+            }>
+        >
+    >(`/games/${request.id}/scoreboard`, {
+        params: request,
+    });
 }

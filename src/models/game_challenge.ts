@@ -10,9 +10,7 @@ export interface GameChallenge {
     difficulty?: number;
     max_pts?: number;
     min_pts?: number;
-    first_blood_reward_ratio?: number;
-    second_blood_reward_ratio?: number;
-    third_blood_reward_ratio?: number;
+    bonus_ratios?: Array<number>;
     frozen_at?: number;
 }
 
@@ -25,24 +23,6 @@ export interface GetGameChallengeRequest {
     size?: number;
 }
 
-export interface UpdateGameChallengeRequest {
-    game_id?: number;
-    challenge_id?: string;
-    is_enabled?: boolean;
-    max_pts?: number;
-    min_pts?: number;
-    difficulty?: number;
-    first_blood_reward_ratio?: number;
-    second_blood_reward_ratio?: number;
-    third_blood_reward_ratio?: number;
-    frozen_at?: number;
-}
-
-export interface DeleteGameChallengeRequest {
-    challenge_id?: string;
-    game_id?: number;
-}
-
 export interface CreateGameChallengeRequest {
     game_id?: number;
     challenge_id?: string;
@@ -50,7 +30,21 @@ export interface CreateGameChallengeRequest {
     max_pts?: number;
     min_pts?: number;
     difficulty?: number;
-    first_blood_reward_ratio?: number;
-    second_blood_reward_ratio?: number;
-    third_blood_reward_ratio?: number;
+    bonus_ratios?: Array<number>;
+}
+
+export interface UpdateGameChallengeRequest {
+    game_id?: number;
+    challenge_id?: string;
+    is_enabled?: boolean;
+    max_pts?: number;
+    min_pts?: number;
+    difficulty?: number;
+    bonus_ratios?: Array<number>;
+    frozen_at?: number;
+}
+
+export interface DeleteGameChallengeRequest {
+    challenge_id?: string;
+    game_id?: number;
 }

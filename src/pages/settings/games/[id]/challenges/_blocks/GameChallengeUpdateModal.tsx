@@ -7,9 +7,7 @@ import {
     DatePicker,
     Flex,
     Form,
-    Grid,
     InputNumber,
-    Modal,
     Space,
     theme,
 } from "antd";
@@ -20,6 +18,8 @@ import { useSharedStore } from "@/stores/shared";
 import { GameChallenge } from "@/models/game_challenge";
 import ReactECharts from "echarts-for-react";
 import { curve } from "@/utils/math";
+import AddCircleLinear from "~icons/solar/add-circle-linear";
+import MinusCircleLinear from "~icons/solar/minus-circle-linear";
 import dayjs, { Dayjs } from "dayjs";
 
 export interface GameChallengeCreateModalProps {
@@ -71,15 +71,7 @@ export default function GameChallengeCreateModal(
             game_id: game?.id!,
             challenge_id: gameChallenge?.challenge_id!,
             difficulty: form.getFieldValue("difficulty"),
-            first_blood_reward_ratio: form.getFieldValue(
-                "first_blood_reward_ratio"
-            ),
-            second_blood_reward_ratio: form.getFieldValue(
-                "second_blood_reward_ratio"
-            ),
-            third_blood_reward_ratio: form.getFieldValue(
-                "third_blood_reward_ratio"
-            ),
+            bonus_ratios: form.getFieldValue("bonus_ratios"),
             min_pts: form.getFieldValue("min_pts"),
             max_pts: form.getFieldValue("max_pts"),
             frozen_at: Math.ceil(
@@ -104,9 +96,7 @@ export default function GameChallengeCreateModal(
     useEffect(() => {
         form.setFieldsValue({
             difficulty: gameChallenge?.difficulty,
-            first_blood_reward_ratio: gameChallenge?.first_blood_reward_ratio,
-            second_blood_reward_ratio: gameChallenge?.second_blood_reward_ratio,
-            third_blood_reward_ratio: gameChallenge?.third_blood_reward_ratio,
+            bonus_ratios: gameChallenge?.bonus_ratios,
             min_pts: gameChallenge?.min_pts,
             max_pts: gameChallenge?.max_pts,
             frozen_at: dayjs(Number(gameChallenge?.frozen_at) * 1000),
@@ -220,51 +210,51 @@ export default function GameChallengeCreateModal(
                             `}
                         />
                     </Form.Item>
-                    <Space.Compact
-                        css={css`
-                            width: 100%;
-                        `}
-                    >
-                        <Form.Item
-                            name={"first_blood_reward_ratio"}
-                            label={"一血奖励（%）"}
-                            css={css`
-                                width: 100%;
-                            `}
-                        >
-                            <InputNumber
+                    <Form.List name={"bonus_ratios"}>
+                        {(fields, { add, remove }) => (
+                            <Flex
+                                gap={16}
                                 css={css`
-                                    width: 100%;
+                                    flex-wrap: wrap;
                                 `}
-                            />
-                        </Form.Item>
-                        <Form.Item
-                            name={"second_blood_reward_ratio"}
-                            label={"二血奖励（%）"}
-                            css={css`
-                                width: 100%;
-                            `}
-                        >
-                            <InputNumber
-                                css={css`
-                                    width: 100%;
-                                `}
-                            />
-                        </Form.Item>
-                        <Form.Item
-                            name={"third_blood_reward_ratio"}
-                            label={"三血奖励（%）"}
-                            css={css`
-                                width: 100%;
-                            `}
-                        >
-                            <InputNumber
-                                css={css`
-                                    width: 100%;
-                                `}
-                            />
-                        </Form.Item>
-                    </Space.Compact>
+                            >
+                                {fields.map(({ key, name, ...restFields }) => (
+                                    <Flex
+                                        key={key}
+                                        css={css`
+                                            gap: 8px;
+                                        `}
+                                    >
+                                        <Form.Item
+                                            name={name}
+                                            layout={"horizontal"}
+                                            {...restFields}
+                                        >
+                                            <InputNumber
+                                                min={0}
+                                                max={65535}
+                                                suffix={"%"}
+                                            />
+                                        </Form.Item>
+                                        <Button
+                                            type={"text"}
+                                            icon={<MinusCircleLinear />}
+                                            onClick={() => remove(name)}
+                                        />
+                                    </Flex>
+                                ))}
+                                <Form.Item>
+                                    <Button
+                                        type={"dashed"}
+                                        onClick={() => add()}
+                                        icon={<AddCircleLinear />}
+                                    >
+                                        排名奖励
+                                    </Button>
+                                </Form.Item>
+                            </Flex>
+                        )}
+                    </Form.List>
                 </Flex>
                 <Flex justify={"center"}>
                     <ReactECharts

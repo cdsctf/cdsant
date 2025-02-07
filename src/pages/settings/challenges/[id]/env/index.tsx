@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, InputNumber, Space } from "antd";
+import { Alert, Button, Flex, Form, Input, InputNumber, Space } from "antd";
 import { useContext, useEffect } from "react";
 import { Context } from "../context";
 import CheckCircleLinear from "~icons/solar/check-circle-linear";
@@ -45,18 +45,19 @@ export default function () {
             id: challenge?.id,
             env: {
                 image: form.getFieldValue("image"),
-                envs: Object.fromEntries(
-                    form
-                        .getFieldValue("envs")
-                        .map((env: { key: string; value: string }) => [
-                            env.key,
-                            env.value,
-                        ])
-                ),
+                envs:
+                    Object.fromEntries(
+                        form
+                            .getFieldValue("envs")
+                            .map((env: { key: string; value: string }) => [
+                                env.key,
+                                env.value,
+                            ])
+                    ) || [],
                 duration: form.getFieldValue("duration"),
                 cpu_limit: form.getFieldValue("cpu_limit"),
                 memory_limit: form.getFieldValue("memory_limit"),
-                ports: form.getFieldValue("ports"),
+                ports: form.getFieldValue("ports") || [],
             },
         }).then((res) => {
             if (res.code === 200) {
@@ -81,6 +82,25 @@ export default function () {
             onFinish={() => handleChallengeUpdate()}
             autoComplete="off"
         >
+            <Form.Item>
+                <Flex align={"center"} gap={12}>
+                    <Alert
+                        message={"题目所依赖的容器镜像，及相关配置。"}
+                        showIcon
+                        css={css`
+                            flex: 1;
+                        `}
+                    />
+                    <Button
+                        size={"large"}
+                        type={"primary"}
+                        htmlType={"submit"}
+                        icon={<CheckCircleLinear />}
+                    >
+                        保存
+                    </Button>
+                </Flex>
+            </Form.Item>
             <h3>基本</h3>
             <Flex
                 align={"center"}
@@ -231,17 +251,6 @@ export default function () {
                     </Flex>
                 )}
             </Form.List>
-            <Form.Item>
-                <Flex justify={"flex-end"}>
-                    <Button
-                        type={"primary"}
-                        htmlType={"submit"}
-                        icon={<CheckCircleLinear />}
-                    >
-                        保存
-                    </Button>
-                </Flex>
-            </Form.Item>
         </Form>
     );
 }

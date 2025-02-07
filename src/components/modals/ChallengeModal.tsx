@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { MarkdownRender } from "../utils/MarkdownRender";
 import DownloadMinimalisticOutline from "~icons/solar/download-minimalistic-outline";
 import FlagLinear from "~icons/solar/flag-linear";
-import { getSubmissionById, postSubmission } from "@/api/submission";
+import { getSubmission, postSubmission } from "@/api/submission";
 import { useNotificationStore } from "@/stores/notification";
 import { createPod, getPods, renewPod, stopPod } from "@/api/pods";
 import { useAuthStore } from "@/stores/auth";
@@ -202,8 +202,11 @@ export default function ChallengeModal(props: ChallengeModalProps) {
     useEffect(() => {
         let intervalId: number;
         function fetchSubmission() {
-            getSubmissionById(submissionId!).then((res) => {
-                const submission = res.data;
+            getSubmission({
+                id: submissionId,
+                is_desensitized: true,
+            }).then((res) => {
+                const submission = res.data?.[0];
                 if (submission?.status !== 0) {
                     switch (submission?.status) {
                         case 1:
@@ -230,7 +233,7 @@ export default function ChallengeModal(props: ChallengeModalProps) {
                             break;
                         case 4:
                             notificationStore?.api?.info({
-                                key: `submission-${res?.data?.id}`,
+                                key: `submission-${res?.data?.[0]?.id}`,
                                 message: "无效",
                                 description: "提交无效。",
                             });
@@ -346,7 +349,7 @@ export default function ChallengeModal(props: ChallengeModalProps) {
                                             <Flex key={src}>
                                                 <Input
                                                     addonBefore={src}
-                                                    value={dst}
+                                                    value={`${pod?.public_entry}:${dst}`}
                                                     css={css`
                                                         caret-color: transparent;
                                                     `}

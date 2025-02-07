@@ -1,4 +1,8 @@
-import { Submission, CreateSubmissionRequest } from "@/models/submission";
+import {
+    Submission,
+    CreateSubmissionRequest,
+    GetSubmissionRequest,
+} from "@/models/submission";
 import { Response } from "@/types";
 import { alova } from "@/utils/alova";
 
@@ -6,8 +10,9 @@ export async function postSubmission(request: CreateSubmissionRequest) {
     return alova.Post<Response<Submission>>("/submissions", request);
 }
 
-export async function getSubmissionById(id: number) {
-    return alova.Get<Response<Submission>>(`/submissions/${id}`, {
+export async function getSubmission(request: GetSubmissionRequest) {
+    return alova.Get<Response<Array<Submission>>>(`/submissions`, {
+        params: request,
         cacheFor: 0,
     });
 }

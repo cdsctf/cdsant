@@ -255,6 +255,7 @@ export default function () {
                                     }
                                 })
                                 .join(","),
+                            is_desensitized: false,
                         });
 
                         return {

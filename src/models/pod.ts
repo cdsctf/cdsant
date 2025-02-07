@@ -10,6 +10,7 @@ export interface Pod {
     // challenge: Challenge;
     nats?: string;
     ports?: Array<number>;
+    public_entry?: string;
 
     status?: string;
     reason?: string;

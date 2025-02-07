@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, Select, Switch } from "antd";
+import { Alert, Button, Flex, Form, Input, Select, Switch } from "antd";
 import { useContext, useEffect } from "react";
 import { Context } from "./context";
 import { useCategoryStore } from "@/stores/category";
@@ -66,6 +66,25 @@ export default function () {
             onFinish={() => handleChallengeUpdate()}
             autoComplete="off"
         >
+            <Form.Item>
+                <Flex gap={12} align={"center"}>
+                    <Alert
+                        message={"题目的基本信息。"}
+                        showIcon
+                        css={css`
+                            flex: 1;
+                        `}
+                    />
+                    <Button
+                        size={"large"}
+                        type={"primary"}
+                        htmlType={"submit"}
+                        icon={<CheckCircleLinear />}
+                    >
+                        保存
+                    </Button>
+                </Flex>
+            </Form.Item>
             <Flex
                 css={css`
                     gap: 16px;
@@ -142,17 +161,6 @@ export default function () {
                     <Switch />
                 </Form.Item>
             </Flex>
-            <Form.Item>
-                <Flex justify={"flex-end"}>
-                    <Button
-                        type={"primary"}
-                        htmlType={"submit"}
-                        icon={<CheckCircleLinear />}
-                    >
-                        保存
-                    </Button>
-                </Flex>
-            </Form.Item>
         </Form>
     );
 }
