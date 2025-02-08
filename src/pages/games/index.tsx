@@ -27,6 +27,7 @@ export default function () {
     function fetchGames() {
         getGames({
             id: Number.isNaN(id) ? undefined : id,
+            is_enabled: true,
             title: title,
             size: size,
             page: page,

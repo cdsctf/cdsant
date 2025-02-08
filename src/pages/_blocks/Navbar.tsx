@@ -45,6 +45,7 @@ import useMode from "@/hooks/useMode";
 import { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { useConfigStore } from "@/stores/config";
 import { Group } from "@/models/user";
+import { logout } from "@/api/user";
 
 const { useToken } = theme;
 const { Header } = Layout;
@@ -114,6 +115,10 @@ function NavDropdown() {
     const navigate = useNavigate();
     const { token } = useToken();
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+
+    function handleLogout() {
+        logout();
+    }
 
     return (
         <Dropdown
@@ -227,6 +232,8 @@ function NavDropdown() {
                         icon: <LogoutLinear />,
                         danger: true,
                         onClick: () => {
+                            handleLogout();
+                            navigate("/login");
                             authStore.clear();
                         },
                     },

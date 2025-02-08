@@ -7,18 +7,16 @@ import { useAuthStore } from "@/stores/auth";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useNotificationStore } from "@/stores/notification";
-import { Turnstile } from "@marsidev/react-turnstile";
 import { useConfigStore } from "@/stores/config";
-import { useThemeStore } from "@/stores/theme";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { Captcha } from "@/components/widgets/Captcha";
+import { useSharedStore } from "@/stores/shared";
 
 export default function () {
     const authStore = useAuthStore();
     const navigate = useNavigate();
     const notificationStore = useNotificationStore();
     const configStore = useConfigStore();
-    const themeStore = useThemeStore();
+    const sharedStore = useSharedStore();
 
     const { token } = theme.useToken();
     const [form] = Form.useForm<{
@@ -55,6 +53,14 @@ export default function () {
                         message: "登录失败",
                         description: "用户名或密码错误",
                     });
+                }
+
+                if (res.code === 410) {
+                    notificationStore?.api?.error({
+                        message: "登录失败",
+                        description: "验证码已失效",
+                    });
+                    sharedStore.setRefresh();
                 }
             })
             .finally(() => {

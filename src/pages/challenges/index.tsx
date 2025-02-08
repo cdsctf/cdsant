@@ -158,6 +158,7 @@ export default function () {
                         category: filter.category
                             ? Number(filter.category[0])
                             : undefined,
+                        is_public: true,
                         is_desensitized: true,
                         page: params.current,
                         size: params.pageSize,

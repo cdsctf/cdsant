@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import RefreshLinear from "~icons/solar/refresh-linear";
 import CalculatorMinimalisticLinear from "~icons/solar/calculator-minimalistic-linear";
 import CryptoJS from "crypto-js";
+import { useSharedStore } from "@/stores/shared";
 
 export interface CaptchaProps {
     onChange: (captcha?: { id?: string; content?: string }) => void;
@@ -57,6 +58,7 @@ function PowCaptcha(props: CaptchaProps) {
 
     const [refresh, { inc }] = useCounter(0);
     const [loading, setLoading] = useState<boolean>(false);
+    const sharedStore = useSharedStore();
 
     const [result, setResult] = useState<string>();
     const [id, setId] = useState<string>();
@@ -88,7 +90,7 @@ function PowCaptcha(props: CaptchaProps) {
         return () => {
             calculateWorker.terminate();
         };
-    }, [refresh]);
+    }, [refresh, sharedStore.refresh]);
 
     useEffect(() => {
         onChange({
@@ -121,6 +123,7 @@ function PowCaptcha(props: CaptchaProps) {
 
 function ImageCaptcha(props: CaptchaProps) {
     const { onChange } = props;
+    const sharedStore = useSharedStore();
 
     const [refresh, { inc }] = useCounter(0);
     const [loading, setLoading] = useState<boolean>(false);
@@ -138,7 +141,7 @@ function ImageCaptcha(props: CaptchaProps) {
 
     useEffect(() => {
         fetchCaptchaData();
-    }, [refresh]);
+    }, [refresh, sharedStore.refresh]);
 
     useEffect(() => {
         onChange({
@@ -154,7 +157,11 @@ function ImageCaptcha(props: CaptchaProps) {
                 width: 100%;
             `}
         >
-            <Input value={result} onChange={(e) => setResult(e.target.value)} />
+            <Input
+                value={result}
+                onChange={(e) => setResult(e.target.value)}
+                placeholder={"验证码"}
+            />
             <Image
                 src={`data:image/svg+xml;base64,${CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(String(challenge)))}`}
                 preview={false}

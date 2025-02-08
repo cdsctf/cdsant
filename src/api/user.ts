@@ -42,6 +42,10 @@ export async function login(request: UserLoginRequest) {
     return alova.Post<Response<User>>("/users/login", request);
 }
 
+export async function logout() {
+    return alova.Post<Response<never>>("/users/logout");
+}
+
 export async function updateUserProfile(request: UpdateUserProfileRequest) {
     return alova.Put<Response<User>>("/users/profile", request);
 }
