@@ -7,6 +7,7 @@ import {
     UpdateChallengeRequest,
     DeleteChallengeRequest,
     UpdateChallengeCheckerRequest,
+    UpdateChallengeEnvRequest,
 } from "@/models/challenge";
 import { Metadata } from "@/models/media";
 import { Response } from "@/types";
@@ -38,6 +39,16 @@ export async function updateChallenge(request: UpdateChallengeRequest) {
     );
 }
 
+export async function updateChallengeEnv(request: UpdateChallengeEnvRequest) {
+    return alova.Put<Response<never>>(
+        `/challenges/${request?.id}/env`,
+        request,
+        {
+            cacheFor: 0,
+        }
+    );
+}
+
 export async function updateChallengeChecker(
     request: UpdateChallengeCheckerRequest
 ) {
@@ -58,10 +69,6 @@ export async function createChallenge(request: CreateChallengeRequest) {
 
 export async function deleteChallenge(request: DeleteChallengeRequest) {
     return alova.Delete<Response<never>>(`/challenges/${request.id}`);
-}
-
-export async function lintChallengeScript(id: string) {
-    return alova.Get<Response<never>>(`/challenges/${id}/lint`);
 }
 
 export async function getChallengeAttachmentMetadata(id: string) {

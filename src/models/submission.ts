@@ -5,7 +5,7 @@ import { User } from "./user";
 
 export interface Submission {
     id?: number;
-    flag?: string;
+    content?: string;
     status?: Status;
     user_id?: number;
     user?: User;
@@ -33,7 +33,7 @@ export enum Status {
 }
 
 export interface CreateSubmissionRequest {
-    flag?: string;
+    content?: string;
     challenge_id?: string;
     team_id?: number;
     game_id?: number;
@@ -41,7 +41,7 @@ export interface CreateSubmissionRequest {
 
 export interface GetSubmissionRequest {
     id?: number;
-    flag?: string;
+    content?: string;
     status?: number;
     user_id?: number;
     is_detailed?: boolean;

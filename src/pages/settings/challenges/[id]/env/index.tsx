@@ -5,7 +5,7 @@ import CheckCircleLinear from "~icons/solar/check-circle-linear";
 import AddCircleLinear from "~icons/solar/add-circle-linear";
 import MinusCircleLinear from "~icons/solar/minus-circle-linear";
 import { css } from "@emotion/react";
-import { updateChallenge } from "@/api/challenge";
+import { updateChallengeEnv } from "@/api/challenge";
 import { useNotificationStore } from "@/stores/notification";
 import { useSharedStore } from "@/stores/shared";
 import { useKeyPress } from "ahooks";
@@ -41,7 +41,7 @@ export default function () {
     }, [challenge]);
 
     function handleChallengeUpdate() {
-        updateChallenge({
+        updateChallengeEnv({
             id: challenge?.id,
             env: {
                 image: form.getFieldValue("image"),
@@ -63,7 +63,7 @@ export default function () {
             if (res.code === 200) {
                 notificationStore?.api?.success({
                     message: "更新成功",
-                    description: `题目 ${res?.data?.title} 容器信息已更新`,
+                    description: `题目 ${challenge?.title} 容器信息已更新`,
                 });
                 sharedStore.setRefresh();
             }

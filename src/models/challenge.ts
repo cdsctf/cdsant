@@ -39,13 +39,16 @@ export interface UpdateChallengeRequest {
     has_attachment?: boolean;
     is_public?: boolean;
     is_dynamic?: boolean;
-    env?: Env;
-    checker?: string;
 }
 
 export interface UpdateChallengeCheckerRequest {
     id?: string;
     checker?: string;
+}
+
+export interface UpdateChallengeEnvRequest {
+    id?: string;
+    env?: Env;
 }
 
 export interface CreateChallengeRequest {

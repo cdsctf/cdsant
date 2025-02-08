@@ -41,7 +41,7 @@ export interface UpdateGameChallengeRequest {
     min_pts?: number;
     difficulty?: number;
     bonus_ratios?: Array<number>;
-    frozen_at?: number;
+    frozen_at?: number | null;
 }
 
 export interface DeleteGameChallengeRequest {

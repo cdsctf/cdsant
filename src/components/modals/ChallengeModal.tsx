@@ -166,7 +166,7 @@ export default function ChallengeModal(props: ChallengeModalProps) {
         setSubmitLoading(true);
         postSubmission({
             challenge_id: challenge?.id,
-            flag: flag,
+            content: flag,
             game_id: mode === "game" ? Number(gameTeam?.game_id) : undefined,
             team_id: mode === "game" ? Number(gameTeam?.team_id) : undefined,
         }).then((res) => {

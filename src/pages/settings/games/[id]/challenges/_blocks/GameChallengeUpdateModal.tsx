@@ -39,7 +39,7 @@ export default function GameChallengeCreateModal(
 
     const [form] = Form.useForm<
         GameChallenge & {
-            frozen_at: Dayjs;
+            frozen_at?: Dayjs;
         }
     >();
     const minPtsValue = Form.useWatch("min_pts", form);
@@ -74,9 +74,11 @@ export default function GameChallengeCreateModal(
             bonus_ratios: form.getFieldValue("bonus_ratios"),
             min_pts: form.getFieldValue("min_pts"),
             max_pts: form.getFieldValue("max_pts"),
-            frozen_at: Math.ceil(
-                form.getFieldValue("frozen_at").toDate().getTime() / 1000
-            ),
+            frozen_at: form.getFieldValue("frozen_at")
+                ? Math.ceil(
+                      form.getFieldValue("frozen_at").toDate().getTime() / 1000
+                  )
+                : null,
         })
             .then((res) => {
                 if (res.code === 200) {
@@ -99,7 +101,9 @@ export default function GameChallengeCreateModal(
             bonus_ratios: gameChallenge?.bonus_ratios,
             min_pts: gameChallenge?.min_pts,
             max_pts: gameChallenge?.max_pts,
-            frozen_at: dayjs(Number(gameChallenge?.frozen_at) * 1000),
+            frozen_at: gameChallenge?.frozen_at
+                ? dayjs(Number(gameChallenge?.frozen_at) * 1000)
+                : undefined,
         });
     }, [gameChallenge]);
 
@@ -193,16 +197,7 @@ export default function GameChallengeCreateModal(
                             <InputNumber size={"large"} />
                         </Form.Item>
                     </Flex>
-                    <Form.Item
-                        label={"冻结时间"}
-                        name={"frozen_at"}
-                        rules={[
-                            {
-                                required: true,
-                                message: "请输入冻结时间",
-                            },
-                        ]}
-                    >
+                    <Form.Item label={"冻结时间"} name={"frozen_at"}>
                         <DatePicker
                             showTime
                             css={css`
