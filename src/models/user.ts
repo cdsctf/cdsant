@@ -72,3 +72,15 @@ export interface UserRegisterRequest {
         content?: string;
     };
 }
+
+export interface UpdateUserProfileRequest {
+    nickname?: string;
+    email?: string;
+    password?: string;
+    description?: string;
+}
+
+export interface UpdateUserProfilePasswordRequest {
+    old_password: string;
+    new_password: string;
+}

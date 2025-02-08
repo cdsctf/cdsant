@@ -46,9 +46,15 @@ export default function () {
                     notificationStore?.api?.success({
                         message: "登录成功",
                         description: "欢迎回来",
-                        placement: "bottomRight",
                     });
                     navigate("/");
+                }
+
+                if (res.code === 400) {
+                    notificationStore?.api?.error({
+                        message: "登录失败",
+                        description: "用户名或密码错误",
+                    });
                 }
             })
             .finally(() => {

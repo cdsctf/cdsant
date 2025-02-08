@@ -145,9 +145,9 @@ function NavDropdown() {
                                 gap: 12px;
                             `}
                             onClick={() => {
-                                authStore?.user
-                                    ? navigate(`/users/${authStore?.user?.id}`)
-                                    : navigate("/login");
+                                // authStore?.user
+                                //     ? navigate(`/users/${authStore?.user?.id}`)
+                                //     : navigate("/login");
                                 setDropdownOpen(false);
                             }}
                         >
@@ -219,7 +219,7 @@ function NavDropdown() {
                     {
                         key: "3",
                         icon: <SettingsOutline />,
-                        label: "账户设置",
+                        label: <Link to={"/profile"}>账户设置</Link>,
                     },
                     {
                         key: "4",

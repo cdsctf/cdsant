@@ -368,6 +368,36 @@ export default createBrowserRouter([
                 ],
             },
             {
+                path: "profile",
+                lazy: async () => {
+                    return {
+                        Component: (await import("@/pages/profile/layout"))
+                            .default,
+                    };
+                },
+                children: [
+                    {
+                        index: true,
+                        lazy: async () => {
+                            return {
+                                Component: (await import("@/pages/profile"))
+                                    .default,
+                            };
+                        },
+                    },
+                    {
+                        path: "password",
+                        lazy: async () => {
+                            return {
+                                Component: (
+                                    await import("@/pages/profile/password")
+                                ).default,
+                            };
+                        },
+                    },
+                ],
+            },
+            {
                 path: "login",
                 children: [
                     {

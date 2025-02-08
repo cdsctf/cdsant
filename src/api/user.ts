@@ -6,6 +6,8 @@ import {
     GetUserRequest,
     UserLoginRequest,
     UpdateUserRequest,
+    UpdateUserProfileRequest,
+    UpdateUserProfilePasswordRequest,
 } from "@/models/user";
 import { Response } from "@/types";
 import { alova } from "@/utils/alova";
@@ -38,4 +40,14 @@ export async function deleteUserAvatar(id: number) {
 
 export async function login(request: UserLoginRequest) {
     return alova.Post<Response<User>>("/users/login", request);
+}
+
+export async function updateUserProfile(request: UpdateUserProfileRequest) {
+    return alova.Put<Response<User>>("/users/profile", request);
+}
+
+export async function updateUserProfilePassword(
+    request: UpdateUserProfilePasswordRequest
+) {
+    return alova.Put<Response<never>>("/users/profile/password", request);
 }
