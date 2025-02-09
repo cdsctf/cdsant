@@ -399,17 +399,19 @@ export default createBrowserRouter([
             },
             {
                 path: "login",
-                children: [
-                    {
-                        index: true,
-                        lazy: async () => {
-                            return {
-                                Component: (await import("@/pages/login"))
-                                    .default,
-                            };
-                        },
-                    },
-                ],
+                lazy: async () => {
+                    return {
+                        Component: (await import("@/pages/login")).default,
+                    };
+                },
+            },
+            {
+                path: "register",
+                lazy: async () => {
+                    return {
+                        Component: (await import("@/pages/register")).default,
+                    };
+                },
             },
         ],
     },

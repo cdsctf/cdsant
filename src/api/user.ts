@@ -8,6 +8,7 @@ import {
     UpdateUserRequest,
     UpdateUserProfileRequest,
     UpdateUserProfilePasswordRequest,
+    UserRegisterRequest,
 } from "@/models/user";
 import { Response } from "@/types";
 import { alova } from "@/utils/alova";
@@ -44,6 +45,10 @@ export async function login(request: UserLoginRequest) {
 
 export async function logout() {
     return alova.Post<Response<never>>("/users/logout");
+}
+
+export async function register(request: UserRegisterRequest) {
+    return alova.Post<Response<User>>("/users/register", request);
 }
 
 export async function updateUserProfile(request: UpdateUserProfileRequest) {

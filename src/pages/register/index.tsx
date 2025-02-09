@@ -1,8 +1,19 @@
 import { css } from "@emotion/react";
-import { Button, Card, Flex, Form, Grid, Input, Image, theme } from "antd";
+import {
+    Button,
+    Card,
+    Flex,
+    Form,
+    Grid,
+    Input,
+    Image,
+    theme,
+    Space,
+} from "antd";
 import UserOutline from "~icons/solar/user-outline";
 import LockPasswordOutline from "~icons/solar/lock-password-outline";
-import { login } from "@/api/user";
+import MailBoxLinear from "~icons/solar/mailbox-linear";
+import { register } from "@/api/user";
 import { useAuthStore } from "@/stores/auth";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
@@ -12,7 +23,6 @@ import { Captcha } from "@/components/widgets/Captcha";
 import { useSharedStore } from "@/stores/shared";
 
 export default function () {
-    const authStore = useAuthStore();
     const navigate = useNavigate();
     const notificationStore = useNotificationStore();
     const configStore = useConfigStore();
@@ -20,7 +30,9 @@ export default function () {
 
     const { token } = theme.useToken();
     const [form] = Form.useForm<{
-        account: string;
+        username: string;
+        nickname: string;
+        email: string;
         password: string;
         captcha?: {
             id?: string;
@@ -31,33 +43,42 @@ export default function () {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    function handleLogin() {
+    function handleRegister() {
         setLoading(true);
-        login({
-            account: form.getFieldValue("account"),
+        register({
+            username: form.getFieldValue("username"),
+            nickname: form.getFieldValue("username"),
+            email: form.getFieldValue("email"),
             password: form.getFieldValue("password"),
             captcha: form.getFieldValue("captcha"),
         })
             .then((res) => {
                 if (res.code === 200) {
-                    authStore.setUser(res.data);
                     notificationStore?.api?.success({
-                        message: "登录成功",
-                        description: "欢迎回来",
+                        message: "注册成功",
+                        description: "请登录",
                     });
-                    navigate("/");
+                    navigate("/login");
                 }
 
                 if (res.code === 400) {
                     notificationStore?.api?.error({
-                        message: "登录失败",
-                        description: "用户名或密码错误",
+                        message: "注册失败",
+                        description: res.msg,
                     });
+                }
+
+                if (res.code === 409) {
+                    notificationStore?.api?.error({
+                        message: "注册失败",
+                        description: "用户名或邮箱冲突",
+                    });
+                    sharedStore.setRefresh();
                 }
 
                 if (res.code === 410) {
                     notificationStore?.api?.error({
-                        message: "登录失败",
+                        message: "注册失败",
                         description: "验证码已失效",
                     });
                     sharedStore.setRefresh();
@@ -119,33 +140,65 @@ export default function () {
                                     font-size: 1.5rem;
                                 `}
                             >
-                                登录
+                                注册
                             </h2>
                         )}
                     </Flex>
                     <Form
                         form={form}
-                        name="login"
-                        onFinish={() => handleLogin()}
+                        name="register"
+                        onFinish={() => handleRegister()}
                         autoComplete="off"
                         css={css`
                             display: flex;
                             flex-direction: column;
                         `}
                     >
+                        <Space.Compact>
+                            <Form.Item
+                                name={"username"}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "请输入用户名",
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    placeholder={"用户名"}
+                                    size={"large"}
+                                    prefix={<UserOutline />}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                name={"nickname"}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "请输入昵称",
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    placeholder={"昵称"}
+                                    size={"large"}
+                                    prefix={<UserOutline />}
+                                />
+                            </Form.Item>
+                        </Space.Compact>
                         <Form.Item
-                            name={"account"}
+                            name={"email"}
                             rules={[
                                 {
                                     required: true,
-                                    message: "请输入用户名或邮箱",
+                                    message: "请输入邮箱",
                                 },
                             ]}
                         >
                             <Input
-                                placeholder={"用户名或邮箱"}
+                                placeholder={"邮箱"}
                                 size={"large"}
-                                prefix={<UserOutline />}
+                                prefix={<MailBoxLinear />}
                             />
                         </Form.Item>
                         <Form.Item
@@ -180,8 +233,8 @@ export default function () {
                                     color: ${token.colorTextDescription};
                                 `}
                             >
-                                还没有账号？在这里
-                                <Link to={"/register"}>注册</Link>。
+                                已有账号？在这里
+                                <Link to={"/login"}>登录</Link>。
                             </span>
                         </Flex>
                         <Button
@@ -191,7 +244,7 @@ export default function () {
                             loading={loading}
                             block
                         >
-                            登录
+                            注册
                         </Button>
                     </Form>
                 </div>

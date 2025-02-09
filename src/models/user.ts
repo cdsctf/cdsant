@@ -66,7 +66,6 @@ export interface UserRegisterRequest {
     nickname: string;
     email: string;
     password: string;
-    token?: string;
     captcha?: {
         id?: string;
         content?: string;
