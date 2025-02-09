@@ -1,11 +1,11 @@
-FROM node:20 AS builder
+FROM node:22 AS builder
 
 COPY ./ /app
     
 WORKDIR /app
     
 RUN npm install
-RUN npm run build
+RUN npm run build --force
 
 FROM busybox:uclibc
 
