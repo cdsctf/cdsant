@@ -4,7 +4,7 @@ COPY ./ /app
     
 WORKDIR /app
     
-RUN npm install
+RUN npm install --force
 RUN npm run build --force
 
 FROM busybox:uclibc
